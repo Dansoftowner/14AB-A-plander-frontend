@@ -1,10 +1,12 @@
+import ColorModeSwitch from "./components/ColorModeSwitch"
 import { RegisterForm } from "./components/RegisterForm/RegisterForm"
 
 function App() {
 
   return (
     <>
-      <RegisterForm/>
+      <ColorModeSwitch />
+      <RegisterForm />
     </>
   )
 }
