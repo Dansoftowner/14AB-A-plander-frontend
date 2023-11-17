@@ -1,23 +1,26 @@
 import { Button, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 export const RegisterForm = () => {
 
     const [show, setShow] = useState(false)
     const setPasswordVisibility = () => setShow(!show)
 
-    {/*Validation-t csinálom majd*/}
+    const { t, i18n } = useTranslation()
+
+    {/*Validation-t csinálom majd*/ }
 
 
     return (
         <form className="mx-auto container mt-3">
-            <Heading marginBottom={10}>Plander regisztráció</Heading>
+            <Heading marginBottom={10}>{t('register-header')}</Heading>
             <Heading size='lg'>Belépési adatok</Heading>
             <hr />
             <Stack marginBottom={5}>
                 <div className="mb-3">
                     <Text>Felhasználónév</Text>
-                    <Input width={400} placeholder="Adjon meg egy felhasználónevet"/>
+                    <Input width={400} placeholder="Adjon meg egy felhasználónevet" />
                 </div>
                 <Text>Jelszó</Text>
                 <HStack justify='start'>
