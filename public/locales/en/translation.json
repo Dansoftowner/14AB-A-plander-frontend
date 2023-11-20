@@ -9,5 +9,10 @@
   "regForm-showPwd": "Show",
   "regForm-hidePwd": "Hide",
   "regForm-repeatPwd": "Please type your password again",
-  "regForm-persInfo": "Personal informations"
+  "regForm-persInfo": "Personal informations",
+  "regForm-fullname": "Full name",
+  "regForm-address": "Address",
+  "regForm-idNumber": "Identy card number",
+  "regForm-email": "Email address",
+  "regForm-phone": "Phone number"
 }

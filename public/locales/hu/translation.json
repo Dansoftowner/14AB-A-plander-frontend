@@ -9,5 +9,10 @@
   "regForm-showPwd": "Mutasd",
   "regForm-hidePwd": "Elrejtés",
   "regForm-repeatPwd": "Jelszó mégegyszer",
-  "regForm-persInfo": "Személyes adatok"
+  "regForm-persInfo": "Személyes adatok",
+  "regForm-fullname": "Teljes név",
+  "regForm-address": "Lakcím",
+  "regForm-idNumber": "Szem. Ig. Szám",
+  "regForm-email": "Email cím",
+  "regForm-phone": "Telefon szám"
 }

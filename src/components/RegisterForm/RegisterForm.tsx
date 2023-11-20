@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react"
+import { Button, Divider, HStack, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Stack, Text, useColorMode } from "@chakra-ui/react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -7,15 +7,25 @@ export const RegisterForm = () => {
     const [show, setShow] = useState(false)
     const setPasswordVisibility = () => setShow(!show)
 
-    const { t } = useTranslation()
+    const { i18n, t } = useTranslation()
 
-    const isVisible = () =>  (show ? t('regForm-showPwd') : t('regForm-hidePwd'))
+    const isVisible = () => (show ? t('regForm-showPwd') : t('regForm-hidePwd'))
+
+    const setMinWidth = (obj: string) => {
+        if (i18n.language == 'hu' && obj == 'login') return 230
+        if (i18n.language == 'en' && obj == 'login') return 190
+
+        if (i18n.language == 'hu' && obj == 'personal') return 260
+        if (i18n.language == 'en' && obj == 'personal') return 320
+    }
 
     return (
         <form className="mx-auto container mt-3">
             <Heading marginBottom={10}>{t('register-header')}</Heading>
-            <Heading size='lg'>{t('login-details')}</Heading>
-            <hr />
+            <HStack marginBottom={5}>
+                <Heading minWidth={setMinWidth('login')} size='lg'>{t('login-details')}</Heading>
+                <Divider />
+            </HStack>
             <Stack marginBottom={5}>
                 <div className="mb-3">
                     <Text>{t('username')}</Text>
@@ -48,8 +58,35 @@ export const RegisterForm = () => {
                     </div>
                 </HStack>
             </Stack>
-            <Heading size='lg'>{t('regForm-persInfo')}</Heading>
-            <hr />
+            <HStack marginBottom={5}>
+                <Heading minWidth={setMinWidth('personal')} size='lg'>{t('regForm-persInfo')}</Heading>
+                <Divider />
+            </HStack>
+            <Stack marginBottom={5}>
+                <div className="mb-3">
+                    <Text>{t('regForm-fullname')}</Text>
+                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                </div>
+                <div className="mb-3">
+                    <Text>{t('regForm-address')}</Text>
+                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                </div>
+                <div className="mb-3">
+                    <Text>{t('regForm-idNumber')}</Text>
+                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                </div>
+                <div className="mb-3">
+                    <Text>{t('regForm-email')}</Text>
+                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                </div>
+                <div className="mb-3">
+                    <Text>{t('regForm-phone')}</Text>
+                    <InputGroup>
+                        <InputLeftAddon children='+36' />
+                        <Input width={340} type='tel' placeholder='tel. szám' />
+                    </InputGroup>
+                </div>
+            </Stack>
 
 
         </form>
