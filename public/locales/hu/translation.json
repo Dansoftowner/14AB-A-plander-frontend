@@ -1,3 +1,7 @@
 {
-  "register-header": "Plander regisztráció"
+  "register-header": "Plander regisztráció",
+  "langSelectorAlt": "Kiválasztott nyelv módosítása",
+  "login-details": "Belépési adatok",
+  "username": "Felhasználónév",
+  "password": "Jelszó"
 }

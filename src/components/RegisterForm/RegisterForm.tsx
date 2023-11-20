@@ -7,22 +7,20 @@ export const RegisterForm = () => {
     const [show, setShow] = useState(false)
     const setPasswordVisibility = () => setShow(!show)
 
-    const { t, i18n } = useTranslation()
-
-    {/*Validation-t csinálom majd*/ }
+    const { t } = useTranslation()
 
 
     return (
         <form className="mx-auto container mt-3">
             <Heading marginBottom={10}>{t('register-header')}</Heading>
-            <Heading size='lg'>Belépési adatok</Heading>
+            <Heading size='lg'>{t('login-details')}</Heading>
             <hr />
             <Stack marginBottom={5}>
                 <div className="mb-3">
-                    <Text>Felhasználónév</Text>
+                    <Text>{t('username')}</Text>
                     <Input width={400} placeholder="Adjon meg egy felhasználónevet" />
                 </div>
-                <Text>Jelszó</Text>
+                <Text>{t('password')}</Text>
                 <HStack justify='start'>
                     <div className="mb-3">
                         <InputGroup size='md'>
@@ -51,7 +49,6 @@ export const RegisterForm = () => {
             </Stack>
             <Heading size='lg'>Személyes adatok</Heading>
             <hr />
-            {/* */}
 
 
         </form>

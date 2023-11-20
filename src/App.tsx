@@ -1,11 +1,11 @@
-import ColorModeSwitch from "./components/ColorModeSwitch"
+import NavBar from "./components/NavBar/NavBar"
 import { RegisterForm } from "./components/RegisterForm/RegisterForm"
 
 function App() {
 
   return (
     <>
-      <ColorModeSwitch />
+      <NavBar />
       <RegisterForm />
     </>
   )

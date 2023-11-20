@@ -1,3 +1,7 @@
 {
-  "register-header": "Plander registration"
+  "register-header": "Plander registration",
+  "langSelectorAlt": "Change selected language",
+  "login-details": "Login details",
+  "username": "Username",
+  "password": "Password"
 }
