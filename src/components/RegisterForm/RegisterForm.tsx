@@ -9,6 +9,7 @@ export const RegisterForm = () => {
 
     const { t } = useTranslation()
 
+    const isVisible = () =>  (show ? t('regForm-showPwd') : t('regForm-hidePwd'))
 
     return (
         <form className="mx-auto container mt-3">
@@ -18,7 +19,7 @@ export const RegisterForm = () => {
             <Stack marginBottom={5}>
                 <div className="mb-3">
                     <Text>{t('username')}</Text>
-                    <Input width={400} placeholder="Adjon meg egy felhasználónevet" />
+                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
                 </div>
                 <Text>{t('password')}</Text>
                 <HStack justify='start'>
@@ -27,11 +28,11 @@ export const RegisterForm = () => {
                             <Input
                                 pr='4.5rem'
                                 type={show ? 'text' : 'password'}
-                                placeholder='Válasszon jelszót' width={400}
+                                placeholder={t('regForm-pwdPholder')} width={400}
                             />
                             <InputRightElement width='4.5rem'>
                                 <Button h='1.75rem' size='sm' margin={1} onClick={setPasswordVisibility}>
-                                    {show ? 'Elrejtés' : 'Mutasd'}
+                                    {isVisible()}
                                 </Button>
                             </InputRightElement>
                         </InputGroup>
@@ -41,13 +42,13 @@ export const RegisterForm = () => {
                             <Input
                                 pr='4.5rem'
                                 type={"password"}
-                                placeholder='Jelszó mégegyszer' width={400}
+                                placeholder={t('regForm-repeatPwd')} width={400}
                             />
                         </InputGroup>
                     </div>
                 </HStack>
             </Stack>
-            <Heading size='lg'>Személyes adatok</Heading>
+            <Heading size='lg'>{t('regForm-persInfo')}</Heading>
             <hr />
 
 

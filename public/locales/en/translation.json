@@ -3,5 +3,11 @@
   "langSelectorAlt": "Change selected language",
   "login-details": "Login details",
   "username": "Username",
-  "password": "Password"
+  "password": "Password",
+  "regForm-usernamePholder": "Please provide a username",
+  "regForm-pwdPholder": "Please provide a password",
+  "regForm-showPwd": "Show",
+  "regForm-hidePwd": "Hide",
+  "regForm-repeatPwd": "Please type your password again",
+  "regForm-persInfo": "Personal informations"
 }

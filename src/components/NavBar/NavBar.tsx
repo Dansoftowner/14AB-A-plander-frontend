@@ -8,7 +8,7 @@ const NavBar = () => {
             <HStack margin={3} justifyContent='end'>
                 <ColorModeSwitch />
                 <LangSelector />
-            </HStack>
+            </HStack >
         </>
     )
 }

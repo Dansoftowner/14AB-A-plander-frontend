@@ -3,5 +3,11 @@
   "langSelectorAlt": "Kiválasztott nyelv módosítása",
   "login-details": "Belépési adatok",
   "username": "Felhasználónév",
-  "password": "Jelszó"
+  "password": "Jelszó",
+  "regForm-usernamePholder": "Adjon meg egy felhasználónevet",
+  "regForm-pwdPholder": "Adjon meg egy jelszót",
+  "regForm-showPwd": "Mutasd",
+  "regForm-hidePwd": "Elrejtés",
+  "regForm-repeatPwd": "Jelszó mégegyszer",
+  "regForm-persInfo": "Személyes adatok"
 }
