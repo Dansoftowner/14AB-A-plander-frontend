@@ -14,5 +14,8 @@
   "regForm-address": "Address",
   "regForm-idNumber": "Identy card number",
   "regForm-email": "Email address",
-  "regForm-phone": "Phone number"
+  "regForm-phone": "Phone number",
+  "regForm-zodUsername": "The username must be at least 5 characters!",
+  "regForm-zodPassword": "The password must contain at least 1 number and 1 uppercase character!",
+  "regForm-zodPasswordLength": "The password must be at lest 8 characters!"
 }
