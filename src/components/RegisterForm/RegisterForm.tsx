@@ -16,10 +16,10 @@ export const RegisterForm = () => {
     const schema = z.object({
         username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
         password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
-        repeatedPassword: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
+        repeatedPassword: z.string()
     }).refine(data => data.password === data.repeatedPassword, {
-        message: 'nem jo gec',
-        path: ["confirmPassword"]
+        message: t('regForm-zodRepeatedPwd'),
+        path: ["repeatedPassword"]
     })
 
 
@@ -79,6 +79,7 @@ export const RegisterForm = () => {
                     </div>
                 </HStack>
                 {errors.password && <p className='text-danger'>{errors.password.message?.toString()}</p>}
+                {errors.repeatedPassword && <p className='text-danger'>{errors.repeatedPassword.message?.toString()}</p>}
             </Stack>
             <HStack marginBottom={5}>
                 <Heading minWidth={setMinWidth('personal')} size='lg'>{t('regForm-persInfo')}</Heading>

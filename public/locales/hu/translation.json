@@ -17,5 +17,6 @@
   "regForm-phone": "Telefon szám",
   "regForm-zodUsername": "Legalább 5 karakteres felhasználónevet válasszon!",
   "regForm-zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagy betűt és 1 számot!",
-  "regForm-zodPasswordLength": "A jelszónak legalább 8 karakter hosszúnak kell lennie!"
+  "regForm-zodPasswordLength": "A jelszónak legalább 8 karakter hosszúnak kell lennie!",
+  "regForm-zodRepeatedPwd": "A két jelszó nem egyezik!"
 }
