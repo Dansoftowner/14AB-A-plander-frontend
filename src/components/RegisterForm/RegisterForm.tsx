@@ -48,7 +48,7 @@ export const RegisterForm = () => {
             <Heading marginBottom={10}>{t('register-header')}</Heading>
             <HStack marginBottom={5}>
                 <Heading minWidth={setMinWidth('login')} size='lg'>{t('login-details')}</Heading>
-                <Divider />
+                <Divider borderColor={"grey"}/>
             </HStack>
             <Stack marginBottom={5}>
                 <div className="mb-3">
@@ -88,35 +88,35 @@ export const RegisterForm = () => {
             </Stack>
             <HStack marginBottom={5}>
                 <Heading minWidth={setMinWidth('personal')} size='lg'>{t('regForm-persInfo')}</Heading>
-                <Divider />
+                <Divider borderColor={"gray"} />
             </HStack>
             <Stack marginBottom={5}>
                 <div className="mb-3">
                     <Text>{t('regForm-fullname')}</Text>
-                    <Input {...register('fullName')} width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('fullName')} width={400} placeholder={t('regForm-fnPholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-address')}</Text>
-                    <Input {...register('address')} width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('address')} width={400} placeholder={t('regForm-adPholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-idNumber')}</Text>
-                    <Input {...register('idNumber')} width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('idNumber')} width={400} placeholder={t('regForm-idcPholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-email')}</Text>
-                    <Input {...register('emailAddress')} width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
                 </div>
                 {errors.emailAddress && <p className="text-danger">{errors.emailAddress.message?.toString()}</p>}
                 <div className="mb-3">
                     <Text>{t('regForm-phone')}</Text>
                     <InputGroup>
                         <InputLeftAddon children='+36' />
-                        <Input {...register('phoneNumber')} width={340} type='tel' placeholder='tel. szám' />
+                        <Input {...register('phoneNumber')} width={340} type='tel' placeholder={t('regForm-phnPholder')} />
                     </InputGroup>
                 </div>
             </Stack>
-            <button className="btn btn-primary">Regisztráció</button>
+            <button className="btn btn-primary">{t('regForm-regButton')}</button>
 
         </form>
     )
