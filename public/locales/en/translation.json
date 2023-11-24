@@ -12,12 +12,12 @@
   "regForm-persInfo": "Personal informations",
   "regForm-fullname": "Full name",
   "regForm-address": "Address",
-  "regForm-idNumber": "Identy card number",
+  "regForm-idNumber": "Identity card number",
   "regForm-email": "Email address",
   "regForm-phone": "Phone number",
   "regForm-zodUsername": "The username must be at least 5 characters!",
   "regForm-zodPassword": "The password must contain at least 1 number and 1 uppercase character!",
-  "regForm-zodPasswordLength": "The password must be at lest 8 characters!",
+  "regForm-zodPasswordLength": "The password must be at least 8 characters!",
   "regForm-zodRepeatedPwd": "The passwords are not matching!",
   "regForm-zodEmail": "Invalid email format!"
 }

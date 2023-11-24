@@ -8,16 +8,16 @@
   "regForm-pwdPholder": "Adjon meg egy jelszót",
   "regForm-showPwd": "Mutasd",
   "regForm-hidePwd": "Elrejtés",
-  "regForm-repeatPwd": "Jelszó mégegyszer",
+  "regForm-repeatPwd": "Jelszó újból",
   "regForm-persInfo": "Személyes adatok",
   "regForm-fullname": "Teljes név",
   "regForm-address": "Lakcím",
-  "regForm-idNumber": "Szem. Ig. Szám",
-  "regForm-email": "Email cím",
-  "regForm-phone": "Telefon szám",
+  "regForm-idNumber": "Személyigazolvány-szám",
+  "regForm-email": "E-mailcím",
+  "regForm-phone": "Telefonszám",
   "regForm-zodUsername": "Legalább 5 karakteres felhasználónevet válasszon!",
-  "regForm-zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagy betűt és 1 számot!",
+  "regForm-zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagybetűt és 1 számot!",
   "regForm-zodPasswordLength": "A jelszónak legalább 8 karakter hosszúnak kell lennie!",
   "regForm-zodRepeatedPwd": "A két jelszó nem egyezik!",
-  "regForm-zodEmail": "Nem megfelelő e-mail formátum!"
+  "regForm-zodEmail": "Nem megfelelő e-mailformátum!"
 }
