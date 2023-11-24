@@ -16,7 +16,12 @@ export const RegisterForm = () => {
     const schema = z.object({
         username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
         password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
-        repeatedPassword: z.string()
+        repeatedPassword: z.string(),
+        fullName: z.string(),
+        address: z.string(),
+        idNumber: z.string(),
+        emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
+        phoneNumber: z.string()
     }).refine(data => data.password === data.repeatedPassword, {
         message: t('regForm-zodRepeatedPwd'),
         path: ["repeatedPassword"]
@@ -88,25 +93,26 @@ export const RegisterForm = () => {
             <Stack marginBottom={5}>
                 <div className="mb-3">
                     <Text>{t('regForm-fullname')}</Text>
-                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('fullName')} width={400} placeholder={t('regForm-usernamePholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-address')}</Text>
-                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('address')} width={400} placeholder={t('regForm-usernamePholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-idNumber')}</Text>
-                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('idNumber')} width={400} placeholder={t('regForm-usernamePholder')} />
                 </div>
                 <div className="mb-3">
                     <Text>{t('regForm-email')}</Text>
-                    <Input width={400} placeholder={t('regForm-usernamePholder')} />
+                    <Input {...register('emailAddress')} width={400} placeholder={t('regForm-usernamePholder')} />
                 </div>
+                {errors.emailAddress && <p className="text-danger">{errors.emailAddress.message?.toString()}</p>}
                 <div className="mb-3">
                     <Text>{t('regForm-phone')}</Text>
                     <InputGroup>
                         <InputLeftAddon children='+36' />
-                        <Input width={340} type='tel' placeholder='tel. szám' />
+                        <Input {...register('phoneNumber')} width={340} type='tel' placeholder='tel. szám' />
                     </InputGroup>
                 </div>
             </Stack>
