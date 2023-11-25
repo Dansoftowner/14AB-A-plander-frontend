@@ -22,8 +22,12 @@
   "regForm-phone": "Phone number",
   "regForm-regButton": "Registration",
   "regForm-zodUsername": "The username must be at least 5 characters!",
-  "regForm-zodPassword": "The password must contain at least 1 number and 1 uppercase character!",
+  "regForm-zodPassword": "The password must contain at least one number and one uppercase character!",
   "regForm-zodPasswordLength": "The password must be at least 8 characters!",
   "regForm-zodRepeatedPwd": "The passwords are not matching!",
-  "regForm-zodEmail": "Invalid email format!"
+  "regForm-zodEmail": "Invalid email format!",
+  "regForm-zodFullname": "The full name must be at least 5 characters!",
+  "regForm-zodAddress": "The address must be at least 20 characters and contain one number!",
+  "regForm-zodIdNumber": "The identity card number must contain exactly 11 numbers!",
+  "regForm-zodPhoneNumber": "Invalid phone number!"
 }

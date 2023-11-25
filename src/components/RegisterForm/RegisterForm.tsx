@@ -17,9 +17,9 @@ export const RegisterForm = () => {
         username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
         password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
         repeatedPassword: z.string(),
-        fullName: z.string(),
-        address: z.string(),
-        idNumber: z.string(),
+        fullName: z.string().min(5, { message: t('regForm-zodFullname') }).max(40),
+        address: z.string().min(5, {message: t('regForm-zodAddress')}).refine(str => /[0-9]/.test(str), { message: t('regForm-zodAddress') }),
+        idNumber: z.number().int({message: t('regForm-zodIdNumber')}).gte(10000000000, {message: t('regForm-zodIdNumber')}).lte(9999999999, {message: t('regForm-zodIdNumber')}),
         emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
         phoneNumber: z.string()
     }).refine(data => data.password === data.repeatedPassword, {
@@ -117,7 +117,6 @@ export const RegisterForm = () => {
                 </div>
             </Stack>
             <button className="btn btn-primary">{t('regForm-regButton')}</button>
-
         </form>
     )
 }

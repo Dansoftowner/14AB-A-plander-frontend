@@ -25,5 +25,9 @@
   "regForm-zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagybetűt és 1 számot!",
   "regForm-zodPasswordLength": "A jelszónak legalább 8 karakter hosszúnak kell lennie!",
   "regForm-zodRepeatedPwd": "A két jelszó nem egyezik!",
-  "regForm-zodEmail": "Nem megfelelő e-mailformátum!"
+  "regForm-zodEmail": "Nem megfelelő e-mailformátum!",
+  "regForm-zodFullname": "A teljes nevének legalább 5 karakterből kell állnia!",
+  "regForm-zodAddress": "A lekcímének legalább 20 karakterből kell állnia és tartalmaznia kell legalább egy számot!",
+  "regForm-zodIdNumber": "A személyigazolvány-számának pontosan 11 számból kell állnia!",
+  "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!"
 }
