@@ -26,10 +26,11 @@ export const RegisterForm = () => {
         idNumber: z.string().min(1),
         emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
         phoneNumber: z.string().min(1),
-    }).refine(data => data.password == data.repeatedPassword, {
-        message: t('regForm-zodRepeatedPwd'),
-        path: ["repeatedPassword"]
     })
+        .refine(data => data.password == data.repeatedPassword, {
+            message: t('regForm-zodRepeatedPwd'),
+            path: ["repeatedPassword"]
+        })
 
     //int({ message: t('regForm-zodIdNumber') }).gte(10000000000, { message: t('regForm-zodIdNumber') }).lte(9999999999, { message: t('regForm-zodIdNumber') }),
 
@@ -66,8 +67,8 @@ export const RegisterForm = () => {
                             type={show ? 'text' : 'password'}
                             placeholder={t('regForm-pwdPholder')} width={400}
                         />
-                        <InputRightElement width='4.5rem'>
-                            <Button h='1.75rem' size='sm' margin={1} onClick={setPasswordVisibility}>
+                        <InputRightElement pr={1}>
+                            <Button h='1.75rem' size='sm' onClick={setPasswordVisibility}>
                                 {isVisible()}
                             </Button>
                         </InputRightElement>
