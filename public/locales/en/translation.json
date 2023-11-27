@@ -11,8 +11,6 @@
   "regForm-idcPholder": "Please provide your identity card number",
   "regForm-emaPholder": "Please provide your email address",
   "regForm-phnPholder": "Please provide your phone number",
-  "regForm-showPwd": "Show",
-  "regForm-hidePwd": "Hide",
   "regForm-repeatPwd": "Please type your password again",
   "regForm-persInfo": "Personal information",
   "regForm-fullname": "Full name",
