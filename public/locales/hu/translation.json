@@ -29,5 +29,6 @@
   "regForm-zodFullname": "A teljes nevének legalább 5 karakterből kell állnia!",
   "regForm-zodAddress": "A lekcímének legalább 20 karakterből kell állnia és tartalmaznia kell legalább egy számot!",
   "regForm-zodIdNumber": "A személyigazolvány-számának pontosan 11 számból kell állnia!",
-  "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!"
+  "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!",
+  "regForm-zodInvalidName": "Nem megfelelő formátum (szóköz-t ellenőrizze)!"
 }
