@@ -11,7 +11,7 @@
   "regForm-idcPholder": "Adja meg a személyigazolvány-számát",
   "regForm-emaPholder": "Adja meg az e-mailcímét",
   "regForm-phnPholder": "Adja meg a telefonszámát",
-  "regForm-showPwd": "Mutasd",
+  "regForm-repeatPwd": "Jelszó újból",
   "regForm-persInfo": "Személyes adatok",
   "regForm-fullname": "Teljes név",
   "regForm-address": "Lakcím",
@@ -28,5 +28,5 @@
   "regForm-zodAddress": "A lekcímének legalább 20 karakterből kell állnia és tartalmaznia kell legalább egy számot!",
   "regForm-zodIdNumber": "A személyigazolvány-számának pontosan 11 számból kell állnia!",
   "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!",
-  "regForm-zodInvalidName": "Nem megfelelő formátum (szóköz-t ellenőrizze)!"
+  "regForm-zodInvalidName": "Nem megfelelő formátum!"
 }
