@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
+
 
 
 export const RegisterForm = () => {
@@ -34,66 +37,60 @@ export const RegisterForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(schema) })
 
 
-    const isVisible = () => (show ? t('regForm-hidePwd') : t('regForm-showPwd'))
-
-    const setMinWidth = (obj: string) => {
-        if (i18n.language == 'hu' && obj == 'login') return 230
-        if (i18n.language == 'en' && obj == 'login') return 190
-
-        if (i18n.language == 'hu' && obj == 'personal') return 260
-        if (i18n.language == 'en' && obj == 'personal') return 320
-    }
-
-    if (errors) console.log(errors);
+    const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
 
 
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
-            <Heading marginBottom={10}>{t('register-header')}</Heading>
-            <HStack marginBottom={5}>
-                <Heading minWidth={setMinWidth('login')} size='lg'>{t('login-details')}</Heading>
-                <Divider borderColor={"grey"} />
+            <Stack>
+                <Heading alignSelf='center' marginBottom={10}>{t('register-header')}</Heading>
+            </Stack>
+            <HStack marginBottom={5} alignContent='center'>
+                <Divider borderColor='grey' />
+                <Heading minWidth='fit-content' noOfLines={1} alignSelf='center' alignContent='center' size='lg'>{t('login-details')}</Heading>
+                <Divider borderColor='grey' />
             </HStack>
-            <Stack marginBottom={5}>
+            <Stack marginBottom={5} align='center'>
                 <div className="mb-3">
                     <Text>{t('username')}</Text>
                     <Input {...register('username')} width={400} placeholder={t('regForm-usernamePholder')} />
                     {errors.username && <p className='text-danger'>{errors.username.message?.toString()}</p>}
                 </div>
-                <Text>{t('password')}</Text>
-                <HStack justify='start'>
-                    <div className="mb-3">
-                        <InputGroup size='md'>
-                            <Input {...register('password')}
-                                pr='4.5rem'
-                                type={show ? 'text' : 'password'}
-                                placeholder={t('regForm-pwdPholder')} width={400}
-                            />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' margin={1} onClick={setPasswordVisibility}>
-                                    {isVisible()}
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
-                    </div>
-                    <div className="mb-3">
-                        <InputGroup size='md'>
-                            <Input {...register('repeatedPassword')}
-                                pr='4.5rem'
-                                type={"password"}
-                                placeholder={t('regForm-repeatPwd')} width={400}
-                            />
-                        </InputGroup>
-                    </div>
-                </HStack>
+
+                <div className="mb-3">
+                    <Text>{t('password')}</Text>
+                    <InputGroup size='md'>
+                        <Input {...register('password')}
+                            pr='4.5rem'
+                            type={show ? 'text' : 'password'}
+                            placeholder={t('regForm-pwdPholder')} width={400}
+                        />
+                        <InputRightElement width='4.5rem'>
+                            <Button h='1.75rem' size='sm' margin={1} onClick={setPasswordVisibility}>
+                                {isVisible()}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                </div>
+                <div className="mb-3">
+                    <InputGroup size='md'>
+                        <Input {...register('repeatedPassword')}
+                            pr='4.5rem'
+                            type={"password"}
+                            placeholder={t('regForm-repeatPwd')} width={400}
+                        />
+                    </InputGroup>
+                </div>
+
                 {errors.password && <p className='text-danger'>{errors.password.message?.toString()}</p>}
                 {errors.repeatedPassword && <p className='text-danger'>{errors.repeatedPassword.message?.toString()}</p>}
             </Stack>
             <HStack marginBottom={5}>
-                <Heading minWidth={setMinWidth('personal')} size='lg'>{t('regForm-persInfo')}</Heading>
-                <Divider borderColor={"gray"} />
+                <Divider borderColor='gray' />
+                <Heading minWidth='fit-content' size='lg'>{t('regForm-persInfo')}</Heading>
+                <Divider borderColor='gray' />
             </HStack>
-            <Stack marginBottom={5}>
+            <Stack marginBottom={5} align='center'>
                 <div className="mb-3">
                     <Text>{t('regForm-fullname')}</Text>
                     <Input {...register('fullName')} width={400} placeholder={t('regForm-fnPholder')} />
@@ -123,8 +120,8 @@ export const RegisterForm = () => {
                 </div>
                 {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message?.toString()}</p>}
 
+                <button className="btn btn-primary">{t('regForm-regButton')}</button>
             </Stack>
-            <button className="btn btn-primary">{t('regForm-regButton')}</button>
-        </form>
+        </form >
     )
 }
