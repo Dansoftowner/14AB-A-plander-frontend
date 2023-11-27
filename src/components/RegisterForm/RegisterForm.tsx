@@ -54,8 +54,8 @@ export const RegisterForm = () => {
                 <div className="mb-3">
                     <Text>{t('username')}</Text>
                     <Input {...register('username')} width={400} placeholder={t('regForm-usernamePholder')} />
-                    {errors.username && <p className='text-danger'>{errors.username.message?.toString()}</p>}
                 </div>
+                {errors.username && <p className='text-danger'>{errors.username.message?.toString()}</p>}
 
                 <div className="mb-3">
                     <Text>{t('password')}</Text>
