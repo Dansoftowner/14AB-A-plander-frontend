@@ -1,5 +1,5 @@
-import { Button, Divider, HStack, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Stack, Text } from "@chakra-ui/react"
-import { useState } from "react"
+import { Button, Divider, FormControl, FormErrorMessage, FormLabel, HStack, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Stack, Text } from "@chakra-ui/react"
+import { ChangeEvent, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -24,6 +24,7 @@ export const RegisterForm = () => {
             .refine(str => !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str), { message: t('regForm-zodInvalidName') }),
         address: z.string().min(5, { message: t('regForm-zodAddress') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodAddress') }),
         idNumber: z.string().min(1),
+        guardNumber: z.string().min(1, { message: t('regForm-zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('regForm-zodGuardNumber') }),
         emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
         phoneNumber: z.string().min(1),
     })
@@ -32,7 +33,6 @@ export const RegisterForm = () => {
             path: ["repeatedPassword"]
         })
 
-    //int({ message: t('regForm-zodIdNumber') }).gte(10000000000, { message: t('regForm-zodIdNumber') }).lte(9999999999, { message: t('regForm-zodIdNumber') }),
 
     type RegForm = z.infer<typeof schema>
 
@@ -40,6 +40,16 @@ export const RegisterForm = () => {
 
 
     const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
+
+    const lengths: number[] = [2, 7]
+    let prevValue = 0
+    const guardNumberHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
+        if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
+    }
+
+    console.log(errors.guardNumber?.message);
+
 
 
     return (
@@ -109,8 +119,17 @@ export const RegisterForm = () => {
                 </div>
                 {errors.idNumber && <p className="text-danger">{errors.idNumber.message?.toString()}</p>}
                 <div className="mb-3">
-                    <Text>{t('regForm-email')}</Text>
-                    <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
+                    <Text>{t('regForm-guardNumber')}</Text>
+                    <Input {...register('guardNumber')} type='tel' width={400} maxLength={13} onChange={(e) => guardNumberHandler(e)}
+                        placeholder={t('regForm-guardNumPholder')} />
+                </div>
+                {errors.guardNumber && <p className="text-danger">{errors.guardNumber.message?.toString()}</p>}
+                <div className="mb-3">
+                    <FormControl isRequired={true}>
+                        <FormLabel>{t('regForm-email')}</FormLabel>
+                        <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
+                        {<FormErrorMessage>Kötelező megadni.</FormErrorMessage>}
+                    </FormControl>
                 </div>
                 {errors.emailAddress && <p className="text-danger">{errors.emailAddress.message?.toString()}</p>}
                 <div className="mb-3">

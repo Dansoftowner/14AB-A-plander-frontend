@@ -16,7 +16,7 @@
   "regForm-fullname": "Teljes név",
   "regForm-address": "Lakcím",
   "regForm-idNumber": "Személyigazolvány-szám",
-  "regForm-email": "E-mailcím",
+  "regForm-email": "E-mail cím",
   "regForm-phone": "Telefonszám",
   "regForm-regButton": "Regisztráció",
   "regForm-zodUsername": "Legalább 5 karakteres felhasználónevet válasszon!",
@@ -25,8 +25,11 @@
   "regForm-zodRepeatedPwd": "A két jelszó nem egyezik!",
   "regForm-zodEmail": "Nem megfelelő e-mailformátum!",
   "regForm-zodFullname": "A teljes nevének legalább 5 karakterből kell állnia!",
-  "regForm-zodAddress": "A lekcímének legalább 20 karakterből kell állnia és tartalmaznia kell legalább egy számot!",
+  "regForm-zodAddress": "A lakcímének legalább 20 karakterből kell állnia és tartalmaznia kell legalább egy számot!",
   "regForm-zodIdNumber": "A személyigazolvány-számának pontosan 11 számból kell állnia!",
   "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!",
-  "regForm-zodInvalidName": "Nem megfelelő formátum!"
+  "regForm-zodInvalidName": "Nem megfelelő formátum!",
+  "regForm-guardNumber": "Polgárőrigazolvány-szám",
+  "regForm-guardNumPholder": "12/3456/78910",
+  "regForm-zodGuardNumber": "Nem megfelelő igazolvány formátum!"
 }

@@ -28,5 +28,8 @@
   "regForm-zodAddress": "The address must be at least 20 characters and contain one number!",
   "regForm-zodIdNumber": "The identity card number must contain exactly 11 numbers!",
   "regForm-zodPhoneNumber": "Invalid phone number!",
-  "regForm-zodInvalidName": "Invalid name!"
+  "regForm-zodInvalidName": "Invalid name!",
+  "regForm-guardNumber": "Guard ID",
+  "regForm-guardNumPholder": "12/3456/78910",
+  "regForm-zodGuardNumber": "Invalid format!"
 }
