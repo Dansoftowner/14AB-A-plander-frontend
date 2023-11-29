@@ -16,7 +16,7 @@ export const RegisterForm = () => {
     const setPasswordVisibility = () => setShow(!show)
 
 
-    const schema = z.object({
+ const schema = z.object({
         username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
         password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
         repeatedPassword: z.string(),
@@ -38,7 +38,8 @@ export const RegisterForm = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(schema) })
 
-
+    
+        
     const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
 
     const lengths: number[] = [2, 7]
@@ -47,8 +48,6 @@ export const RegisterForm = () => {
         if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
         if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
     }
-
-    console.log(errors.guardNumber?.message);
 
 
 
@@ -125,7 +124,7 @@ export const RegisterForm = () => {
                 </div>
                 {errors.guardNumber && <p className="text-danger">{errors.guardNumber.message?.toString()}</p>}
                 <div className="mb-3">
-                    <FormControl isRequired={true}>
+                    <FormControl isRequired={true} isInvalid={errors.emailAddress == undefined}>
                         <FormLabel>{t('regForm-email')}</FormLabel>
                         <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
                         {<FormErrorMessage>Kötelező megadni.</FormErrorMessage>}
