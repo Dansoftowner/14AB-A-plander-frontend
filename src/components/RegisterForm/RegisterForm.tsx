@@ -1,45 +1,28 @@
 import { Button, Divider, FormControl, FormErrorMessage, FormLabel, HStack, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Stack, Text } from "@chakra-ui/react"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { FieldError, useForm } from "react-hook-form"
 import * as z from 'zod'
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
+import { schema } from "./inputSchema"
+import FormInput from "./FormInput"
 
 
 
 export const RegisterForm = () => {
-    const { i18n, t } = useTranslation()
+    const { t } = useTranslation()
+    const inputSchema = useMemo(() => schema(t), [t])
 
     const [show, setShow] = useState(false)
     const setPasswordVisibility = () => setShow(!show)
 
+    type RegForm = z.infer<typeof inputSchema>
 
- const schema = z.object({
-        username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
-        password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
-        repeatedPassword: z.string(),
-        fullName: z.string().min(5, { message: t('regForm-zodFullname') }).max(40).refine(str => /^[^\d]+\s+[^\d]+(\s[^\d]+)*$/g.test(str), { message: t('regForm-zodInvalidName') })
-            .refine(str => !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str), { message: t('regForm-zodInvalidName') }),
-        address: z.string().min(5, { message: t('regForm-zodAddress') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodAddress') }),
-        idNumber: z.string().min(1),
-        guardNumber: z.string().min(1, { message: t('regForm-zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('regForm-zodGuardNumber') }),
-        emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
-        phoneNumber: z.string().min(1),
-    })
-        .refine(data => data.password == data.repeatedPassword, {
-            message: t('regForm-zodRepeatedPwd'),
-            path: ["repeatedPassword"]
-        })
+    const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
 
-    type RegForm = z.infer<typeof schema>
-
-    const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(schema) })
-
-    
-        
     const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
 
     const lengths: number[] = [2, 7]
@@ -48,8 +31,6 @@ export const RegisterForm = () => {
         if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
         if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
     }
-
-
 
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
@@ -139,6 +120,7 @@ export const RegisterForm = () => {
                     </InputGroup>
                 </div>
                 {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message?.toString()}</p>}
+                <FormInput {...register('emailAddress')} fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} />
 
                 <button className="btn btn-primary">{t('regForm-regButton')}</button>
             </Stack>
