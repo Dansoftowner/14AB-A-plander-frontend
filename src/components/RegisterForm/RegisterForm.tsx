@@ -31,7 +31,7 @@ export const RegisterForm = () => {
         if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
         if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
     }
-
+    
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
             <Stack>
@@ -104,13 +104,13 @@ export const RegisterForm = () => {
                         placeholder={t('regForm-guardNumPholder')} />
                 </div>
                 {errors.guardNumber && <p className="text-danger">{errors.guardNumber.message?.toString()}</p>}
-                <div className="mb-3">
+                {/* <div className="mb-3">
                     <FormControl isRequired={true} isInvalid={errors.emailAddress == undefined}>
                         <FormLabel>{t('regForm-email')}</FormLabel>
                         <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
                         {<FormErrorMessage>Kötelező megadni.</FormErrorMessage>}
                     </FormControl>
-                </div>
+                </div> */}
                 {errors.emailAddress && <p className="text-danger">{errors.emailAddress.message?.toString()}</p>}
                 <div className="mb-3">
                     <Text>{t('regForm-phone')}</Text>
@@ -120,8 +120,9 @@ export const RegisterForm = () => {
                     </InputGroup>
                 </div>
                 {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message?.toString()}</p>}
-                <FormInput {...register('emailAddress')} fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} />
-
+                <FormInput registerField={register} name="emailAddress" fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} errors2={errors} />
+                {errors.emailAddress && <p>{errors.emailAddress.message?.toString()}</p>}
+                
                 <button className="btn btn-primary">{t('regForm-regButton')}</button>
             </Stack>
         </form >
