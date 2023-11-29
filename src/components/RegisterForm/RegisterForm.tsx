@@ -120,9 +120,7 @@ export const RegisterForm = () => {
                     </InputGroup>
                 </div>
                 {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message?.toString()}</p>}
-                <FormInput registerField={register} name="emailAddress" fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} errors2={errors} />
-                {errors.emailAddress && <p>{errors.emailAddress.message?.toString()}</p>}
-                
+                <FormInput registerField={register} name="emailAddress" fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={false} error={errors.emailAddress} />                
                 <button className="btn btn-primary">{t('regForm-regButton')}</button>
             </Stack>
         </form >

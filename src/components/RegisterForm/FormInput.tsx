@@ -13,10 +13,10 @@ interface Props<FormData extends FieldValues> {
     name: Path<FormData>
     fieldName: "username" | "password" | "repeatedPassword" | "fullName" | "address" | "idNumber" | "guardNumber" | "emailAddress" | "phoneNumber"
     registerField: UseFormRegister<FormData>,
-    errors2: FieldErrors<FormData>
+    error: FieldError
 }
 
-const FormInput = <FormData extends FieldValues>({ registerField, name, required, i18nTitle, i18nPlaceHolder,errors2, fieldName }: Props<FormData>) => {
+const FormInput = <FormData extends FieldValues>({ error, name, required, i18nTitle, i18nPlaceHolder, fieldName }: Props<FormData>) => {
      const inputSchema = useMemo(() => schema(t), [t])
       type RegForm = z.infer<typeof inputSchema>
       const {register, formState: {errors} } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
@@ -26,7 +26,7 @@ const FormInput = <FormData extends FieldValues>({ registerField, name, required
     const isError = input === ''
     // const error = errors2?.[fieldName]?.message as string | undefined
 
-    console.log(errors2?.[name]);
+    console.log(error);
 
     return (
         <div className="mb-3">
