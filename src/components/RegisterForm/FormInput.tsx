@@ -1,6 +1,6 @@
-import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputLeftAddon } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputLeftAddon, InputRightElement, Button } from '@chakra-ui/react'
 import { t } from 'i18next'
-import { ChangeEvent, useMemo, useState } from 'react'
+import { FormEvent, ReactNode, useMemo, useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,16 +8,19 @@ import { schema } from "./inputSchema"
 
 interface Props<FormData extends FieldValues> {
     required: boolean,
-    i18nTitle: string,
+    i18nTitle?: string,
     i18nPlaceHolder: string,
     name: Path<FormData>
     register: UseFormRegister<FormData>,
     errors: FieldErrors
     tel?: boolean
-    guardChange?: void
+    guard?: boolean
+    passwordConfirm?: boolean
+    password?: boolean
+    children?: ReactNode
 }
 
-const FormInput = <FormData extends FieldValues>({ register, guardChange, tel, errors, name, required, i18nTitle, i18nPlaceHolder }: Props<FormData>) => {
+const FormInput = <FormData extends FieldValues>({ register, password, guard, tel, passwordConfirm, errors, name, required, i18nTitle, i18nPlaceHolder }: Props<FormData>) => {
     const inputSchema = useMemo(() => schema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
@@ -30,20 +33,31 @@ const FormInput = <FormData extends FieldValues>({ register, guardChange, tel, e
 
     const lengths: number[] = [2, 7]
     let prevValue = 0
-    const guardNumberHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
-        if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
+    const guardNumberHandler = (e: FormEvent<HTMLInputElement>) => {
+        const target = (e.target as HTMLInputElement)
+        if (lengths.includes(target.value.length) && (prevValue != 2 && prevValue != 7)) target.value += '/'
+        if (target.value.length >= 1) prevValue = target.value.length - 1
     }
 
     return (
         <div className="mb-3">
             <FormControl isRequired={required} isInvalid={isError || isEmpty}>
-                <FormLabel>{t(i18nTitle)}</FormLabel>
+                {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
                 <InputGroup>
                     {tel && <InputLeftAddon children='+36' />}
-                    <Input {...register(name)} width={tel ? 340 : 400} placeholder={t(i18nPlaceHolder)} onChangeCapture={(e) => { setInput((e.target as HTMLInputElement).value) }} />
+                    <Input {...register(name)} width={tel ? 340 : 400} maxLength={guard ? 13 : undefined}
+                        placeholder={t(i18nPlaceHolder)} type={passwordConfirm ? 'password' : 'text'} onChangeCapture={(e) => {
+                            setInput((e.target as HTMLInputElement).value)
+                            if (guard) guardNumberHandler(e)
+                        }} />
+                    {password &&
+                        <InputRightElement pr={1}>
+                            <Button h='1.75rem' size='sm'>
+                            </Button>
+                        </InputRightElement>
+                    }
                 </InputGroup>
-                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? 'aad meg.' : error} </FormErrorMessage>}
+                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? 'A mező kitöltése kötelező.' : error} </FormErrorMessage>}
             </FormControl>
         </div>
     )
