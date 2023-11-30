@@ -1,7 +1,7 @@
-import { FormControl, FormLabel, Input, FormErrorMessage } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { t } from 'i18next'
-import { useMemo, useState } from 'react'
-import { FieldError, FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
+import { ChangeEvent, useMemo, useState } from 'react'
+import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { schema } from "./inputSchema"
@@ -11,36 +11,42 @@ interface Props<FormData extends FieldValues> {
     i18nTitle: string,
     i18nPlaceHolder: string,
     name: Path<FormData>
-    fieldName: "username" | "password" | "repeatedPassword" | "fullName" | "address" | "idNumber" | "guardNumber" | "emailAddress" | "phoneNumber"
-    registerField: UseFormRegister<FormData>,
-    error: FieldError
+    register: UseFormRegister<FormData>,
+    errors: FieldErrors
+    tel?: boolean
+    guardChange?: void
 }
 
-const FormInput = <FormData extends FieldValues>({ error, name, required, i18nTitle, i18nPlaceHolder, fieldName }: Props<FormData>) => {
-     const inputSchema = useMemo(() => schema(t), [t])
-      type RegForm = z.infer<typeof inputSchema>
-      const {register, formState: {errors} } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
+const FormInput = <FormData extends FieldValues>({ register, guardChange, tel, errors, name, required, i18nTitle, i18nPlaceHolder }: Props<FormData>) => {
+    const inputSchema = useMemo(() => schema(t), [t])
+    type RegForm = z.infer<typeof inputSchema>
+    const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
 
     const [input, setInput] = useState('')
-    const isError = input === ''
-    // const error = errors2?.[fieldName]?.message as string | undefined
+    const error = errors?.[name]?.message as string | undefined
+    const isEmpty = input === ''
+    const isError = error != undefined
 
-    console.log(error);
+    const lengths: number[] = [2, 7]
+    let prevValue = 0
+    const guardNumberHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
+        if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
+    }
 
     return (
         <div className="mb-3">
-            <FormControl isRequired={required} isInvalid={isError}>
+            <FormControl isRequired={required} isInvalid={isError || isEmpty}>
                 <FormLabel>{t(i18nTitle)}</FormLabel>
-                <Input {...register(fieldName)} width={400} placeholder={t(i18nPlaceHolder)} onChange={(e) => setInput(e.target.value)} />
-                {isError && <FormErrorMessage> Add meg pls. </FormErrorMessage>}
-                {errors.emailAddress && <FormErrorMessage>{errors.emailAddress.message}</FormErrorMessage>}
+                <InputGroup>
+                    {tel && <InputLeftAddon children='+36' />}
+                    <Input {...register(name)} width={tel ? 340 : 400} placeholder={t(i18nPlaceHolder)} onChangeCapture={(e) => { setInput((e.target as HTMLInputElement).value) }} />
+                </InputGroup>
+                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? 'aad meg.' : error} </FormErrorMessage>}
             </FormControl>
         </div>
     )
 }
-
-//regForm-email , 
-//'"username" | "password" | "repeatedPassword" | "fullName" | "address" | "idNumber" | "guardNumber" | "emailAddress" | "phoneNumber"'
 
 export default FormInput

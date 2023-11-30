@@ -1,8 +1,8 @@
-import { Button, Divider, FormControl, FormErrorMessage, FormLabel, HStack, Heading, Input, InputGroup, InputLeftAddon, InputRightElement, Stack, Text } from "@chakra-ui/react"
+import { Button, Divider, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react"
 import { ChangeEvent, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FieldError, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import * as z from 'zod'
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
@@ -31,7 +31,7 @@ export const RegisterForm = () => {
         if (lengths.includes(e.target.value.length) && (prevValue != 2 && prevValue != 7)) e.target.value += '/'
         if (e.target.value.length >= 1) prevValue = e.target.value.length - 1
     }
-    
+
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
             <Stack>
@@ -83,44 +83,18 @@ export const RegisterForm = () => {
                 <Divider borderColor='gray' />
             </HStack>
             <Stack marginBottom={5} align='center'>
-                <div className="mb-3">
-                    <Text>{t('regForm-fullname')}</Text>
-                    <Input {...register('fullName')} width={400} placeholder={t('regForm-fnPholder')} />
-                </div>
-                {errors.fullName && <p className="text-danger">{errors.fullName.message?.toString()}</p>}
-                <div className="mb-3">
-                    <Text>{t('regForm-address')}</Text>
-                    <Input {...register('address')} width={400} placeholder={t('regForm-adPholder')} />
-                </div>
-                {errors.address && <p className="text-danger">{errors.address.message?.toString()}</p>}
-                <div className="mb-3">
-                    <Text>{t('regForm-idNumber')}</Text>
-                    <Input {...register('idNumber')} width={400} placeholder={t('regForm-idcPholder')} />
-                </div>
-                {errors.idNumber && <p className="text-danger">{errors.idNumber.message?.toString()}</p>}
-                <div className="mb-3">
-                    <Text>{t('regForm-guardNumber')}</Text>
-                    <Input {...register('guardNumber')} type='tel' width={400} maxLength={13} onChange={(e) => guardNumberHandler(e)}
-                        placeholder={t('regForm-guardNumPholder')} />
-                </div>
-                {errors.guardNumber && <p className="text-danger">{errors.guardNumber.message?.toString()}</p>}
-                {/* <div className="mb-3">
-                    <FormControl isRequired={true} isInvalid={errors.emailAddress == undefined}>
-                        <FormLabel>{t('regForm-email')}</FormLabel>
-                        <Input {...register('emailAddress')} width={400} placeholder={t('regForm-emaPholder')} />
-                        {<FormErrorMessage>Kötelező megadni.</FormErrorMessage>}
-                    </FormControl>
-                </div> */}
-                {errors.emailAddress && <p className="text-danger">{errors.emailAddress.message?.toString()}</p>}
-                <div className="mb-3">
-                    <Text>{t('regForm-phone')}</Text>
-                    <InputGroup>
-                        <InputLeftAddon children='+36' />
-                        <Input {...register('phoneNumber')} width={340} type='tel' placeholder={t('regForm-phnPholder')} />
-                    </InputGroup>
-                </div>
-                {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber.message?.toString()}</p>}
-                <FormInput registerField={register} name="emailAddress" fieldName="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={false} error={errors.emailAddress} />                
+                <FormInput register={register} name="fullName" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
+
+                <FormInput register={register} name="address" i18nPlaceHolder="regForm-adPholder" i18nTitle="regForm-address" required={true} errors={errors} />
+
+                <FormInput register={register} name="idNumber" i18nPlaceHolder="regForm-idcPholder" i18nTitle="regForm-idNumber" required={true} errors={errors} />
+
+                <FormInput register={register} name="guardNumber" i18nPlaceHolder="regForm-guardNumPholder" i18nTitle="regForm-guardNumber" required={false} errors={errors} />
+
+                <FormInput register={register} tel name="phoneNumber" i18nPlaceHolder="regForm-phnPholder" i18nTitle="regForm-phone" required={true} errors={errors} />
+
+                <FormInput register={register} name="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} errors={errors} />
+
                 <button className="btn btn-primary">{t('regForm-regButton')}</button>
             </Stack>
         </form >
