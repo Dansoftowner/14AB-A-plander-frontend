@@ -31,5 +31,6 @@
   "regForm-zodInvalidName": "Invalid name!",
   "regForm-guardNumber": "Guard ID",
   "regForm-guardNumPholder": "12/3456/78910",
-  "regForm-zodGuardNumber": "Invalid format!"
+  "regForm-zodGuardNumber": "Invalid format!",
+  "regForm-fieldRequired" : "This field is required."
 }

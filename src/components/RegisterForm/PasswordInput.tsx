@@ -44,7 +44,7 @@ const PasswordInput = <FormData extends FieldValues>({ register, errors, name, r
                     </InputRightElement>
 
                 </InputGroup>
-                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? 'aad meg.' : error} </FormErrorMessage>}
+                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? t('regForm-fieldRequired') : error} </FormErrorMessage>}
             </FormControl>
         </div>
     )

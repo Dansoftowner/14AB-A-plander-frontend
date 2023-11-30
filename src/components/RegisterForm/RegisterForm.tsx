@@ -20,14 +20,17 @@ export const RegisterForm = () => {
 
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
+
             <Stack>
                 <Heading alignSelf='center' marginBottom={10}>{t('register-header')}</Heading>
             </Stack>
+
             <HStack marginBottom={5} alignContent='center'>
                 <Divider borderColor='grey' />
                 <Heading minWidth='fit-content' noOfLines={1} alignSelf='center' alignContent='center' size='lg'>{t('login-details')}</Heading>
                 <Divider borderColor='grey' />
             </HStack>
+
             <Stack marginBottom={5} align='center'>
                 <FormInput register={register} name="username" i18nPlaceHolder="regForm-usernamePholder" required errors={errors} i18nTitle="username" />
 
@@ -35,11 +38,13 @@ export const RegisterForm = () => {
 
                 <FormInput register={register} name="repeatedPassword" passwordConfirm i18nPlaceHolder="regForm-repeatPwd" required={true} errors={errors} />
             </Stack>
+
             <HStack marginBottom={5}>
                 <Divider borderColor='gray' />
                 <Heading minWidth='fit-content' size='lg'>{t('regForm-persInfo')}</Heading>
                 <Divider borderColor='gray' />
             </HStack>
+
             <Stack marginBottom={5} align='center'>
                 <FormInput register={register} name="fullName" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
 

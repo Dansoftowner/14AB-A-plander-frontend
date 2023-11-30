@@ -28,7 +28,7 @@ const FormInput = <FormData extends FieldValues>({ register, password, guard, te
 
     const [input, setInput] = useState('')
     const error = errors?.[name]?.message as string | undefined
-    const isEmpty = input === ''
+    const isEmpty = (input === '' && required)
     const isError = error != undefined
 
     const lengths: number[] = [2, 7]
@@ -57,7 +57,7 @@ const FormInput = <FormData extends FieldValues>({ register, password, guard, te
                         </InputRightElement>
                     }
                 </InputGroup>
-                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? 'A mező kitöltése kötelező.' : error} </FormErrorMessage>}
+                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? t('regForm-fieldRequired') : error} </FormErrorMessage>}
             </FormControl>
         </div>
     )
