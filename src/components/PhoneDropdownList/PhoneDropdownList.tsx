@@ -33,7 +33,7 @@ const PhoneDropdownList = ({
                 <MenuButton as={Button} rightIcon={<BsChevronDown />}>
                     <HStack>
                             <Image boxSize="2rem" src={selectedPhone.src || '/assets/flags/hu.svg'} mr="12px" />
-                            <Text>{selectedPhone.prefix || '+36'}</Text>
+                            <Text alignContent='center' align='center' justifyContent='center'>{selectedPhone.prefix || '+36'}</Text>
                     </HStack>
                 </MenuButton>
                 <MenuList>
@@ -41,7 +41,7 @@ const PhoneDropdownList = ({
                         <MenuItem minH="48px" onClick={() => selectionChange(p)}>
                             <HStack>
                                 <Image boxSize="2rem" src={p.src} mr="12px" />
-                                <Text> {p.prefix} </Text>
+                                <Text alignContent='center' align='center' textAlign='center' justifyContent='center'> {p.prefix} </Text>
                             </HStack>
                         </MenuItem>
                     ))}
