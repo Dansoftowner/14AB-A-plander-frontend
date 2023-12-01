@@ -18,6 +18,7 @@
     "regForm-idNumber": "Személyigazolvány-szám",
     "regForm-email": "E-mail cím",
     "regForm-phone": "Telefonszám",
+    "regForm-phonePrefix": "Előhívószám választása",
     "regForm-regButton": "Regisztráció",
     "regForm-zodUsername": "Legalább 5 karakteres felhasználónevet válasszon!",
     "regForm-zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagybetűt és 1 számot!",

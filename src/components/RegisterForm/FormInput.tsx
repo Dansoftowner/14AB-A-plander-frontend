@@ -5,6 +5,7 @@ import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { schema } from "./inputSchema"
+import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 
 interface Props<FormData extends FieldValues> {
     required: boolean,
@@ -44,7 +45,7 @@ const FormInput = <FormData extends FieldValues>({ register, password, guard, te
             <FormControl isRequired={required} isInvalid={isError || isEmpty}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
                 <InputGroup>
-                    {tel && <InputLeftAddon children='+36' />}
+                    {tel && <PhoneDropdownList/>}
                     <Input {...register(name)} width={tel ? 340 : 400} maxLength={guard ? 13 : undefined}
                         placeholder={t(i18nPlaceHolder)} type={passwordConfirm ? 'password' : 'text'} onChangeCapture={(e) => {
                             setInput((e.target as HTMLInputElement).value)

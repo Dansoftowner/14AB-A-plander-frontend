@@ -18,7 +18,7 @@ export const LangSelector = () => {
                     height={26}
                     alt={t('langSelectorAlt')}
                     title={t('langSelectorAlt')}
-                    src={selectedLanguage == 'hu' ? '/assets/HU.svg' : '/assets/GB.svg'} />
+                    src={selectedLanguage == 'hu' ? '/assets/flags/hu.svg' : '/assets/flags/gb.svg'} />
             </Button>
         </>
     )
