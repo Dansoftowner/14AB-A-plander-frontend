@@ -8,9 +8,12 @@ import {
     InputRightElement,
     Button,
     InputLeftElement,
+    HStack,
+    Stack,
+    VStack,
 } from '@chakra-ui/react'
 import { t } from 'i18next'
-import { FormEvent, ReactNode, useMemo, useState } from 'react'
+import { FormEvent, Fragment, ReactNode, useMemo, useState } from 'react'
 import {
     FieldErrors,
     FieldValues,
@@ -34,13 +37,10 @@ interface Props<FormData extends FieldValues> {
     tel?: boolean
     guard?: boolean
     passwordConfirm?: boolean
-    password?: boolean
-    children?: ReactNode
 }
 
 const FormInput = <FormData extends FieldValues>({
     register,
-    password,
     guard,
     tel,
     passwordConfirm,
@@ -53,7 +53,7 @@ const FormInput = <FormData extends FieldValues>({
     const inputSchema = useMemo(() => schema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const {
-        formState: {},
+        formState: { },
     } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
     const [phone, setPhone] = useState<PhoneFormat>({
@@ -83,43 +83,43 @@ const FormInput = <FormData extends FieldValues>({
         <div className="mb-3">
             <FormControl isRequired={required} isInvalid={isError || isEmpty}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
-                <InputGroup>
-                    {tel && (
-                        <InputLeftAddon
-                            children={
-                                <PhoneDropdownList
-                                    selectedPhone={phone}
-                                    items={phoneMap}
-                                    selectionChange={(p) => setPhone(p)}
-                                />
+
+                <VStack>
+                    <InputGroup as={Fragment} alignItems='start'>
+                        <HStack justifyContent='space-evenly'>
+
+                            {tel &&
+                                <InputLeftAddon width={150} borderRadius={10} children={
+                                    <PhoneDropdownList
+                                        selectedPhone={phone}
+                                        items={phoneMap}
+                                        selectionChange={(p) => setPhone(p)}
+                                    />
+                                } />
                             }
-                        />
+                            <Input
+                                {...register(name)}
+                                width={tel ? 240 : 400}
+                                maxLength={guard ? 13 : undefined}
+                                placeholder={t(i18nPlaceHolder)}
+                                type={passwordConfirm ? 'password' : 'text'}
+                                onChangeCapture={(e) => {
+                                    setInput((e.target as HTMLInputElement).value)
+                                    if (guard) guardNumberHandler(e)
+                                }}
+                            />
+                        </HStack>
+                    </InputGroup>
+
+                    {(isEmpty || isError) && (
+                        <FormErrorMessage>
+                            {' '}
+                            {isEmpty ? t('regForm-fieldRequired') : error}{' '}
+                        </FormErrorMessage>
                     )}
-                    <Input
-                        {...register(name)}
-                        width={tel ? 340 : 400}
-                        maxLength={guard ? 13 : undefined}
-                        placeholder={t(i18nPlaceHolder)}
-                        type={passwordConfirm ? 'password' : 'text'}
-                        onChangeCapture={(e) => {
-                            setInput((e.target as HTMLInputElement).value)
-                            if (guard) guardNumberHandler(e)
-                        }}
-                    />
-                    {password && (
-                        <InputRightElement pr={1}>
-                            <Button h="1.75rem" size="sm"></Button>
-                        </InputRightElement>
-                    )}
-                </InputGroup>
-                {(isEmpty || isError) && (
-                    <FormErrorMessage>
-                        {' '}
-                        {isEmpty ? t('regForm-fieldRequired') : error}{' '}
-                    </FormErrorMessage>
-                )}
+                </VStack>
             </FormControl>
-        </div>
+        </div >
     )
 }
 

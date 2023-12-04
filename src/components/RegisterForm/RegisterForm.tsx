@@ -1,5 +1,5 @@
-import { Divider, HStack, Heading, Stack } from "@chakra-ui/react"
-import { useMemo } from "react"
+import { Divider, HStack, Heading, Input, InputGroup, InputLeftAddon, Stack } from "@chakra-ui/react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -7,6 +7,8 @@ import * as z from 'zod'
 import { schema } from "./inputSchema"
 import FormInput from "./FormInput"
 import PasswordInput from "./PasswordInput"
+import PhoneDropdownList from "../PhoneDropdownList/PhoneDropdownList"
+import { PhoneFormat, phoneMap } from "../PhoneDropdownList/phones"
 
 
 
@@ -17,6 +19,12 @@ export const RegisterForm = () => {
     type RegForm = z.infer<typeof inputSchema>
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
+
+    const [phone, setPhone] = useState<PhoneFormat>({
+        src: '',
+        prefix: '',
+        length: 0,
+    })
 
     return (
         <form className="mx-auto container mt-3" onSubmit={handleSubmit((e) => console.log(e))}>
@@ -46,6 +54,7 @@ export const RegisterForm = () => {
             </HStack>
 
             <Stack marginBottom={5} align='center'>
+                <FormInput register={register} tel name="phoneNumber" i18nPlaceHolder="regForm-phnPholder" i18nTitle="regForm-phone" required={true} errors={errors} />
                 <FormInput register={register} name="fullName" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
 
                 <FormInput register={register} name="address" i18nPlaceHolder="regForm-adPholder" i18nTitle="regForm-address" required={true} errors={errors} />
@@ -54,7 +63,6 @@ export const RegisterForm = () => {
 
                 <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="regForm-guardNumPholder" i18nTitle="regForm-guardNumber" required={false} errors={errors} />
 
-                <FormInput register={register} tel name="phoneNumber" i18nPlaceHolder="regForm-phnPholder" i18nTitle="regForm-phone" required={true} errors={errors} />
 
                 <FormInput register={register} name="emailAddress" i18nPlaceHolder="regForm-emaPholder" i18nTitle="regForm-email" required={true} errors={errors} />
 
