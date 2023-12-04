@@ -7,6 +7,13 @@ import {
     InputLeftAddon,
     HStack,
     VStack,
+    Flex,
+    Stack,
+    Menu,
+    MenuItem,
+    MenuGroup,
+    MenuList,
+    MenuButton,
 } from '@chakra-ui/react'
 import { t } from 'i18next'
 import { FormEvent, Fragment, useMemo, useState } from 'react'
@@ -53,9 +60,9 @@ const FormInput = <FormData extends FieldValues>({
     } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
     const [phone, setPhone] = useState<PhoneFormat>({
-        src: '',
-        prefix: '',
-        length: 0,
+        src: '/assets/flags/hu.svg',
+        prefix: '+36',
+        length: 7,
     })
     const error = errors?.[name]?.message as string | undefined
     const isError = error != undefined
@@ -73,13 +80,24 @@ const FormInput = <FormData extends FieldValues>({
         if (target.value.length >= 1) prevValue = target.value.length - 1
     }
 
+    const spacePos = [2, 6]
+    const length = phone.length + spacePos.length
+    let prevTelValue = 0
+    const telHandler = (e: FormEvent<HTMLInputElement>) => {
+        const target = (e.target as HTMLInputElement)
+        if (spacePos.includes(target.value.length) && (prevTelValue != 2 && prevTelValue != 6)) target.value += ' '
+        if (target.value.length >= 1) prevTelValue = target.value.length - 1
+    }
+    if (tel) console.log(phone);
+
+
     return (
         <div className="mb-3">
             <FormControl isRequired={required} isInvalid={isError}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
 
                 <VStack maxW={400}>
-                    <InputGroup as={Fragment} alignItems='start'>
+                    <InputGroup as={Menu} alignItems='start'>
                         <HStack justifyContent='space-evenly'>
 
                             {tel &&
@@ -94,11 +112,13 @@ const FormInput = <FormData extends FieldValues>({
                             <Input
                                 {...register(name)}
                                 width={tel ? 240 : 400}
-                                maxLength={guard ? 13 : undefined}
+                                maxLength={guard ? 13 : (tel ? length : undefined)}
+
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
                                 onChangeCapture={(e) => {
                                     if (guard) guardNumberHandler(e)
+                                    if (tel) telHandler(e)
                                 }}
                             />
                         </HStack>

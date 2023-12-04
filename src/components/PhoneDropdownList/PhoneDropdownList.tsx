@@ -34,7 +34,7 @@ const PhoneDropdownList = ({
             </MenuButton>
             <MenuList>
                 {items.map((p) => (
-                    <MenuItem minH="48px" onClick={() => selectionChange(p)}>
+                    <MenuItem key={p.prefix} minH="48px" onClick={() => selectionChange(p)}>
                         <HStack>
                             <Center >
                                 <Image boxSize="2rem" src={p.src} mr="12px" />
