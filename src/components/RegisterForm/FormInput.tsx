@@ -5,15 +5,11 @@ import {
     FormErrorMessage,
     InputGroup,
     InputLeftAddon,
-    InputRightElement,
-    Button,
-    InputLeftElement,
     HStack,
-    Stack,
     VStack,
 } from '@chakra-ui/react'
 import { t } from 'i18next'
-import { FormEvent, Fragment, ReactNode, useMemo, useState } from 'react'
+import { FormEvent, Fragment, useMemo, useState } from 'react'
 import {
     FieldErrors,
     FieldValues,
@@ -81,10 +77,10 @@ const FormInput = <FormData extends FieldValues>({
 
     return (
         <div className="mb-3">
-            <FormControl isRequired={required} isInvalid={isError || isEmpty}>
+            <FormControl isRequired={required} isInvalid={isError}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
 
-                <VStack>
+                <VStack maxW={400}>
                     <InputGroup as={Fragment} alignItems='start'>
                         <HStack justifyContent='space-evenly'>
 
@@ -112,9 +108,8 @@ const FormInput = <FormData extends FieldValues>({
                     </InputGroup>
 
                     {(isEmpty || isError) && (
-                        <FormErrorMessage>
-                            {' '}
-                            {isEmpty ? t('regForm-fieldRequired') : error}{' '}
+                        <FormErrorMessage textAlign='center'>
+                            {error}
                         </FormErrorMessage>
                     )}
                 </VStack>

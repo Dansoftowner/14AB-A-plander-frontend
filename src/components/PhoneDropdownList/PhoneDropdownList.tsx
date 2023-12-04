@@ -7,15 +7,10 @@ import {
     Button,
     Text,
     HStack,
-    Stack,
-    Flex,
     Center,
 } from '@chakra-ui/react'
 import { BsChevronDown } from 'react-icons/bs'
 import { PhoneFormat as Phone } from './phones'
-
-// import React from 'react'
-// import { useTranslation } from 'react-i18next'
 
 interface Props {
     items: Phone[]
@@ -28,7 +23,6 @@ const PhoneDropdownList = ({
     selectionChange,
     selectedPhone,
 }: Props) => {
-    console.log(selectedPhone)
     return (
 
         <Menu matchWidth>
