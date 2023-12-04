@@ -57,9 +57,7 @@ const FormInput = <FormData extends FieldValues>({
         prefix: '',
         length: 0,
     })
-    const [input, setInput] = useState('')
     const error = errors?.[name]?.message as string | undefined
-    const isEmpty = input === '' && required
     const isError = error != undefined
 
     const lengths: number[] = [2, 7]
@@ -100,14 +98,13 @@ const FormInput = <FormData extends FieldValues>({
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
                                 onChangeCapture={(e) => {
-                                    setInput((e.target as HTMLInputElement).value)
                                     if (guard) guardNumberHandler(e)
                                 }}
                             />
                         </HStack>
                     </InputGroup>
 
-                    {(isEmpty || isError) && (
+                    {(isError) && (
                         <FormErrorMessage textAlign='center'>
                             {error}
                         </FormErrorMessage>

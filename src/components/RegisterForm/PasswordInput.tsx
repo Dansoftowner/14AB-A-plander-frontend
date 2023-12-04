@@ -22,9 +22,7 @@ const PasswordInput = <FormData extends FieldValues>({ register, errors, name, r
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
 
-    const [input, setInput] = useState('')
     const error = errors?.[name]?.message as string | undefined
-    const isEmpty = input === ''
     const isError = error != undefined
 
     const [show, setShow] = useState(false)
@@ -32,11 +30,11 @@ const PasswordInput = <FormData extends FieldValues>({ register, errors, name, r
 
     return (
         <div className="mb-3">
-            <FormControl isRequired={required} isInvalid={isError || isEmpty}>
+            <FormControl isRequired={required} isInvalid={isError}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
                 <InputGroup>
                     <Input {...register(name)} width={400} type={show ? 'text' : 'password'}
-                        placeholder={t(i18nPlaceHolder)} onChangeCapture={(e) => setInput((e.target as HTMLInputElement).value)} />
+                        placeholder={t(i18nPlaceHolder)} />
                     <InputRightElement pr={1}>
                         <Button h='1.75rem' size='sm' onClick={() => setShow(!show)}>
                             {isVisible()}
@@ -44,7 +42,7 @@ const PasswordInput = <FormData extends FieldValues>({ register, errors, name, r
                     </InputRightElement>
 
                 </InputGroup>
-                {(isEmpty || isError) && <FormErrorMessage> {isEmpty ? t('regForm-fieldRequired') : error} </FormErrorMessage>}
+                {(isError) && <FormErrorMessage> {error} </FormErrorMessage>}
             </FormControl>
         </div>
     )
