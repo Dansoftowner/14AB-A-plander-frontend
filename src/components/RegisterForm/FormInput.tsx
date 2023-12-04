@@ -80,8 +80,10 @@ const FormInput = <FormData extends FieldValues>({
         if (target.value.length >= 1) prevValue = target.value.length - 1
     }
 
+
     const spacePos = [2, 6]
-    const length = phone.length + spacePos.length
+    const length = phone.length + spacePos.length + 2
+
     let prevTelValue = 0
     const telHandler = (e: FormEvent<HTMLInputElement>) => {
         const target = (e.target as HTMLInputElement)
@@ -112,13 +114,13 @@ const FormInput = <FormData extends FieldValues>({
                             <Input
                                 {...register(name)}
                                 width={tel ? 240 : 400}
-                                maxLength={guard ? 13 : (tel ? length : undefined)}
+                                maxLength={guard ? 13 : ((tel && phone.prefix == '+36') ? length : 20)}
 
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
                                 onChangeCapture={(e) => {
                                     if (guard) guardNumberHandler(e)
-                                    if (tel) telHandler(e)
+                                    if (tel && phone.prefix == '+36') telHandler(e)
                                 }}
                             />
                         </HStack>

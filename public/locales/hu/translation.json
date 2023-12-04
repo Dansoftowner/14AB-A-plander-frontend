@@ -30,7 +30,7 @@
     "regForm-zodIdNumber": "A személyigazolvány-számának pontosan 11 számból kell állnia!",
     "regForm-zodPhoneNumber": "Nem megfelelő telefonszám-formátum!",
     "regForm-zodInvalidName": "Nem megfelelő formátum!",
-    "regForm-guardNumber": "Polgárőrigazolvány-szám",
+    "regForm-guardNumber": "Polgárőr-igazolványszám",
     "regForm-guardNumPholder": "12/3456/78910",
     "regForm-zodGuardNumber": "Nem megfelelő igazolvány formátum!",
     "regForm-fieldRequired": "A mező kitöltése kötelező."
