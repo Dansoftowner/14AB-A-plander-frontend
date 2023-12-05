@@ -31,14 +31,10 @@ npm run build
 
 A használt "third-party" szoftverek az [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) állományban vannak listázva.
 
-# Notes
-*Here you can add some notes for the developing.*
+# Jegyzetek
+*Fejlesztési jegyzeteket tudsz itt elmenteni.*
 
-- As we have no routing, the `RegisterForm` component is added directly into App.tsx
-- Not responsive yet.
+- Routing  hiánya
+- Teljes reszponzivitás ellenőrzése
+- A MUI komponensek hibamentes használata a Chakra UI mellett (témaváltás... stb)
 
-# Todo-s
-*Here you can add todo-s like this:*
-- [x] completed example
-- [ ] validation
-- [x] complete personal informations
