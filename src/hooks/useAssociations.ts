@@ -1,10 +1,10 @@
 import useData from './useData'
 
-interface Association {
+export interface Association {
   _id: string
   name: string
   location: string
-  certifacete: string
+  certificate: string
 }
 export interface AsQuery {
   offset?: number
