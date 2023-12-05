@@ -5,17 +5,15 @@ import theme from './theme.ts'
 import './index.css'
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import 'bootstrap/dist/css/bootstrap.css'
-
 import './i18n.ts'
-import { ThemeProvider, createTheme } from '@mui/material'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
 
-      <ChakraProvider theme={theme}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
-      </ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <App />
+    </ChakraProvider>
   </React.StrictMode>,
 )
 
