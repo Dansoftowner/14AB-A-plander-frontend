@@ -8,15 +8,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import './i18n.ts'
 import { ThemeProvider, createTheme } from '@mui/material'
-const muiTheme = createTheme()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={muiTheme}>
+
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </ChakraProvider>
-    </ThemeProvider>
   </React.StrictMode>,
 )
+

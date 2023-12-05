@@ -14,15 +14,14 @@ export interface AsQuery {
   q?: string
 }
 
-const useAssociations = () =>
+const useAssociations = (asq: AsQuery) =>
   useData<Association>('/associations', {
     params: {
-      offset: 0,
-      limit: 5,
-      projection: 'lite',
-      orderBy: 'name',
+      offset: asq.offset,
+      limit: asq.limit,
+      projection: asq.projection,
+      orderBy: asq.orderBy,
     },
   })
-console.log()
 
 export default useAssociations

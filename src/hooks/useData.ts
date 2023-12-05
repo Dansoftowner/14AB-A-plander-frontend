@@ -39,6 +39,7 @@ const useData = <T>(
     },
     deps ? [deps] : [],
   )
+
   return { data, error, isLoading }
 }
 export default useData

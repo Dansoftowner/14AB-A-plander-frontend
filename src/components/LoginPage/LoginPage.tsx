@@ -1,20 +1,17 @@
-import { TextField } from '@mui/material'
-import { Autocomplete, Button } from '@mui/material'
+import { TextField, ThemeProvider, createTheme } from '@mui/material'
+import { Autocomplete } from '@mui/material'
 import useAssociations from '../../hooks/useAssociations'
 
-interface AutocompleteOption {
-    name: string
-}
 
 const LoginPage = () => {
 
-    const associations = useAssociations().data
-    console.log(useAssociations().data);
-
+    const associations = useAssociations({ limit: 10 }).data
 
     return (
         <>
-            <Autocomplete options={associations} getOptionLabel={option => option.name} renderInput={params => <TextField {...params} label="yes" />} />
+            <ThemeProvider theme={createTheme()}>
+                <Autocomplete options={associations} getOptionLabel={option => option.name} renderInput={params => <TextField {...params} label="Válasszon egyesületet!" />} />
+            </ThemeProvider>
         </>
     )
 }
