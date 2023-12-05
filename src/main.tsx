@@ -7,12 +7,16 @@ import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import 'bootstrap/dist/css/bootstrap.css'
 
 import './i18n.ts'
+import { ThemeProvider, createTheme } from '@mui/material'
+const muiTheme = createTheme()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <App />
-    </ChakraProvider>
+    <ThemeProvider theme={muiTheme}>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </ChakraProvider>
+    </ThemeProvider>
   </React.StrictMode>,
 )

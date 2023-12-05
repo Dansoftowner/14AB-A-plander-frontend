@@ -9,6 +9,8 @@
 - Zod
 - Framer-motion
 - React-hook-form
+- MUI
+- AXIOS
 
 ## Fejlesztési
 - Vite
