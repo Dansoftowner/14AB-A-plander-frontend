@@ -1,6 +1,4 @@
 import {
-  Container,
-  Input,
   TextField,
   ThemeProvider,
   createTheme,
@@ -8,7 +6,7 @@ import {
 import { Autocomplete } from '@mui/material'
 import useAssociations, { Association } from '../../hooks/useAssociations'
 import { useMemo, useState } from 'react'
-import { Box, InputGroup, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -26,7 +24,7 @@ const LoginPage = () => {
 
   type LoginForm = z.infer<typeof inputSchema>
 
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
+  const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
   const associations = useAssociations({ limit: 10, projection: 'full' }).data
   const [selectedAssociation, setSelectedAssociation] =
