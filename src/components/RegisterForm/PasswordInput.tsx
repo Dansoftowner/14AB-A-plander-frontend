@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { schema } from "./inputSchema"
+import { regSchema } from "./inputSchema"
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import { MdLockOutline } from "react-icons/md";
 
@@ -20,7 +20,7 @@ interface Props<FormData extends FieldValues> {
 }
 
 const PasswordInput = <FormData extends FieldValues>({ login, register, errors, name, required, i18nTitle, i18nPlaceHolder }: Props<FormData>) => {
-    const inputSchema = useMemo(() => schema(t), [t])
+    const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 

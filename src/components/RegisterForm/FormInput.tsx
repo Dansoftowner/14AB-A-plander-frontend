@@ -12,7 +12,7 @@ import {
 } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { schema } from './inputSchema'
+import { regSchema } from './inputSchema'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { phoneMap, PhoneFormat } from '../PhoneDropdownList/phones'
 import { FaRegUser } from "react-icons/fa";
@@ -43,7 +43,7 @@ const FormInput = <FormData extends FieldValues>({
     i18nPlaceHolder,
     login,
 }: Props<FormData>) => {
-    const inputSchema = useMemo(() => schema(t), [t])
+    const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const {
         formState: { },

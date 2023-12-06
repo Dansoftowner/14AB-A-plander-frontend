@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from 'zod'
-import { schema } from "./inputSchema"
+import { regSchema } from "./inputSchema"
 import FormInput from "./FormInput"
 import PasswordInput from "./PasswordInput"
 
@@ -13,7 +13,7 @@ import PasswordInput from "./PasswordInput"
 
 export const RegisterForm = () => {
     const { t } = useTranslation()
-    const inputSchema = useMemo(() => schema(t), [t])
+    const inputSchema = useMemo(() => regSchema(t), [t])
 
     type RegForm = z.infer<typeof inputSchema>
 
