@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
+    "@choc-ui/chakra-autocomplete": "^5.2.9",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.2",
-    "@mui/material": "^5.14.19",
     "axios": "^1.6.2",
     "bootstrap": "^5.3.2",
     "framer-motion": "^10.16.5",
