@@ -1,6 +1,6 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
 import { useMemo, useState } from 'react'
-import { Box, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -22,6 +22,8 @@ import { MdOutlineLocalPolice } from "react-icons/md";
 const LoginPage = () => {
     const cardBackground = useColorModeValue('#89D0DF', '#3393DF')
     const dropDownFont = useColorModeValue('#808080', '#ffffff')
+    const buttonBg = useColorModeValue('#0078d7', '#fde74c')
+    const buttonColor = useColorModeValue('#ffffff', '#004881')
     const textColor = useColorModeValue('#0078D7', '#004881')
 
     const { t } = useTranslation()
@@ -94,11 +96,14 @@ const LoginPage = () => {
                     <Box margin={5}>
                         <FormInput login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="Felhasználónév" />
                     </Box>
-                    <Box margin={5}>
+                    <Box >
                         <PasswordInput login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
                     </Box>
-                    <Checkbox colorScheme='' >Maradjak bejelentkezve</Checkbox>
+                    <Checkbox margin={2} colorScheme='' >Maradjak bejelentkezve</Checkbox>
+
+                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor}>Bejelentkezés</Button>
                 </Stack>
+
 
 
                 <Text>{selectedAssociation?.name}</Text>
