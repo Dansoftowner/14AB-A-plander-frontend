@@ -20,6 +20,8 @@ export const regSchema = (t: TFunction) => z.object({
 
 
 export const loginSchema = (t: TFunction) => z.object({
-    username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
-    password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
+    username: z.string().min(1, { message: 'Kötelező megadni!' }),
+    password: z.string().min(1, { message: 'Kötelező megadni!' }),
+    association: z.string().min(1, { message: 'Kötelező megadni!' }).optional(),
+    autoLogin: z.boolean().default(false)
 })
