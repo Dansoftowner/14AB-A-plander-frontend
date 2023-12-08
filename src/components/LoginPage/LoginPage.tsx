@@ -1,4 +1,4 @@
-import useAssociations, { Association } from '../../hooks/useAssociations'
+import { useAssociations, useSearchAssociations, Association } from '../../hooks/useAssociations'
 import { Fragment, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
@@ -33,10 +33,12 @@ const LoginPage = () => {
 
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
-    const { data: associations, error, isLoading, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 10, projection: 'full' })
+    const [qParam, setQParam] = useState('')
+    const { data: associations, error, isLoading, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
     const [selectedAssociation, setSelectedAssociation] =
         useState<Association | null>()
-    console.log(selectedAssociation);
+
+
 
 
     return (
@@ -57,19 +59,15 @@ const LoginPage = () => {
                     fontWeight="md"
                 > Plander</Text>
 
-
-
-
-
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
                                 <AutoCompleteInput autoComplete="off" placeholder="Válasszon egyesületet!"
-                                    {...register("username")}
                                     borderRadius={10}
                                     fontSize={20}
                                     h={10}
+                                    onChange={(val: any) => setQParam(val.target.value)}
                                 />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
@@ -78,10 +76,11 @@ const LoginPage = () => {
                                 </InputLeftElement>
                             </InputGroup>
                             <AutoCompleteList>
-                                {associations?.pages.map((page, index) => {
-                                    <Fragment>
+                                {associations?.pages.map((page, index) =>
+                                    <Fragment key={index}>
                                         {page.map(association => (
                                             <AutoCompleteItem
+                                                key={association._id}
                                                 value={association}
                                                 label={association.name}
                                                 textTransform="capitalize"
@@ -90,8 +89,10 @@ const LoginPage = () => {
                                                 {association.name}
                                             </AutoCompleteItem>
                                         ))}
-                                    </Fragment>
-                                })}
+                                    </Fragment>)}
+                                <Button color='red' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                    {isFetchingNextPage ? 'Loading...' : 'More...'}
+                                </Button>
                             </AutoCompleteList>
                         </AutoComplete>
                     </Box>
