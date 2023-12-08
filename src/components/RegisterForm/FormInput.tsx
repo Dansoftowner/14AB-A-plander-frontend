@@ -100,6 +100,7 @@ const FormInput = <FormData extends FieldValues>({
                         borderRadius={10}
                         fontSize={20}
                         h={10}
+                        autoComplete="off"
                     />
                 </InputGroup>
                 {isError && <FormErrorMessage> {error} </FormErrorMessage>}
