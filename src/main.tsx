@@ -9,6 +9,9 @@ import './i18n.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
+import './fonts/Moul-Regular.ttf'
+import './fonts/Ultra-Regular.ttf'
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
