@@ -1,6 +1,6 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
 import { useMemo, useState } from 'react'
-import { Box, Checkbox, Icon, InputGroup, InputLeftAddon, InputLeftElement, InputRightElement, Menu, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -21,6 +21,7 @@ import { MdOutlineLocalPolice } from "react-icons/md";
 
 const LoginPage = () => {
     const cardBackground = useColorModeValue('#89D0DF', '#3393DF')
+    const dropDownFont = useColorModeValue('#808080', '#ffffff')
     const textColor = useColorModeValue('#0078D7', '#004881')
 
     const { t } = useTranslation()
@@ -60,13 +61,14 @@ const LoginPage = () => {
 
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>
-                        <AutoComplete openOnFocus onChange={(e: any, val: any) => setSelectedAssociation(val.originalValue)}>
+                        <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
                                 <AutoCompleteInput autoComplete="off" placeholder="Válasszon egyesületet!"
                                     {...register("username")}
                                     borderRadius={10}
                                     fontSize={20}
-                                    h={10} />
+                                    h={10}
+                                />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
                                 <InputLeftElement>
@@ -80,6 +82,7 @@ const LoginPage = () => {
                                         value={association}
                                         label={association.name}
                                         textTransform="capitalize"
+                                        color={dropDownFont}
                                     >
                                         {association.name}
                                     </AutoCompleteItem>
@@ -94,7 +97,7 @@ const LoginPage = () => {
                     <Box margin={5}>
                         <PasswordInput login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
                     </Box>
-                    <Checkbox>Maradjak bejelentkezve</Checkbox>
+                    <Checkbox colorScheme='' >Maradjak bejelentkezve</Checkbox>
                 </Stack>
 
 
