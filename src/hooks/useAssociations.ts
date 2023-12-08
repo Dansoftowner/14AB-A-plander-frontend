@@ -19,16 +19,6 @@ interface Response {
   items: Association[]
 }
 
-// const useAssociations = (asq: AsQuery) =>
-//   useData<Association>('/associations', {
-//     params: {
-//       offset: asq.offset,
-//       limit: asq.limit,
-//       projection: asq.projection,
-//       orderBy: asq.orderBy,
-//     },
-//   })
-
 export const useAssociations = (query: AsQuery) =>
   useInfiniteQuery<Response>({
     queryKey: ['associations', query],
