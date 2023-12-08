@@ -1,5 +1,5 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
@@ -33,7 +33,7 @@ const LoginPage = () => {
 
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
-    const associations = useAssociations({ limit: 10, projection: 'full' }).data
+    const { data: associations, error, isLoading, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 10, projection: 'full' })
     const [selectedAssociation, setSelectedAssociation] =
         useState<Association | null>()
     console.log(selectedAssociation);
@@ -78,17 +78,20 @@ const LoginPage = () => {
                                 </InputLeftElement>
                             </InputGroup>
                             <AutoCompleteList>
-                                {associations.map((association, id) => (
-                                    <AutoCompleteItem
-                                        key={id}
-                                        value={association}
-                                        label={association.name}
-                                        textTransform="capitalize"
-                                        color={dropDownFont}
-                                    >
-                                        {association.name}
-                                    </AutoCompleteItem>
-                                ))}
+                                {associations?.pages.map((page, index) => {
+                                    <Fragment>
+                                        {page.map(association => (
+                                            <AutoCompleteItem
+                                                value={association}
+                                                label={association.name}
+                                                textTransform="capitalize"
+                                                color={dropDownFont}
+                                            >
+                                                {association.name}
+                                            </AutoCompleteItem>
+                                        ))}
+                                    </Fragment>
+                                })}
                             </AutoCompleteList>
                         </AutoComplete>
                     </Box>
