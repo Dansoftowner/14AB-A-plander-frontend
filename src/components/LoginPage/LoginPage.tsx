@@ -1,6 +1,6 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
 import { useMemo, useState } from 'react'
-import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -16,6 +16,7 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
+import './LoginPage.css';
 
 
 
@@ -50,12 +51,16 @@ const LoginPage = () => {
                 w={500}
                 alignItems='center'
             >
+                <HStack>
+                <Image src='./assets/logo.png' width={100}/>
                 <Text
                     color={textColor}
-                    fontSize="x-large"
+                    fontSize="xxx-large"
                     fontWeight="md"
-                    className='font-face-ul'
+                    className='font-face-mo'
+                    marginLeft={10}
                 > Plander</Text>
+                </HStack>
 
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>

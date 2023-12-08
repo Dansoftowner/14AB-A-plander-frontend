@@ -1,18 +1,5 @@
 @font-face {
-    font-family: Moul;
-    src: url("./fonts/Moul-Regular.ttf");
+    font-family: 'Moul';
+    src: local("Moul"),
+    url("./fonts/Moul-Regular.ttf") format("truetype");
 }
-
-/* @font-face {
-    font-family: Ultra;
-    src: local('Ultra'),
-    url("./fonts/Ultra-Regular.ttf") format("truetype");
-} */
-
-.font-face-mo{
-    font-family: Moul;
-}
-
-/* .font-face-ul{
-    font-family: 'Ultra';
-} */
