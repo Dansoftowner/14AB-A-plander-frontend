@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 export interface Association {
   _id: string
@@ -30,7 +30,7 @@ interface Response {
 //   })
 
 export const useAssociations = (query: AsQuery) =>
-  useInfiniteQuery<Association[]>({
+  useInfiniteQuery<Response>({
     queryKey: ['associations', query],
     queryFn: ({ pageParam = 1 }) =>
       axios
@@ -42,27 +42,10 @@ export const useAssociations = (query: AsQuery) =>
             q: query.q,
           },
         })
-        .then((res) => res.data.items),
+        .then((res) => res.data),
     staleTime: 1000 * 60,
     keepPreviousData: true,
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length > 0 ? allPages.length + 1 : undefined
+      return lastPage.items.length > 0 ? allPages.length + 1 : undefined
     },
-  })
-
-export const useSearchAssociations = (qParam: string | undefined) =>
-  useQuery({
-    queryKey: ['association', qParam],
-    queryFn: () =>
-      axios
-        .get<Association>(
-          `https://plander-dev.onrender.com/api/associations/`,
-          {
-            params: {
-              q: qParam,
-            },
-          },
-        )
-        .then((res) => res.data),
-    staleTime: 1000 * 60,
   })

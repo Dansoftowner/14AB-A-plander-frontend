@@ -1,4 +1,4 @@
-import { useAssociations, useSearchAssociations, Association } from '../../hooks/useAssociations'
+import { useAssociations, Association } from '../../hooks/useAssociations'
 import { Fragment, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
@@ -34,11 +34,9 @@ const LoginPage = () => {
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
     const [qParam, setQParam] = useState('')
-    const { data: associations, error, isLoading, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
+    const { data: associations, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
     const [selectedAssociation, setSelectedAssociation] =
         useState<Association | null>()
-
-
 
 
     return (
@@ -78,7 +76,7 @@ const LoginPage = () => {
                             <AutoCompleteList>
                                 {associations?.pages.map((page, index) =>
                                     <Fragment key={index}>
-                                        {page.map(association => (
+                                        {page.items.map(association => (
                                             <AutoCompleteItem
                                                 key={association._id}
                                                 value={association}
@@ -90,9 +88,10 @@ const LoginPage = () => {
                                             </AutoCompleteItem>
                                         ))}
                                     </Fragment>)}
-                                <Button color='red' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-                                    {isFetchingNextPage ? 'Loading...' : 'More...'}
-                                </Button>
+                                {associations?.pages &&
+                                    <Button color='red' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                        {isFetchingNextPage ? 'Loading...' : 'More...'}
+                                    </Button>}
                             </AutoCompleteList>
                         </AutoComplete>
                     </Box>
