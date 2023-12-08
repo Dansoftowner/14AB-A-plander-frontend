@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { Fragment, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image } from '@chakra-ui/react'
+import { ChangeEvent, Fragment, useMemo, useState } from 'react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormControl, FormErrorMessage } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -18,6 +18,7 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
+import { Login, useLogin } from '../../hooks/useLogin'
 
 
 
@@ -37,12 +38,28 @@ const LoginPage = () => {
 
     const [qParam, setQParam] = useState('')
     const { data: associations, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
-    const [selectedAssociation, setSelectedAssociation] =
-        useState<Association | null>()
+
+
+    const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [isChecked, setIsChecked] = useState<boolean>(false)
+
+    const User: Login = {
+        username: username,
+        password: password,
+        associationId: selectedAssociation?._id,
+        isAutoLogin: isChecked
+    }
+
 
 
     return (
-        <>
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            console.log(User)
+            useLogin(User)
+        }}>
             <Box
                 className="mx-auto container mt-3"
                 borderRadius="xl"
@@ -53,14 +70,14 @@ const LoginPage = () => {
                 alignItems='center'
             >
                 <HStack>
-                <Image src='./assets/logo.png' width={100}/>
-                <Text
-                    color={textColor}
-                    fontSize="xxx-large"
-                    fontWeight="md"
-                    className='font-face-mo'
-                    marginLeft={10}
-                > Plander</Text>
+                    <Image src='./assets/logo.png' width={100} />
+                    <Text
+                        color={textColor}
+                        fontSize="xxx-large"
+                        fontWeight="md"
+                        className='font-face-mo'
+                        marginLeft={10}
+                    > Plander</Text>
                 </HStack>
 
 
@@ -68,17 +85,21 @@ const LoginPage = () => {
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
-                                <AutoCompleteInput autoComplete="off" placeholder="Válasszon egyesületet!"
+                                <AutoCompleteInput autoComplete="off"
+                                    placeholder="Válasszon egyesületet!"
                                     borderRadius={10}
                                     fontSize={20}
                                     h={10}
-                                    onChange={(val: any) => setQParam(val.target.value)}
+                                    onChange={(val: any) => {
+                                        setQParam(val.target.value)
+                                    }}
                                 />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
                                 <InputLeftElement>
                                     <MdOutlineLocalPolice />
                                 </InputLeftElement>
+                                {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
                             </InputGroup>
                             <AutoCompleteList>
                                 {associations?.pages.map((page, index) =>
@@ -104,14 +125,15 @@ const LoginPage = () => {
                     </Box>
 
                     <Box margin={5}>
-                        <FormInput login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="Felhasználónév" />
+                        <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="Felhasználónév" />
                     </Box>
                     <Box >
-                        <PasswordInput login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
+                        <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
                     </Box>
-                    <Checkbox margin={2} colorScheme='' >Maradjak bejelentkezve</Checkbox>
+                    <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>Maradjak bejelentkezve</Checkbox>
+                    {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
 
-                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor}>Bejelentkezés</Button>
+                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>Bejelentkezés</Button>
                 </Stack>
 
 
@@ -121,7 +143,7 @@ const LoginPage = () => {
                 <Text>{selectedAssociation?._id}</Text>
                 <Text>{selectedAssociation?.certificate}</Text>
             </Box >
-        </>
+        </form >
     )
 }
 
