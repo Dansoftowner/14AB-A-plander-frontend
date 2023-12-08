@@ -53,13 +53,9 @@ const LoginPage = () => {
                 <Text
                     color={textColor}
                     fontSize="x-large"
-                    fontFamily="Moul"
                     fontWeight="md"
+                    className='font-face-ul'
                 > Plander</Text>
-
-
-
-
 
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>

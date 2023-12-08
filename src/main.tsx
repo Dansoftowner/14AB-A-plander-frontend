@@ -6,6 +6,8 @@ import './index.css'
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import 'bootstrap/dist/css/bootstrap.css'
 import './i18n.ts'
+import './fonts/Moul-Regular.ttf'
+import './fonts/Ultra-Regular.ttf'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
