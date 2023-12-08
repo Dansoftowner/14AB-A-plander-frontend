@@ -1,6 +1,7 @@
-import useAssociations, { Association } from '../../hooks/useAssociations'
-import { useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+
+import { useAssociations, Association } from '../../hooks/useAssociations'
+import { Fragment, useMemo, useState } from 'react'
+import { Box, Button, Checkbox, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -34,10 +35,10 @@ const LoginPage = () => {
 
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
-    const associations = useAssociations({ limit: 10, projection: 'full' }).data
+    const [qParam, setQParam] = useState('')
+    const { data: associations, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
     const [selectedAssociation, setSelectedAssociation] =
         useState<Association | null>()
-    console.log(selectedAssociation);
 
 
     return (
@@ -62,15 +63,16 @@ const LoginPage = () => {
                 > Plander</Text>
                 </HStack>
 
+
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
                                 <AutoCompleteInput autoComplete="off" placeholder="Válasszon egyesületet!"
-                                    {...register("username")}
                                     borderRadius={10}
                                     fontSize={20}
                                     h={10}
+                                    onChange={(val: any) => setQParam(val.target.value)}
                                 />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
@@ -79,17 +81,24 @@ const LoginPage = () => {
                                 </InputLeftElement>
                             </InputGroup>
                             <AutoCompleteList>
-                                {associations.map((association, id) => (
-                                    <AutoCompleteItem
-                                        key={id}
-                                        value={association}
-                                        label={association.name}
-                                        textTransform="capitalize"
-                                        color={dropDownFont}
-                                    >
-                                        {association.name}
-                                    </AutoCompleteItem>
-                                ))}
+                                {associations?.pages.map((page, index) =>
+                                    <Fragment key={index}>
+                                        {page.items.map(association => (
+                                            <AutoCompleteItem
+                                                key={association._id}
+                                                value={association}
+                                                label={association.name}
+                                                textTransform="capitalize"
+                                                color={dropDownFont}
+                                            >
+                                                {association.name}
+                                            </AutoCompleteItem>
+                                        ))}
+                                    </Fragment>)}
+                                {associations?.pages &&
+                                    <Button color='red' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                        {isFetchingNextPage ? 'Loading...' : 'More...'}
+                                    </Button>}
                             </AutoCompleteList>
                         </AutoComplete>
                     </Box>
