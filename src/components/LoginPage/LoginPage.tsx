@@ -1,6 +1,6 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useMemo, useState } from 'react'
+import { ChangeEvent, Fragment, useMemo, useReducer, useState } from 'react'
 import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormControl, FormErrorMessage } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
@@ -18,7 +18,8 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
-import { Login, useLogin } from '../../hooks/useLogin'
+import { Login, useLogin } from '../../hooks/useLogin.ts'
+import authReducer from '../../reducers/authReducer'
 
 
 
@@ -52,15 +53,18 @@ const LoginPage = () => {
         isAutoLogin: isChecked
     }
 
-
+    const [token, dispatch] = useReducer(authReducer, '')
 
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
-                useLogin(User)
+                const token = useLogin(User)
+                console.log(token);
+
             }
         }}>
+            {token && <p>{token}</p>}
             <Box
                 className="mx-auto container mt-3"
                 borderRadius="xl"
@@ -80,7 +84,6 @@ const LoginPage = () => {
                         marginLeft={10}
                     > Plander</Text>
                 </HStack>
-
 
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>

@@ -1,5 +1,7 @@
+import { useReducer, useState } from 'react'
 import apiClient from '../services/apiClient'
-import jwt_decode, { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
+import authReducer from '../reducers/authReducer'
 
 export interface Login {
   associationId: string | undefined
@@ -12,8 +14,10 @@ export const useLogin = (login: Login) =>
   apiClient
     .post('/auth', login)
     .then((res) => {
-      const token = res.data
-      const user = jwtDecode(token)
-      console.log(user)
+      const _token = res.data
+      return _token
     })
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      console.log(err)
+    })
+
