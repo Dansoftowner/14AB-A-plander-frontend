@@ -18,9 +18,17 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
-import { Login, useLogin } from '../../hooks/useLogin.ts'
+import { Login, useLogin, useLoginByID } from '../../hooks/useLogin.ts'
 import authReducer from '../../reducers/authReducer'
+import { jwtDecode } from 'jwt-decode'
 
+
+interface JWTPayload {
+    association: string;
+    iat: number;
+    roles: number;
+    _id: string;
+}
 
 
 const LoginPage = () => {
@@ -59,12 +67,18 @@ const LoginPage = () => {
         <form onSubmit={(e) => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
-                const token = useLogin(User)
-                console.log(token);
+                useLogin(User).then(res => {
+                    console.log(res)
+                    dispatch({ type: 'SET_TOKEN', token: res })
+                })
+
+
+                const userId = jwtDecode<JWTPayload>(token)._id
+                useLoginByID(userId).then(res => console.log(res))
+
 
             }
         }}>
-            {token && <p>{token}</p>}
             <Box
                 className="mx-auto container mt-3"
                 borderRadius="xl"
