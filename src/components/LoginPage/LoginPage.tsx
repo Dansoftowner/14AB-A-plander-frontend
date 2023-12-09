@@ -59,7 +59,6 @@ const LoginPage = () => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User)
-                console.log(User)
             }
         }}>
             <Box
