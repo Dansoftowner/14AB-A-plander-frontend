@@ -33,5 +33,9 @@
     "regForm-guardNumber": "Polgárőr-igazolványszám",
     "regForm-guardNumPholder": "12/3456/78910",
     "regForm-zodGuardNumber": "Nem megfelelő igazolvány formátum!",
-    "regForm-fieldRequired": "A mező kitöltése kötelező."
+    "regForm-fieldRequired": "A mező kitöltése kötelező.",
+    "loginPage-password": "Jelszó",
+    "loginPage-userName": "Felhasználónév",
+    "loginPage-association": "Válassz egyesületet",
+    "loginPage-loginButton": "Bejelentkezés"
 }

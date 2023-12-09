@@ -2,7 +2,7 @@ import { z } from 'zod'
 import i18n from '../../i18n'
 import { TFunction } from 'i18next'
 
-export const schema = (t: TFunction) => z.object({
+export const regSchema = (t: TFunction) => z.object({
     username: z.string().min(5, { message: i18n.t('regForm-zodUsername') }).max(20),
     password: z.string().min(8, { message: t('regForm-zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('regForm-zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('regForm-zodPassword') }),
     repeatedPassword: z.string(),
@@ -13,8 +13,15 @@ export const schema = (t: TFunction) => z.object({
     guardNumber: z.string().min(1, { message: t('regForm-zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('regForm-zodGuardNumber') }),
     emailAddress: z.string().refine(str => /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(str), { message: t('regForm-zodEmail') }),
     phoneNumber: z.string().min(1),
+}).refine(data => data.password == data.repeatedPassword, {
+    message: t('regForm-zodRepeatedPwd'),
+    path: ["repeatedPassword"]
 })
-    .refine(data => data.password == data.repeatedPassword, {
-        message: t('regForm-zodRepeatedPwd'),
-        path: ["repeatedPassword"]
-    })
+
+
+export const loginSchema = (t: TFunction) => z.object({
+    username: z.string().min(1, { message: 'Kötelező megadni!' }),
+    password: z.string().min(1, { message: 'Kötelező megadni!' }),
+    association: z.string().min(1, { message: 'Kötelező megadni!' }).optional(),
+    autoLogin: z.boolean().default(false)
+})

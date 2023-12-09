@@ -1,22 +1,8 @@
 import {
-    FormControl,
-    FormLabel,
-    Input,
-    FormErrorMessage,
-    InputGroup,
-    InputLeftAddon,
-    HStack,
-    VStack,
-    Flex,
-    Stack,
-    Menu,
-    MenuItem,
-    MenuGroup,
-    MenuList,
-    MenuButton,
+    FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputLeftAddon, HStack, VStack, Menu, InputLeftElement,
 } from '@chakra-ui/react'
 import { t } from 'i18next'
-import { FormEvent, Fragment, useMemo, useState } from 'react'
+import { FormEvent, useMemo, useState } from 'react'
 import {
     FieldErrors,
     FieldValues,
@@ -26,9 +12,11 @@ import {
 } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { schema } from './inputSchema'
+import { regSchema } from './inputSchema'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { phoneMap, PhoneFormat } from '../PhoneDropdownList/phones'
+import { FaRegUser } from "react-icons/fa";
+
 
 interface Props<FormData extends FieldValues> {
     required: boolean
@@ -40,6 +28,8 @@ interface Props<FormData extends FieldValues> {
     tel?: boolean
     guard?: boolean
     passwordConfirm?: boolean
+    login?: boolean,
+    _onChange?: (e: any) => void
 }
 
 const FormInput = <FormData extends FieldValues>({
@@ -52,8 +42,10 @@ const FormInput = <FormData extends FieldValues>({
     required,
     i18nTitle,
     i18nPlaceHolder,
+    login,
+    _onChange
 }: Props<FormData>) => {
-    const inputSchema = useMemo(() => schema(t), [t])
+    const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const {
         formState: { },
@@ -80,18 +72,44 @@ const FormInput = <FormData extends FieldValues>({
         if (target.value.length >= 1) prevValue = target.value.length - 1
     }
 
-
     const spacePos = [2, 6]
     const length = phone.length + spacePos.length + 2
 
     let prevTelValue = 0
     const telHandler = (e: FormEvent<HTMLInputElement>) => {
-        const target = (e.target as HTMLInputElement)
-        if (spacePos.includes(target.value.length) && (prevTelValue != 2 && prevTelValue != 6)) target.value += ' '
+        const target = e.target as HTMLInputElement
+        if (
+            spacePos.includes(target.value.length) &&
+            prevTelValue != 2 &&
+            prevTelValue != 6
+        )
+            target.value += ' '
         if (target.value.length >= 1) prevTelValue = target.value.length - 1
     }
-    if (tel) console.log(phone);
 
+    if (login) {
+        return (
+            <FormControl isRequired={required} isInvalid={isError} width={400}>
+                {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
+                <InputGroup>
+                    <InputLeftElement>
+                        <FaRegUser />
+                    </InputLeftElement>
+                    <Input
+                        {...register(name, { required })}
+                        placeholder={t(i18nPlaceHolder)}
+                        name={name}
+                        borderRadius={10}
+                        fontSize={20}
+                        h={10}
+                        autoComplete="off"
+                        onChange={_onChange}
+                    />
+                </InputGroup>
+                {isError && <FormErrorMessage> {error} </FormErrorMessage>}
+            </FormControl>
+        )
+    }
 
     return (
         <div className="mb-3">
@@ -99,23 +117,27 @@ const FormInput = <FormData extends FieldValues>({
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
 
                 <VStack maxW={400}>
-                    <InputGroup as={Menu} alignItems='start'>
-                        <HStack justifyContent='space-evenly'>
-
-                            {tel &&
-                                <InputLeftAddon width={150} borderRadius={10} children={
-                                    <PhoneDropdownList
-                                        selectedPhone={phone}
-                                        items={phoneMap}
-                                        selectionChange={(p) => setPhone(p)}
-                                    />
-                                } />
-                            }
+                    <InputGroup as={Menu} alignItems="start">
+                        <HStack justifyContent="space-evenly">
+                            {tel && (
+                                <InputLeftAddon
+                                    width={150}
+                                    borderRadius={10}
+                                    children={
+                                        <PhoneDropdownList
+                                            selectedPhone={phone}
+                                            items={phoneMap}
+                                            selectionChange={(p) => setPhone(p)}
+                                        />
+                                    }
+                                />
+                            )}
                             <Input
                                 {...register(name)}
                                 width={tel ? 240 : 400}
-                                maxLength={guard ? 13 : ((tel && phone.prefix == '+36') ? length : 20)}
-
+                                maxLength={
+                                    guard ? 13 : tel && phone.prefix == '+36' ? length : 20
+                                }
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
                                 onChangeCapture={(e) => {
@@ -126,14 +148,12 @@ const FormInput = <FormData extends FieldValues>({
                         </HStack>
                     </InputGroup>
 
-                    {(isError) && (
-                        <FormErrorMessage textAlign='center'>
-                            {error}
-                        </FormErrorMessage>
+                    {isError && (
+                        <FormErrorMessage textAlign="center">{error}</FormErrorMessage>
                     )}
                 </VStack>
             </FormControl>
-        </div >
+        </div>
     )
 }
 
