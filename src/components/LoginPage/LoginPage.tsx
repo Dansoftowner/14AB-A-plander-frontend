@@ -46,7 +46,7 @@ const LoginPage = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     const User: Login = {
-        username: username,
+        user: username,
         password: password,
         associationId: selectedAssociation?._id,
         isAutoLogin: isChecked
@@ -57,8 +57,10 @@ const LoginPage = () => {
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
-            console.log(User)
-            useLogin(User)
+            if (User.user && User.password && User.associationId) {
+                useLogin(User)
+                console.log(User)
+            }
         }}>
             <Box
                 className="mx-auto container mt-3"

@@ -2,7 +2,7 @@ import apiClient from '../services/apiClient'
 
 export interface Login {
   associationId: string | undefined
-  username: string
+  user: string
   password: string
   isAutoLogin: boolean
 }
@@ -11,7 +11,7 @@ export const useLogin = (login: Login) =>
   apiClient
     .post<Login>('/auth', {
       associationId: login.associationId,
-      username: login.username,
+      user: login.user,
       password: login.password,
       isAutoLogin: login.isAutoLogin,
     })
