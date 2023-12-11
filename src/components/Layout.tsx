@@ -5,11 +5,11 @@ import { AuthContext } from '../context/authContext'
 import authReducer from '../reducers/authReducer'
 
 const Layout = () => {
-    const [token, dispatch] = useReducer(authReducer, '')
+    const [isLoggedIn, dispatch] = useReducer(authReducer, false)
     return (
         <>
             <NavBar />
-            <AuthContext.Provider value={{ token, dispatch }}>
+            <AuthContext.Provider value={{ isLoggedIn, dispatch }}>
                 <Outlet />
             </AuthContext.Provider>
         </>

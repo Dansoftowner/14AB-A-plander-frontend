@@ -64,9 +64,10 @@ const LoginPage = () => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User).then(res => {
-                    authContext.dispatch({ type: 'SET_TOKEN', token: res })
-                    console.log(authContext.token)
-                    if (authContext.token) navigate('/')
+                    console.log(res)
+                    authContext.dispatch({ type: 'SET_TOKEN', isLoggedIn: res })
+                    // console.log(authContext.token)
+                    if (res) navigate('/')
                 })
             }
         }}>
