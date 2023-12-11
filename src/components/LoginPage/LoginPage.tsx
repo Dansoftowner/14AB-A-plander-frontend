@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -39,7 +39,7 @@ const LoginPage = () => {
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
     const [qParam, setQParam] = useState('')
-    const { data: associations, fetchNextPage, isFetchingNextPage } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
+    const { data: associations, fetchNextPage, isFetchingNextPage, isLoading } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
@@ -102,7 +102,7 @@ const LoginPage = () => {
 
                 <Stack mt={10} alignItems='center' >
                     <Box width={400} margin={5}>
-                        <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
+                        <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
                             <InputGroup>
                                 <AutoCompleteInput autoComplete="off"
                                     placeholder="Válasszon egyesületet!"
@@ -112,6 +112,7 @@ const LoginPage = () => {
                                     onChange={(val: any) => {
                                         setQParam(val.target.value)
                                     }}
+                                    LoadingIcon={<Spinner />}
                                 />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
@@ -120,7 +121,7 @@ const LoginPage = () => {
                                 </InputLeftElement>
                                 {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
                             </InputGroup>
-                            <AutoCompleteList>
+                            <AutoCompleteList loadingState="szia">
                                 {associations?.pages.map((page, index) =>
                                     <Fragment key={index}>
                                         {page.items.map(association => (
@@ -131,7 +132,7 @@ const LoginPage = () => {
                                                 textTransform="capitalize"
                                                 color={dropDownFont}
                                             >
-                                                {association.name}
+                                                {association.name || 'nem jo'}
                                             </AutoCompleteItem>
                                         ))}
                                     </Fragment>)}
