@@ -21,7 +21,7 @@ export const useLogin = (login: Login) =>
       console.log(err)
     })
 
-export const useLoginByID = (id: string) =>
-  apiClient.get(`/members/${id}`).then((res) => {
-    return res.data
+export const useLoginForMe = (id: string) =>
+  apiClient.get(`/members/me`).then((res) => {
+    res.data
   })

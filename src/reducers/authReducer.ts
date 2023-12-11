@@ -5,8 +5,8 @@ interface SetAction {
 interface RemoveAction {
   type: 'REMOVE_TOKEN'
 }
-type Action = SetAction | RemoveAction
-const authReducer = (token: string, action: Action) => {
+export type AuthAction = SetAction | RemoveAction
+const authReducer = (token: string, action: AuthAction) => {
   switch (action.type) {
     case 'SET_TOKEN':
       return action.token

@@ -1,6 +1,6 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useMemo, useReducer, useState } from 'react'
+import { ChangeEvent, Fragment, useContext, useMemo, useReducer, useState } from 'react'
 import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormControl, FormErrorMessage } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
@@ -18,17 +18,12 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
-import { Login, useLogin, useLoginByID } from '../../hooks/useLogin.ts'
+import { Login, useLogin, useLoginForMe } from '../../hooks/useLogin.ts'
 import authReducer from '../../reducers/authReducer'
 import { jwtDecode } from 'jwt-decode'
+import { useNavigate } from 'react-router'
+import { AuthContext } from '../../context/authContext.ts'
 
-
-interface JWTPayload {
-    association: string;
-    iat: number;
-    roles: number;
-    _id: string;
-}
 
 
 const LoginPage = () => {
@@ -61,22 +56,18 @@ const LoginPage = () => {
         isAutoLogin: isChecked
     }
 
-    const [token, dispatch] = useReducer(authReducer, '')
+    const navigate = useNavigate()
+    const authContext = useContext(AuthContext)
 
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User).then(res => {
-                    console.log(res)
-                    dispatch({ type: 'SET_TOKEN', token: res })
+                    authContext.dispatch({ type: 'SET_TOKEN', token: res })
+                    console.log(authContext.token)
+                    if (authContext.token) navigate('/')
                 })
-
-
-                const userId = jwtDecode<JWTPayload>(token)._id
-                useLoginByID(userId).then(res => console.log(res))
-
-
             }
         }}>
             <Box
