@@ -19,4 +19,5 @@ export const useLoginForMe = () =>
     queryKey: ['loginForMe'],
     queryFn: () => apiClient.get(`/members/me`).then((res) => res.data),
     staleTime: 1000 * 60,
+    retry: 2,
   })
