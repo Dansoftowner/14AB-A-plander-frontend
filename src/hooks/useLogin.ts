@@ -14,8 +14,7 @@ export const useLogin = (login: Login) =>
       return res.status === 200
     })
     .catch((err) => {
-      console.log(err)
-      return false
+      return err.response.data
     })
 
 export const useLogout = () =>

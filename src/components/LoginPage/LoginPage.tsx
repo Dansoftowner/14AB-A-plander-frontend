@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -56,28 +56,40 @@ const LoginPage = () => {
 
     const navigate = useNavigate()
     const authContext = useContext(AuthContext)
+    const errorToast = useToast()
 
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User).then(res => {
-                    console.log(res)
-                    authContext.dispatch({ type: 'SET_TOKEN', isLoggedIn: res })
-                    // console.log(authContext.token)
-                    if (res) navigate('/')
+                    authContext.dispatch({ type: 'SET_TOKEN', isLoggedIn: true })
+                    if (res == true) navigate('/')
+                    else {
+                        errorToast({
+                            title: res.message,
+                            description: 'Nem sikerült a belépés.',
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                            position: 'top'
+                        })
+                    }
+
+                })
+
+            } else {
+                errorToast({
+                    title: 'Minden mező kitöltése kötelező!',
+                    description: 'Nem sikerült a belépés.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                    position: 'top'
                 })
             }
         }}>
-            <Box
-                className="mx-auto container mt-3"
-                borderRadius="xl"
-                bg={cardBackground}
-                color="white"
-                h={600}
-                w={500}
-                alignItems='center'
-            >
+            <Box className="container" mt={3} marginX='auto' borderRadius="xl" bg={cardBackground} color="white" h={600} w={500} alignItems='center'>
                 <HStack>
                     <Image src='./assets/logo.png' width={100} />
                     <Text
@@ -85,8 +97,7 @@ const LoginPage = () => {
                         fontSize="xxx-large"
                         fontWeight="md"
                         className='font-face-mo'
-                        marginLeft={10}
-                    > Plander</Text>
+                        marginLeft={10}> Plander</Text>
                 </HStack>
 
                 <Stack mt={10} alignItems='center' >
