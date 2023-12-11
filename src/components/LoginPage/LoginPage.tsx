@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useContext, useMemo, useReducer, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormControl, FormErrorMessage } from '@chakra-ui/react'
+import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -18,7 +18,7 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
-import { Login, useLogin, useLoginForMe } from '../../hooks/useLogin.ts'
+import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
 import { AuthContext } from '../../context/authContext.ts'
 
