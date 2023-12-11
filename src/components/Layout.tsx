@@ -8,8 +8,8 @@ const Layout = () => {
     const [isLoggedIn, dispatch] = useReducer(authReducer, false)
     return (
         <>
-            <NavBar />
             <AuthContext.Provider value={{ isLoggedIn, dispatch }}>
+                <NavBar />
                 <Outlet />
             </AuthContext.Provider>
         </>
