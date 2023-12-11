@@ -1,11 +1,13 @@
 import React from 'react'
 import { AuthContext } from '../../context/authContext'
 import { Button } from '@chakra-ui/button'
-import { useLoginForMe } from '../../hooks/useLogin'
+import { useLoginForMe, useLogout } from '../../hooks/useLogin'
 
 const HomePage = () => {
     const context = React.useContext(AuthContext)
-    const user = useLoginForMe()
+    const { data: user } = useLoginForMe()
+    console.log(user);
+
 
     return (
         <div>
@@ -13,10 +15,12 @@ const HomePage = () => {
             {!context.isLoggedIn && <h2>You are not logged in.</h2>}
             {context.isLoggedIn &&
                 <>
-                    <Button onClick={() => context.dispatch({ type: 'REMOVE_TOKEN' })}>
+                    <Button onClick={() => {
+                        context.dispatch({ type: 'REMOVE_TOKEN' })
+                        useLogout()
+                    }}>
                         Logout
                     </Button>
-                    {/* {user} */}
                 </>}
         </div>
     )

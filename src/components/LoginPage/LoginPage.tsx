@@ -19,8 +19,6 @@ import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
 import { Login, useLogin, useLoginForMe } from '../../hooks/useLogin.ts'
-import authReducer from '../../reducers/authReducer'
-import { jwtDecode } from 'jwt-decode'
 import { useNavigate } from 'react-router'
 import { AuthContext } from '../../context/authContext.ts'
 
