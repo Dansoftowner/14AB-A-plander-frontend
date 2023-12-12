@@ -39,7 +39,7 @@ const LoginPage = () => {
     const { register, formState: { errors } } = useForm<LoginForm>({ resolver: zodResolver(inputSchema) })
 
     const [qParam, setQParam] = useState('')
-    const { data: associations, fetchNextPage, isFetchingNextPage, isLoading } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
+    const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
@@ -121,9 +121,9 @@ const LoginPage = () => {
                                 </InputLeftElement>
                                 {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
                             </InputGroup>
-                            <AutoCompleteList loadingState="szia">
+                            <AutoCompleteList loadingState={<Spinner />}>
                                 {associations?.pages.map((page, index) =>
-                                    <Fragment key={index}>
+                                    <Fragment key={index} >
                                         {page.items.map(association => (
                                             <AutoCompleteItem
                                                 key={association._id}
@@ -136,9 +136,9 @@ const LoginPage = () => {
                                             </AutoCompleteItem>
                                         ))}
                                     </Fragment>)}
-                                {associations?.pages &&
-                                    <Button color='red' onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-                                        {isFetchingNextPage ? 'Loading...' : 'More...'}
+                                {hasNextPage &&
+                                    <Button color={dropDownFont} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                        {isFetchingNextPage ? <Spinner /> : '...'}
                                     </Button>}
                             </AutoCompleteList>
                         </AutoComplete>
@@ -155,13 +155,6 @@ const LoginPage = () => {
 
                     <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>Bejelentkezés</Button>
                 </Stack>
-
-
-
-                <Text>{selectedAssociation?.name}</Text>
-                <Text>{selectedAssociation?.location}</Text>
-                <Text>{selectedAssociation?._id}</Text>
-                <Text>{selectedAssociation?.certificate}</Text>
             </Box >
         </form >
     )
