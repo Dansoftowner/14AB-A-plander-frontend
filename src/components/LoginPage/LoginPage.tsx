@@ -1,6 +1,6 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useMemo, useState } from 'react'
+import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
@@ -20,6 +20,7 @@ import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
 import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
+import { AuthContext } from '../../context/authContext.ts'
 
 
 
@@ -45,6 +46,8 @@ const LoginPage = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [isChecked, setIsChecked] = useState<boolean>(false)
+
+    const { dispatch, user } = useContext(AuthContext)
 
     const User: Login = {
         user: username,
@@ -72,9 +75,8 @@ const LoginPage = () => {
                             position: 'top'
                         })
                     }
-
+                    dispatch({ type: 'SET_TOKEN', loggedUser: res.data })
                 })
-
             } else {
                 errorToast({
                     title: 'Minden mező kitöltése kötelező!',
@@ -109,7 +111,6 @@ const LoginPage = () => {
                                     onChange={(val: any) => {
                                         setQParam(val.target.value)
                                     }}
-                                // LoadingIcon={<Spinner />}
                                 />
                                 <InputRightElement
                                     children={<FaChevronDown />} />
