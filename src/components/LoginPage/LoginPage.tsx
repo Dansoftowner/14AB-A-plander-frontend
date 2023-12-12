@@ -41,13 +41,12 @@ const LoginPage = () => {
     const [qParam, setQParam] = useState('')
     const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
+    const { setAuthToken, setUser } = useContext(AuthContext)
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [isChecked, setIsChecked] = useState<boolean>(false)
-
-    const { dispatch, user } = useContext(AuthContext)
 
     const User: Login = {
         user: username,
@@ -64,7 +63,11 @@ const LoginPage = () => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User).then(res => {
-                    if (res == true) navigate('/')
+                    if (res == true) {
+                        setUser({ type: 'SET_TOKEN', loggedUser: res.data })
+                        setAuthToken(localStorage.getItem('token') || '')
+                        navigate('/')
+                    }
                     else {
                         errorToast({
                             title: res.message,
@@ -75,7 +78,6 @@ const LoginPage = () => {
                             position: 'top'
                         })
                     }
-                    dispatch({ type: 'SET_TOKEN', loggedUser: res.data })
                 })
             } else {
                 errorToast({

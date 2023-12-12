@@ -9,7 +9,7 @@ import { AuthContext } from '../../context/authContext'
 const NavBar = () => {
     const { colorMode } = useColorMode()
     const navigate = useNavigate()
-    const { user, dispatch } = useContext(AuthContext)
+    const { setUser, user } = useContext(AuthContext)
 
     return (
         <HStack padding={3} justifyContent='end' backgroundColor={colorMode == 'light' ? 'blue.300' : 'blue.50'}>
@@ -17,8 +17,10 @@ const NavBar = () => {
             <LangSelector />
             <Button backgroundColor='transparent' onClick={() => {
                 useLogout().then(() => {
+                    // setAuthToken('')
+                    setUser({ type: 'REMOVE_TOKEN' })
+                    localStorage.removeItem("token");
                     navigate('/login')
-                    dispatch({ type: 'REMOVE_TOKEN' })
                 })
             }}>{user?.name || 'Nincs bejelentkezve'}</Button>
         </HStack >

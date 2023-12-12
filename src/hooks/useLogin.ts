@@ -11,7 +11,10 @@ export const useLogin = (login: Login) =>
   apiClient
     .post('/auth', login)
     .then((res) => {
-      return res.status === 200
+      if (res.status === 200) {
+        localStorage.setItem('token', res.data)
+        return true
+      }
     })
     .catch((err) => {
       return err.response.data
@@ -19,5 +22,6 @@ export const useLogin = (login: Login) =>
 
 export const useLogout = () =>
   apiClient.post('/logout').then((res) => {
+    localStorage.removeItem('token')
     return res.data
   })

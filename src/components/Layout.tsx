@@ -1,20 +1,26 @@
-import { useReducer } from 'react'
+import { useReducer, useState } from 'react'
 import NavBar from './NavBar/NavBar'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
-import authReducer from '../reducers/authReducer'
 import { useLoginForMe } from '../hooks/useMember'
+import authReducer from '../reducers/authReducer'
 
 const Layout = () => {
-    const { data, isFetching } = useLoginForMe()
+    const [authToken, setAuthToken] = useState(
+        localStorage.getItem("token") || ""
+    );
+    const setToken = (token: any) => {
+        localStorage.setItem("token", token);
+        setAuthToken(token);
+    }
 
-    // if (!data && !isFetching) return <Navigate to='/login' />
 
-    const [user, dispatch] = useReducer(authReducer, data!)
+    const { data } = useLoginForMe()
+    const [user, setUser] = useReducer(authReducer, data!)
 
     return (
         <>
-            <AuthContext.Provider value={{ user, dispatch }}>
+            <AuthContext.Provider value={{ authToken, setAuthToken: setToken, user, setUser }}>
                 <NavBar />
                 <Outlet />
             </AuthContext.Provider >
