@@ -1,6 +1,6 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
-import { useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Fragment, useMemo, useState } from 'react'
+import { Box, Button, Checkbox, Flex, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -27,6 +27,8 @@ const LoginPage = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const textColor = useColorModeValue('#0078D7', '#004881')
 
+    const { colorMode } = useColorMode()
+
     const { t } = useTranslation()
     const inputSchema = useMemo(() => loginSchema(t), [t])
 
@@ -41,18 +43,17 @@ const LoginPage = () => {
 
 
     return (
-        <>
+        <Box className="d-flex align-items-center justify-content-center h-100">
             <Box
-                className="mx-auto container mt-3"
+                className="mx-auto container"
                 borderRadius="xl"
                 bg={cardBackground}
                 color="white"
                 h={600}
                 w={500}
-                alignItems='center'
             >
                 <HStack>
-                <Image src='./assets/logo.png' width={100}/>
+                <Image src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100}/>
                 <Text
                     color={textColor}
                     fontSize="xxx-large"
@@ -111,8 +112,8 @@ const LoginPage = () => {
                 <Text>{selectedAssociation?.location}</Text>
                 <Text>{selectedAssociation?._id}</Text>
                 <Text>{selectedAssociation?.certificate}</Text>
-            </Box >
-        </>
+            </ Box>
+        </Box>
     )
 }
 

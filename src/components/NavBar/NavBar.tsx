@@ -1,11 +1,11 @@
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
-import { HStack, useColorMode } from '@chakra-ui/react'
+import { HStack, useColorModeValue } from '@chakra-ui/react'
 
 const NavBar = () => {
-    const { colorMode } = useColorMode()
+    const navBarColor = useColorModeValue('#0078D7', '#004881')
     return (
-        <HStack padding={3} justifyContent='end' backgroundColor={colorMode == 'light' ? 'blue.300' : 'blue.50'}>
+        <HStack padding={3} justifyContent='end' backgroundColor={navBarColor}>
             <ColorModeSwitch />
             <LangSelector />
         </HStack >
