@@ -1,36 +1,30 @@
-import React from 'react'
-import { AuthContext } from '../../context/authContext'
 import { Button } from '@chakra-ui/button'
 import { useLogout } from '../../hooks/useLogin'
 import { useLoginForMe } from '../../hooks/useMember'
-
+import { Navigate, useNavigate } from 'react-router-dom'
+import { Spinner } from '@chakra-ui/react'
 const HomePage = () => {
-    const context = React.useContext(AuthContext)
-    const { data: user, status: loginStatus } = useLoginForMe()
-    if (loginStatus === "success") {
-        context.dispatch({ type: 'SET_TOKEN', isLoggedIn: true })
+
+    const { data: user, isFetching } = useLoginForMe()
+
+    const navigate = useNavigate()
+
+    if (!user && isFetching) {
+        <Spinner />
     }
-
-    console.log(user);
-
+    if (!user && !isFetching) return <Navigate to='/login' />
 
     return (
-        <div>
-            <h1>Hello.</h1>
-            {!context.isLoggedIn && <h2>You are not logged in.</h2>}
-            {context.isLoggedIn &&
-                <>
-                    <h1>Hello {user?.name}!</h1>
-                    <Button onClick={() => {
-                        useLogout().then(() => {
-                            context.dispatch({ type: 'REMOVE_TOKEN' })
-                        })
-                    }}>
-                        Logout
-                    </Button>
-                </>}
-
-        </div>
+        <>
+            <h1>Hello {user?.name}!</h1>
+            <Button onClick={() => {
+                useLogout().then(() => {
+                    navigate('/login')
+                })
+            }}>
+                Logout
+            </Button>
+        </>
     )
 }
 

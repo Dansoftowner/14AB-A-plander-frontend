@@ -17,7 +17,8 @@ export interface User {
 export const useLoginForMe = () =>
   useQuery<User>({
     queryKey: ['loginForMe'],
-    queryFn: () => apiClient.get(`/members/me`).then((res) => res.data),
+    queryFn: async () =>
+      await apiClient.get(`/members/me`).then((res) => res.data),
     staleTime: 1000 * 60,
-    retry: 2,
+    retry: 1,
   })

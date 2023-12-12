@@ -1,19 +1,19 @@
 interface SetAction {
   type: 'SET_TOKEN'
-  isLoggedIn: boolean
+  userId: string
 }
 interface RemoveAction {
   type: 'REMOVE_TOKEN'
 }
 export type AuthAction = SetAction | RemoveAction
-const authReducer = (isLoggedIn: boolean, action: AuthAction) => {
+const authReducer = (userId: string, action: AuthAction) => {
   switch (action.type) {
     case 'SET_TOKEN':
-      return action.isLoggedIn
+      return action.userId
     case 'REMOVE_TOKEN':
-      return false
+      return ''
     default:
-      return isLoggedIn
+      return userId
   }
 }
 export default authReducer
