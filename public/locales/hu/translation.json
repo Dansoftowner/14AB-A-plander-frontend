@@ -36,6 +36,7 @@
     "regForm-fieldRequired": "A mező kitöltése kötelező.",
     "loginPage-password": "Jelszó",
     "loginPage-userName": "Felhasználónév",
-    "loginPage-association": "Válassz egyesületet",
+    "loginPage-association": "Egyesület választása",
+    "loginPage-stayInCheckbox": "Bejelentkezve maradok",
     "loginPage-loginButton": "Bejelentkezés"
 }

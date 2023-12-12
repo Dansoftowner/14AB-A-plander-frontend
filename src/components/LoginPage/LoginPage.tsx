@@ -67,7 +67,7 @@ const LoginPage = () => {
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
-                                <AutoCompleteInput autoComplete="off" placeholder="Válasszon egyesületet!"
+                                <AutoCompleteInput autoComplete="off" placeholder={t('loginPage-association')}
                                     {...register("username")}
                                     borderRadius={10}
                                     fontSize={20}
@@ -96,14 +96,14 @@ const LoginPage = () => {
                     </Box>
 
                     <Box margin={5}>
-                        <FormInput login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="Felhasználónév" />
+                        <FormInput login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="loginPage-userName" />
                     </Box>
                     <Box >
-                        <PasswordInput login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
+                        <PasswordInput login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="loginPage-password" i18nTitle="" />
                     </Box>
-                    <Checkbox margin={2} colorScheme='' >Maradjak bejelentkezve</Checkbox>
+                    <Checkbox margin={2} colorScheme='' >{t('loginPage-stayInCheckbox')}</Checkbox>
 
-                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor}>Bejelentkezés</Button>
+                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor}>{t('loginPage-loginButton')}</Button>
                 </Stack>
 
 

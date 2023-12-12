@@ -37,5 +37,6 @@
   "loginPage-password": "Password",
   "loginPage-userName": "Username",
   "loginPage-association": "Choose association",
+  "loginPage-stayInCheckbox": "Stay logged in",
   "loginPage-loginButton": "Login"
 }
