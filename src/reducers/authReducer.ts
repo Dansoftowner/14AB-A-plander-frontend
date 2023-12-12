@@ -1,19 +1,22 @@
+import { User } from '../hooks/useMember'
+
 interface SetAction {
   type: 'SET_TOKEN'
-  userId: string
+  loggedUser: User
 }
 interface RemoveAction {
   type: 'REMOVE_TOKEN'
 }
 export type AuthAction = SetAction | RemoveAction
-const authReducer = (userId: string, action: AuthAction) => {
+
+const authReducer = (user: User, action: AuthAction): User => {
   switch (action.type) {
     case 'SET_TOKEN':
-      return action.userId
+      return action.loggedUser
     case 'REMOVE_TOKEN':
-      return ''
+      return null as unknown as User
     default:
-      return userId
+      return user
   }
 }
 export default authReducer

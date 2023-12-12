@@ -1,17 +1,23 @@
-import React, { useReducer } from 'react'
+import { useReducer } from 'react'
 import NavBar from './NavBar/NavBar'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
 import authReducer from '../reducers/authReducer'
+import { useLoginForMe } from '../hooks/useMember'
 
 const Layout = () => {
-    const [isLoggedIn, dispatch] = useReducer(authReducer, false)
+    const { data, isFetching } = useLoginForMe()
+
+    // if (!data && !isFetching) return <Navigate to='/login' />
+
+    const [user, dispatch] = useReducer(authReducer, data!)
+
     return (
         <>
-            <AuthContext.Provider value={{ isLoggedIn, dispatch }}>
+            <AuthContext.Provider value={{ user, dispatch }}>
                 <NavBar />
                 <Outlet />
-            </AuthContext.Provider>
+            </AuthContext.Provider >
         </>
     )
 }
