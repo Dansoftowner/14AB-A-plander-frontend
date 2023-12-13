@@ -33,9 +33,9 @@
   "regForm-guardNumber": "Guard ID",
   "regForm-guardNumPholder": "12/3456/78910",
   "regForm-zodGuardNumber": "Invalid format!",
-  "regForm-fieldRequired" : "This field is required.",
+  "regForm-fieldRequired": "This field is required.",
   "loginPage-password": "Password",
-  "loginPage-userName": "Username",
+  "loginPage-userName": "Username or e-mail",
   "loginPage-association": "Choose association",
   "loginPage-stayInCheckbox": "Stay logged in",
   "loginPage-loginButton": "Login"
