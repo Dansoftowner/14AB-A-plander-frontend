@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -61,114 +61,115 @@ const LoginPage = () => {
     const errorToast = useToast()
 
     return (
-      
+
         <Center display='flex' justifyContent='center' alignItems='center' h='90vh'>
-                <form onSubmit={(e) => {
-            e.preventDefault();
-            if (User.user && User.password && User.associationId) {
-                useLogin(User).then(res => {
-                    if (res == true) {
-                        setUser({ type: 'SET_TOKEN', loggedUser: res.data })
-                        setAuthToken(localStorage.getItem('token') || '')
-                        navigate('/')
-                    }
-                    else {
-                        errorToast({
-                            title: res.message,
-                            description: 'Nem sikerült a belépés.',
-                            status: 'error',
-                            duration: 9000,
-                            isClosable: true,
-                            position: 'top'
-                        })
-                    }
-                })
-            } else {
-                errorToast({
-                    title: 'Minden mező kitöltése kötelező!',
-                    description: 'Nem sikerült a belépés.',
-                    status: 'error',
-                    duration: 9000,
-                    isClosable: true,
-                    position: 'top'
-                })
-            }
-        }}>
-            <Box
-                className="mx-auto container"
-                borderRadius="xl"
-                bg={cardBackground}
-                color="white"
-                h={600}
-                w={500}
-            >
-              
-                <HStack alignContent='center' justifyContent='center'>
-                    <Image my={10} src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
-                    <Text
-                        mb={0}
-                        color={textColor}
-                        fontSize="xxx-large"
-                        fontWeight="md"
-                        className='font-face-mo'
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                if (User.user && User.password && User.associationId) {
+                    useLogin(User).then(res => {
+                        if (res == true) {
+                            setUser({ type: 'SET_TOKEN', loggedUser: res.data })
+                            setAuthToken(localStorage.getItem('token') || '')
+                            navigate('/')
+                        }
+                        else {
+                            errorToast({
+                                title: res.message,
+                                description: 'Nem sikerült a belépés.',
+                                status: 'error',
+                                duration: 9000,
+                                isClosable: true,
+                                position: 'top'
+                            })
+                        }
+                    })
+                } else {
+                    errorToast({
+                        title: 'Minden mező kitöltése kötelező!',
+                        description: 'Nem sikerült a belépés.',
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                        position: 'top'
+                    })
+                }
+            }}>
+                <Box
+                    className="mx-auto container"
+                    borderRadius="xl"
+                    bg={cardBackground}
+                    color="white"
+                    h={600}
+                    w={500}
+                >
+
+                    <HStack alignContent='center' justifyContent='center'>
+                        <Image my={10} src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
+                        <Text
+                            mb={0}
+                            color={textColor}
+                            fontSize="xxx-large"
+                            fontWeight="md"
+                            className='font-face-mo'
+                            fontFamily='Moul'
                         > Plander</Text>
-                </HStack>
+                    </HStack>
 
-                <Stack alignItems='center' >
-                    <Box width={400} margin={5}>
-                        <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
-                            <InputGroup>
-                                <AutoCompleteInput autoComplete="off" placeholder={t('loginPage-association')}
-                                    borderRadius={10}
-                                    fontSize={20}
-                                    h={10}
-                                    onChange={(val: any) => {
-                                        setQParam(val.target.value)
-                                    }}
-                                />
-                                <InputRightElement
-                                    children={<FaChevronDown />} />
-                                <InputLeftElement>
-                                    <MdOutlineLocalPolice />
-                                </InputLeftElement>
-                                {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
-                            </InputGroup>
-                            <AutoCompleteList loadingState={<Spinner />}>
-                                {associations?.pages.map((page, index) =>
-                                    <Fragment key={index} >
-                                        {page.items.map(association => (
-                                            <AutoCompleteItem
-                                                key={association._id}
-                                                value={association}
-                                                label={association.name}
-                                                textTransform="capitalize"
-                                                color={dropDownFont}
-                                            >
-                                                {association.name || 'nem jo'}
-                                            </AutoCompleteItem>
-                                        ))}
-                                    </Fragment>)}
-                                {hasNextPage &&
-                                    <Button color={dropDownFont} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-                                        {isFetchingNextPage ? <Spinner /> : '...'}
-                                    </Button>}
-                            </AutoCompleteList>
-                        </AutoComplete>
-                    </Box>
+                    <Stack alignItems='center' >
+                        <Box width={400} margin={5}>
+                            <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
+                                <InputGroup>
+                                    <AutoCompleteInput autoComplete="off" placeholder={t('loginPage-association')}
+                                        borderRadius={10}
+                                        fontSize={20}
+                                        h={10}
+                                        onChange={(val: any) => {
+                                            setQParam(val.target.value)
+                                        }}
+                                    />
+                                    <InputRightElement
+                                        children={<FaChevronDown />} />
+                                    <InputLeftElement>
+                                        <MdOutlineLocalPolice />
+                                    </InputLeftElement>
+                                    {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
+                                </InputGroup>
+                                <AutoCompleteList loadingState={<Spinner />}>
+                                    {associations?.pages.map((page, index) =>
+                                        <Fragment key={index} >
+                                            {page.items.map(association => (
+                                                <AutoCompleteItem
+                                                    key={association._id}
+                                                    value={association}
+                                                    label={association.name}
+                                                    textTransform="capitalize"
+                                                    color={dropDownFont}
+                                                >
+                                                    {association.name || 'nem jo'}
+                                                </AutoCompleteItem>
+                                            ))}
+                                        </Fragment>)}
+                                    {hasNextPage &&
+                                        <Button color={dropDownFont} onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                            {isFetchingNextPage ? <Spinner /> : '...'}
+                                        </Button>}
+                                </AutoCompleteList>
+                            </AutoComplete>
+                        </Box>
 
-                    <Box margin={5}>
-                        <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="loginPage-userName" />
-                    </Box>
-                    <Box >
-                        <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="loginPage-password" i18nTitle="" />
-                    </Box>
-                    <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('loginPage-stayInCheckbox')}</Checkbox>
-                    {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
+                        <Box margin={5}>
+                            <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="loginPage-userName" />
+                        </Box>
+                        <Box >
+                            <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="loginPage-password" i18nTitle="" />
+                        </Box>
+                        <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('loginPage-stayInCheckbox')}</Checkbox>
+                        {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
 
-                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginPage-loginButton')}</Button>
-                </Stack>
-            </Box >
-        </form >
+                        <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginPage-loginButton')}</Button>
+                    </Stack>
+                </Box >
+            </form >
         </Center>
     )
 }
