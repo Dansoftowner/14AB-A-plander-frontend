@@ -2,17 +2,24 @@ import { Button } from '@chakra-ui/button'
 import { useLogout } from '../../hooks/useLogin'
 import { useLoginForMe } from '../../hooks/useMember'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AuthContext } from '../../context/authContext'
 const HomePage = () => {
 
-    const { data, isFetching } = useLoginForMe()
-    const { authToken, setUser,user } = useContext(AuthContext)
+    // const { data, isFetching } = useLoginForMe()
+    const { authToken, setUser, user } = useContext(AuthContext)
 
     const navigate = useNavigate()
 
-    if (!authToken && !isFetching) return <Navigate to='/login' />
-    if (data) setUser({ type: 'SET_TOKEN', loggedUser: data })
+
+    if (!authToken) return <Navigate to='/login' />
+
+    const { data } = useLoginForMe()
+
+    if (localStorage.getItem('token')) {
+        setUser({ type: 'SET_TOKEN', loggedUser: data! })
+    }
+
 
     return (
         <>

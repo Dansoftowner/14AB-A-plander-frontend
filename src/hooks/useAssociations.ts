@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import apiClient from '../services/apiClient'
 
 export interface Association {
   _id: string
@@ -23,8 +24,8 @@ export const useAssociations = (query: AsQuery) =>
   useInfiniteQuery<Response>({
     queryKey: ['associations', query],
     queryFn: ({ pageParam = 1 }) =>
-      axios
-        .get<Response>('https://plander-dev.onrender.com/api/associations', {
+      apiClient
+        .get<Response>('/associations', {
           params: {
             offset: (pageParam - 1) * query.limit,
             limit: query.limit,

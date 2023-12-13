@@ -9,10 +9,10 @@ import { RouterProvider } from 'react-router-dom'
 import router from './routes.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-const queryClient = new QueryClient()
 import './fonts/Moul-Regular.ttf'
 import './fonts/Ultra-Regular.ttf'
 
+const queryClient = new QueryClient()
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <QueryClientProvider client={queryClient}>
-              <RouterProvider router={router} />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,

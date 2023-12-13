@@ -44,7 +44,7 @@ const LoginPage = () => {
     const [qParam, setQParam] = useState('')
     const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
-    const { setAuthToken, setUser,user } = useContext(AuthContext)
+    const { setAuthToken, setUser, user } = useContext(AuthContext)
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
     const [username, setUsername] = useState<string>('')
@@ -70,7 +70,6 @@ const LoginPage = () => {
                     useLogin(User).then(res => {
                         if (res == true) {
                             setUser({ type: 'SET_TOKEN', loggedUser: res.data })
-                            console.log(res.data);
                             setAuthToken(localStorage.getItem('token') || '')
                             navigate('/')
                         }
