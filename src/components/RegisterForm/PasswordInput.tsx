@@ -16,10 +16,11 @@ interface Props<FormData extends FieldValues> {
     name: Path<FormData>
     register: UseFormRegister<FormData>,
     errors: FieldErrors
-    login?: boolean
+    login?: boolean,
+    _onChange?: (e: any) => void
 }
 
-const PasswordInput = <FormData extends FieldValues>({ login, register, errors, name, required, i18nTitle, i18nPlaceHolder }: Props<FormData>) => {
+const PasswordInput = <FormData extends FieldValues>({ login, register, errors, name, required, i18nTitle, i18nPlaceHolder, _onChange }: Props<FormData>) => {
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
@@ -41,6 +42,7 @@ const PasswordInput = <FormData extends FieldValues>({ login, register, errors, 
                     </InputLeftElement>
                     <Input
                         {...register(name, { required })}
+                        onChange={_onChange}
                         placeholder={t(i18nPlaceHolder)}
                         type={show ? 'text' : 'password'}
                         name={name}

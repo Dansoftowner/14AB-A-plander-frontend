@@ -28,7 +28,8 @@ interface Props<FormData extends FieldValues> {
     tel?: boolean
     guard?: boolean
     passwordConfirm?: boolean
-    login?: boolean
+    login?: boolean,
+    _onChange?: (e: any) => void
 }
 
 const FormInput = <FormData extends FieldValues>({
@@ -42,6 +43,7 @@ const FormInput = <FormData extends FieldValues>({
     i18nTitle,
     i18nPlaceHolder,
     login,
+    _onChange
 }: Props<FormData>) => {
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
@@ -101,6 +103,7 @@ const FormInput = <FormData extends FieldValues>({
                         fontSize={20}
                         h={10}
                         autoComplete="off"
+                        onChange={_onChange}
                     />
                 </InputGroup>
                 {isError && <FormErrorMessage> {error} </FormErrorMessage>}
