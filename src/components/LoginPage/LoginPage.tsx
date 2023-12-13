@@ -1,6 +1,6 @@
 import useAssociations, { Association } from '../../hooks/useAssociations'
 import { Fragment, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, Flex, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Center, Checkbox, Flex, HStack, Image, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -43,9 +43,8 @@ const LoginPage = () => {
 
 
     return (
-        <Box alignItems='center' justifyContent='center' h={100} margin='auto' >
+        <Center display='flex' justifyContent='center' alignItems='center' h='90vh'>
             <Box
-                mt={120}
                 className="mx-auto container"
                 borderRadius="xl"
                 bg={cardBackground}
@@ -106,15 +105,8 @@ const LoginPage = () => {
 
                     <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor}>{t('loginPage-loginButton')}</Button>
                 </Stack>
-
-
-
-                <Text>{selectedAssociation?.name}</Text>
-                <Text>{selectedAssociation?.location}</Text>
-                <Text>{selectedAssociation?._id}</Text>
-                <Text>{selectedAssociation?.certificate}</Text>
             </ Box>
-        </Box >
+        </Center >
     )
 }
 
