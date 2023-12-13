@@ -18,7 +18,7 @@ export const useLoginForMe = () =>
   useQuery<User>({
     queryKey: ['loginForMe'],
     queryFn: async () =>
-      await apiClient.get(`/members/me`).then((res) => res.data),
+      await apiClient.get(`/members/me`, {headers: {'x-plander-auth' : localStorage.getItem('token')}}).then((res) => res.data),
     staleTime: 1000 * 60,
     retry: 1,
   })

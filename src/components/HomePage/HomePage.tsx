@@ -7,7 +7,7 @@ import { AuthContext } from '../../context/authContext'
 const HomePage = () => {
 
     const { data, isFetching } = useLoginForMe()
-    const { authToken, setUser } = useContext(AuthContext)
+    const { authToken, setUser,user } = useContext(AuthContext)
 
     const navigate = useNavigate()
 
@@ -16,12 +16,12 @@ const HomePage = () => {
 
     return (
         <>
-            <h1>Hello {data?.name}!</h1>
+            <h1>Hello {user?.name}!</h1>
             <Button onClick={() => {
                 useLogout().then(() => {
-                    navigate('/login')
-                    localStorage.removeItem("token");
                     setUser({ type: 'REMOVE_TOKEN' })
+                    localStorage.removeItem("token");
+                    navigate('/login')
                 })
             }}>
                 Logout
