@@ -43,8 +43,9 @@ const LoginPage = () => {
 
 
     return (
-        <Box className="d-flex align-items-center justify-content-center h-100">
+        <Box alignItems='center' justifyContent='center' h={100} margin='auto' >
             <Box
+                mt={120}
                 className="mx-auto container"
                 borderRadius="xl"
                 bg={cardBackground}
@@ -52,18 +53,18 @@ const LoginPage = () => {
                 h={600}
                 w={500}
             >
-                <HStack>
-                <Image src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100}/>
-                <Text
-                    color={textColor}
-                    fontSize="xxx-large"
-                    fontWeight="md"
-                    className='font-face-mo'
-                    marginLeft={10}
-                > Plander</Text>
+                <HStack alignContent='center' justifyContent='center'>
+                    <Image my={10} src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
+                    <Text
+                        mb={0}
+                        color={textColor}
+                        fontSize="xxx-large"
+                        fontWeight="md"
+                        className='font-face-mo'
+                    > Plander</Text>
                 </HStack>
 
-                <Stack mt={10} alignItems='center' >
+                <Stack alignItems='center' >
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)}>
                             <InputGroup>
@@ -113,7 +114,7 @@ const LoginPage = () => {
                 <Text>{selectedAssociation?._id}</Text>
                 <Text>{selectedAssociation?.certificate}</Text>
             </ Box>
-        </Box>
+        </Box >
     )
 }
 
