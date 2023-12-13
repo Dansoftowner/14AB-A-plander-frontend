@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -31,6 +31,8 @@ const LoginPage = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const textColor = useColorModeValue('#0078D7', '#004881')
 
+    const { colorMode } = useColorMode()
+
     const { t } = useTranslation()
     const inputSchema = useMemo(() => loginSchema(t), [t])
 
@@ -59,7 +61,9 @@ const LoginPage = () => {
     const errorToast = useToast()
 
     return (
-        <form onSubmit={(e) => {
+      
+        <Center display='flex' justifyContent='center' alignItems='center' h='90vh'>
+                <form onSubmit={(e) => {
             e.preventDefault();
             if (User.user && User.password && User.associationId) {
                 useLogin(User).then(res => {
@@ -90,23 +94,31 @@ const LoginPage = () => {
                 })
             }
         }}>
-            <Box className="container" mt={3} marginX='auto' borderRadius="xl" bg={cardBackground} color="white" h={600} w={500} alignItems='center'>
-                <HStack>
-                    <Image src='./assets/logo.png' width={100} />
+            <Box
+                className="mx-auto container"
+                borderRadius="xl"
+                bg={cardBackground}
+                color="white"
+                h={600}
+                w={500}
+            >
+              
+                <HStack alignContent='center' justifyContent='center'>
+                    <Image my={10} src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
                     <Text
+                        mb={0}
                         color={textColor}
                         fontSize="xxx-large"
                         fontWeight="md"
                         className='font-face-mo'
-                        marginLeft={10}> Plander</Text>
+                        > Plander</Text>
                 </HStack>
 
-                <Stack mt={10} alignItems='center' >
+                <Stack alignItems='center' >
                     <Box width={400} margin={5}>
                         <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
                             <InputGroup>
-                                <AutoCompleteInput autoComplete="off"
-                                    placeholder="Válasszon egyesületet!"
+                                <AutoCompleteInput autoComplete="off" placeholder={t('loginPage-association')}
                                     borderRadius={10}
                                     fontSize={20}
                                     h={10}
@@ -145,18 +157,19 @@ const LoginPage = () => {
                     </Box>
 
                     <Box margin={5}>
-                        <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="Felhasználónév" />
+                        <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="loginPage-userName" />
                     </Box>
                     <Box >
-                        <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="regForm-pwdPholder" i18nTitle="" />
+                        <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="loginPage-password" i18nTitle="" />
                     </Box>
-                    <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>Maradjak bejelentkezve</Checkbox>
+                    <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('loginPage-stayInCheckbox')}</Checkbox>
                     {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
 
-                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>Bejelentkezés</Button>
+                    <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginPage-loginButton')}</Button>
                 </Stack>
             </Box >
         </form >
+        </Center>
     )
 }
 
