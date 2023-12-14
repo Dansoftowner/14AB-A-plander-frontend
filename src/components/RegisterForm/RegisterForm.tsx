@@ -1,4 +1,4 @@
-import { Divider, HStack, Heading, Input, Stack, Text } from "@chakra-ui/react"
+import { Divider, HStack, Heading, Input, Stack, Text, useToast } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -27,6 +27,8 @@ export const RegisterForm = () => {
     const [user, setUser] = useState({} as User)
     const [error, setError] = useState('')
 
+    const registerToast = useToast()
+
     useEffect(() => {
         const fetch = () => {
             apiClient.get(`/members/register/${id}/${registrationToken}`).then(res => {
@@ -41,14 +43,35 @@ export const RegisterForm = () => {
             })
         }
         fetch()
-    }, [valid])
+    }, [])
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
     if (valid) return (
-        <form className="mx-auto container mt-3" onInvalid={(e) => console.log(e)} onSubmit={handleSubmit((e) =>
-            console.log(e)
-
+        <form className="mx-auto container mt-3" onInvalid={(e) => console.log(e)} onSubmit={handleSubmit((postUser) => {
+            type dataOmit = Omit<typeof postUser, "repeatedPassword">
+            const post: dataOmit = {
+                address: postUser.address,
+                name: postUser.name,
+                phoneNumber: postUser.phoneNumber,
+                guardNumber: postUser.guardNumber,
+                idNumber: postUser.idNumber,
+                username: postUser.username,
+                password: postUser.password
+            }
+            apiClient.post(`/members/register/${id}/${registrationToken}`, post)
+                .then(res => {
+                    if (res.status === 200) {
+                        registerToast({
+                            title: res.status === 200 ? 'Sikeres regisztráció!' : 'Hiba történt!',
+                            status: res.status === 200 ? 'success' : 'error',
+                            duration: 9000,
+                            isClosable: true,
+                            position: 'top'
+                        })
+                    }
+                })
+        }
         )}>
 
             <Stack>
@@ -76,7 +99,7 @@ export const RegisterForm = () => {
             </HStack>
 
             <Stack marginBottom={5} align='center'>
-                <FormInput register={register} value={user.name} name="fullName" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
+                <FormInput register={register} value={user.name} name="name" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
                 <FormInput register={register} value={user.address} name="address" i18nPlaceHolder="regForm-adPholder" i18nTitle="regForm-address" required={true} errors={errors} />
 
                 <FormInput register={register} value={user.idNumber} name="idNumber" i18nPlaceHolder="regForm-idcPholder" i18nTitle="regForm-idNumber" required={true} errors={errors} />
