@@ -15,7 +15,7 @@ const router = createBrowserRouter([
                 element: <LoginPage />
             },
             {
-                path: '/members/register/:id/:registrationToken',
+                path: '/register/:id/:registrationToken',
                 element: <RegisterForm />,
                 
             },
