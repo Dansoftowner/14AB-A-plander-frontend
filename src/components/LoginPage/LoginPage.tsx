@@ -67,7 +67,8 @@ const LoginPage = () => {
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (User.user && User.password && User.associationId) {
-                    useLogin(User).then(res => {
+                    const remember = User.isAutoLogin ? localStorage : sessionStorage
+                    useLogin(User, remember).then(res => {
                         if (res == true) {
                             setUser({ type: 'SET_TOKEN', loggedUser: res.data })
                             setAuthToken(localStorage.getItem('token') || '')

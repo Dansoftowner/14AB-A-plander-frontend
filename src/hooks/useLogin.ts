@@ -1,5 +1,6 @@
 import apiClient from '../services/apiClient'
 import axios from 'axios'
+import { useLoginForMe } from './useMember'
 
 export interface Login {
   associationId: string | undefined
@@ -8,17 +9,17 @@ export interface Login {
   isAutoLogin: boolean
 }
 
-export const useLogin = (login: Login) =>
+export const useLogin = (login: Login, storeMode: Storage) =>
   apiClient
     .post('/auth', login)
     .then((res) => {
       if (res.status === 200) {
-        localStorage.setItem('token', res.data)
+        storeMode.setItem('token', res.data)
         return true
       }
     })
     .catch((err) => {
-      return err.response.data
+      return err
     })
 
 export const useLogout = () =>
