@@ -1,5 +1,5 @@
 import React, { SetStateAction } from 'react'
-import { User } from '../hooks/useMember'
+import { User } from '../hooks/useLogin'
 
 interface AuthContextType {
   user: User

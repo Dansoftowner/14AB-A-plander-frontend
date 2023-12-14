@@ -1,28 +1,33 @@
 import { useNavigate } from 'react-router-dom'
-import { useLogout } from '../../hooks/useLogin'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
-import { Button, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react'
-import { useContext } from 'react'
-import { AuthContext } from '../../context/authContext'
-import { useLoginForMe } from '../../hooks/useMember'
+import { Button, HStack, useColorModeValue } from '@chakra-ui/react'
+import { useEffect } from 'react'
+import useAuth from '../../hooks/useAuth'
+import { User } from '../../hooks/useLogin'
 
 const NavBar = () => {
     const navBarColor = useColorModeValue('#0078D7', '#004881')
     const navigate = useNavigate()
-    const { setUser, user,authToken } = useContext(AuthContext)
+
+
+    const { user, setUser } = useAuth()
+    useEffect(() => {
+        if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
+        else setUser(JSON.parse(sessionStorage.getItem('user')!))
+    }, [])
 
     return (
         <HStack padding={3} justifyContent='end' backgroundColor={navBarColor}>
             <ColorModeSwitch />
             <LangSelector />
             <Button backgroundColor='transparent' onClick={() => {
-                useLogout().then(() => {
-                    setUser({ type: 'REMOVE_TOKEN' })
-                    localStorage.removeItem("token");
-                    console.log(authToken)
-                    navigate('/login')
-                })
+                localStorage.removeItem("user");
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("token");
+                localStorage.removeItem("token");
+                setUser({} as User)
+                navigate('/login')
             }}>{user?.name || 'Nincs bejelentkezve'}</Button>
         </HStack >
     )

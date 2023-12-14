@@ -1,29 +1,22 @@
-import { useReducer, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { Outlet } from 'react-router-dom'
-import { AuthContext } from '../context/authContext'
-import { useLoginForMe } from '../hooks/useMember'
-import authReducer from '../reducers/authReducer'
 
 const Layout = () => {
-    const [authToken, setAuthToken] = useState(
-        localStorage.getItem("token") || ""
-    );
-    const setToken = (token: any) => {
-        localStorage.setItem("token", token);
-        setAuthToken(token);
-    }
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
-
-    const { data } = useLoginForMe()
-    const [user, setUser] = useReducer(authReducer, data!)
-
+    useEffect(() => {
+        if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
+        else setUser(JSON.parse(sessionStorage.getItem('user')!))
+    }, [])
     return (
         <>
-            <AuthContext.Provider value={{ authToken, setAuthToken: setToken, user, setUser }}>
+            <AuthContext.Provider value={{ user, setUser }}>
                 <NavBar />
                 <Outlet />
-            </AuthContext.Provider >
+            </AuthContext.Provider>
+
         </>
     )
 }
