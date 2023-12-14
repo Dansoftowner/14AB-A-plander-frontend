@@ -11,6 +11,7 @@ import { useRegister } from "../../hooks/useRegister"
 import { useLocation, useParams, useRoutes } from "react-router-dom"
 import apiClient from "../../services/apiClient"
 import { User } from "../../hooks/useMember"
+import ErrorPage from "../ErrorPage/ErrorPage"
 
 
 
@@ -112,5 +113,5 @@ export const RegisterForm = () => {
             </Stack>
         </form >
     )
-    return <Text fontSize='xxx-large' color='red'>{error}</Text>
+    return <ErrorPage status={404} message={error} />
 }
