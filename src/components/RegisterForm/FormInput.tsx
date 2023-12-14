@@ -29,7 +29,8 @@ interface Props<FormData extends FieldValues> {
     guard?: boolean
     passwordConfirm?: boolean
     login?: boolean,
-    _onChange?: (e: any) => void
+    _onChange?: (e: any) => void,
+    value?: string
 }
 
 const FormInput = <FormData extends FieldValues>({
@@ -43,7 +44,8 @@ const FormInput = <FormData extends FieldValues>({
     i18nTitle,
     i18nPlaceHolder,
     login,
-    _onChange
+    _onChange,
+    value
 }: Props<FormData>) => {
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
@@ -144,6 +146,7 @@ const FormInput = <FormData extends FieldValues>({
                                     if (guard) guardNumberHandler(e)
                                     if (tel && phone.prefix == '+36') telHandler(e)
                                 }}
+                                defaultValue={value}
                             />
                         </HStack>
                     </InputGroup>
