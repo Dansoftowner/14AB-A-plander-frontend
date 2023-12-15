@@ -121,7 +121,7 @@ const LoginPage = () => {
                         <Box width={400} margin={5}>
                             <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
                                 <InputGroup>
-                                    <AutoCompleteInput autoComplete="off" placeholder={t('association')}
+                                    <AutoCompleteInput autoComplete="off" placeholder={t('associationSelector')}
                                         borderRadius={10}
                                         fontSize={20}
                                         h={10}
@@ -168,7 +168,7 @@ const LoginPage = () => {
                         </Box>
                         <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('stayInCheckbox')}</Checkbox>
                         {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
-                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>Elfelejtett jelszó?</Text></Link>
+                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
                         <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginButton')}</Button>
                     </Stack>

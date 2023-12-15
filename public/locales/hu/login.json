@@ -1,9 +1,14 @@
 {
   "password": "Jelszó",
   "username": "Felhasználónév vagy email",
-  "association": "Egyesület választása",
+  "associationSelector": "Egyesület választása",
   "stayInCheckbox": "Bejelentkezve maradok",
   "loginButton": "Bejelentkezés",
   "fieldMissing": "Minden mező kitöltése kötelező.",
-  "loginError": "Sikertelen bejelentkezés."
+  "loginError": "Sikertelen bejelentkezés.",
+  "forgotMyPassword": "Elfelejtett jelszó?",
+  "lostPassword": "Elfelejtette jelszavát? Semmi baj!",
+  "explainReset": "Válassza ki egyesületét és adja meg azt e-mail címet amivel be lett Ön regisztrálva. Ezt követően rendszerünk egy automata levelet küld egy link-kel, melyet megnyitva beállíthatja új jelszavát.",
+  "newPassword": "Új jelszó kérése",
+  "backToLogin": "Vissza a bejelentkezéshez"
 }

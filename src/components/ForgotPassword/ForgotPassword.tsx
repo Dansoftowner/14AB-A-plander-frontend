@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
 
-    const { t } = useTranslation()
+    const { t } = useTranslation('login')
     const errorToast = useToast()
 
     const { id, restorationToken } = useParams()
@@ -39,7 +39,7 @@ const ForgotPassword = () => {
             console.log(selectedAssociation, email)
         } else {
             errorToast({
-                title: t('login:fieldMissing'),
+                title: t('fieldMissing'),
                 status: 'error',
                 duration: 9000,
                 isClosable: true,
@@ -50,12 +50,11 @@ const ForgotPassword = () => {
 
     return (
         <form onSubmit={(e) => submitHandler(e)}>
-            <Stack border={1} alignItems='center' justifyContent='center' display='flex' h='90vh'>
-                <Heading as='h1'>Elfelejtette jelszavát? Semmi baj!</Heading>
-                <Text maxW={650} textAlign='center' fontSize='larger'>Válassza ki egyesületét és adja meg azt e-mail címet amivel be lett Ön regisztrálva.
-                    Ezt követően rendszerünk egy automata levelet küld egy link-kel, melyet megnyitva beállíthatja új jelszavát.</Text>
+            <Stack alignItems='center' justifyContent='center' display='flex' h='90vh'>
+                <Heading as='h1'>{t('lostPassword')}</Heading>
+                <Text maxW={650} textAlign='center' fontSize='larger'>{t('explainReset')}</Text>
                 <Box width={400} margin={5}>
-                    <FormLabel>Egyesület</FormLabel>
+                    <FormLabel>{t('common:association')}</FormLabel>
                     <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
                         <InputGroup>
                             <AutoCompleteInput borderColor='#767676' autoComplete="off" placeholder={t('associationSelector')}
@@ -65,7 +64,6 @@ const ForgotPassword = () => {
                                 onChange={(val: any) => {
                                     setQParam(val.target.value)
                                 }}
-
                             />
                             <InputRightElement
                                 children={<FaChevronDown />} />
@@ -84,7 +82,7 @@ const ForgotPassword = () => {
                                             textTransform="capitalize"
                                             color={dropDownFont}
                                         >
-                                            {association.name || 'nem jo gec'}
+                                            {association.name || 'itt se jo gec'}
                                         </AutoCompleteItem>
                                     ))}
                                 </Fragment>)}
@@ -98,13 +96,13 @@ const ForgotPassword = () => {
 
 
                 <Box margin={5} w={400} >
-                    <FormLabel>E-mail cím</FormLabel>
-                    <Input type='email' borderColor='#767676' placeholder='Email cím' onChangeCapture={(e) => setEmail((e.target as HTMLInputElement).value)} borderRadius={10} fontSize={20} h={10} />
+                    <FormLabel>{t('common:emailAddress')}</FormLabel>
+                    <Input type='email' borderColor='#767676' placeholder={t('common:emailAddress')} onChangeCapture={(e) => setEmail((e.target as HTMLInputElement).value)} borderRadius={10} fontSize={20} h={10} />
                 </Box>
 
-                <Button type='submit' margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>Új jelszó kérése</Button>
+                <Button type='submit' margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>{t('newPassword')}</Button>
                 <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>
-                    <Link to='/login'>Vissza a bejelentkezéshez</Link>
+                    <Link to='/login'>{t('backToLogin')}</Link>
                 </Button>
             </Stack>
         </ form>
