@@ -1,12 +1,22 @@
 import apiClient from '../services/apiClient'
-import axios from 'axios'
-import { useLoginForMe } from './useMember'
 
 export interface Login {
   associationId: string | undefined
   user: string
   password: string
-  isAutoLogin: boolean
+}
+
+export interface User {
+  _id: string
+  isRegistered: boolean
+  email: string
+  username: string
+  name: string
+  address: string
+  idNumber: string
+  phoneNumber: string
+  guardNumber: string
+  roles: string[]
 }
 
 export const useLogin = (login: Login, storeMode: Storage) =>
@@ -14,16 +24,11 @@ export const useLogin = (login: Login, storeMode: Storage) =>
     .post('/auth', login)
     .then((res) => {
       if (res.status === 200) {
-        storeMode.setItem('token', res.data)
+        storeMode.setItem('user', JSON.stringify(res.data))
+        storeMode.setItem('token', res.headers['x-plander-auth'])
         return true
       }
     })
     .catch((err) => {
       return err
     })
-
-export const useLogout = () =>
-  apiClient.post('/logout').then((res) => {
-    localStorage.removeItem('token')
-    return res.data
-  })

@@ -1,6 +1,6 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useContext, useMemo, useState } from 'react'
+import { ChangeEvent, Fragment, useMemo, useState } from 'react'
 import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
@@ -20,8 +20,7 @@ import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
 import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
-import { AuthContext } from '../../context/authContext.ts'
-import { useLoginForMe } from '../../hooks/useMember.ts'
+import useAuth from '../../hooks/useAuth.ts'
 
 
 
@@ -44,7 +43,7 @@ const LoginPage = () => {
     const [qParam, setQParam] = useState('')
     const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
-    const { setAuthToken, setUser, user } = useContext(AuthContext)
+    // const { setAuthToken, setUser, user } = useContext(AuthContext)
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
     const [username, setUsername] = useState<string>('')
@@ -55,11 +54,12 @@ const LoginPage = () => {
         user: username,
         password: password,
         associationId: selectedAssociation?._id,
-        isAutoLogin: isChecked
     }
 
     const navigate = useNavigate()
     const errorToast = useToast()
+
+    const { user, setUser } = useAuth()
 
     return (
 
@@ -67,11 +67,10 @@ const LoginPage = () => {
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (User.user && User.password && User.associationId) {
-                    const remember = User.isAutoLogin ? localStorage : sessionStorage
+                    const remember = isChecked ? localStorage : sessionStorage
                     useLogin(User, remember).then(res => {
                         if (res == true) {
-                            setUser({ type: 'SET_TOKEN', loggedUser: res.data })
-                            setAuthToken(localStorage.getItem('token') || '')
+                            setUser(JSON.parse(remember.getItem('user')!))
                             navigate('/')
                         }
                         else {
