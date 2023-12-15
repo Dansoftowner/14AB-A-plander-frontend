@@ -16,6 +16,7 @@ import { regSchema } from './inputSchema'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { phoneMap, PhoneFormat } from '../PhoneDropdownList/phones'
 import { FaRegUser } from "react-icons/fa";
+import { useTranslation } from 'react-i18next'
 
 
 interface Props<FormData extends FieldValues> {
@@ -47,6 +48,7 @@ const FormInput = <FormData extends FieldValues>({
     _onChange,
     value
 }: Props<FormData>) => {
+    const { t } = useTranslation('register')
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const {

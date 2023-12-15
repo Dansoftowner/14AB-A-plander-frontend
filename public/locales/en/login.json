@@ -1,0 +1,9 @@
+{
+  "password": "Password",
+  "username": "Username or e-mail",
+  "association": "Choose association",
+  "stayInCheckbox": "Stay logged in",
+  "loginButton": "Login",
+  "fieldMissing": "All fields are required.",
+  "loginError": "Error occured while logging in."
+}

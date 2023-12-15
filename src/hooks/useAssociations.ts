@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import apiClient from '../services/apiClient'
 

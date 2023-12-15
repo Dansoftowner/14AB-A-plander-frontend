@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { regSchema } from "./inputSchema"
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import { MdLockOutline } from "react-icons/md";
+import { useTranslation } from 'react-i18next'
 
 
 interface Props<FormData extends FieldValues> {
@@ -21,6 +22,7 @@ interface Props<FormData extends FieldValues> {
 }
 
 const PasswordInput = <FormData extends FieldValues>({ login, register, errors, name, required, i18nTitle, i18nPlaceHolder, _onChange }: Props<FormData>) => {
+    const { t } = useTranslation('register')
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
