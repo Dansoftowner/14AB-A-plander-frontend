@@ -14,7 +14,6 @@
   "address": "Lakcím",
   "idNumber": "Személyigazolvány-szám",
   "email": "E-mail cím",
-  "phone": "Telefonszám",
   "regButton": "Regisztráció",
   "zodUsername": "Legalább 5 karakteres felhasználónevet válasszon!",
   "zodPassword": "A jelszónak tartalmaznia kell legalább 1 nagybetűt és 1 számot!",
@@ -32,5 +31,6 @@
   "zodGuardNumber": "Nem megfelelő igazolvány formátum!",
   "fieldRequired": "A mező kitöltése kötelező.",
   "login-details": "Belépési adatok",
-  "phnPholder": "Adja meg a telefonszámát"
+  "phnPholder": "Adja meg a telefonszámát",
+  "phone": "Telefonszám"
 }

@@ -30,5 +30,6 @@
   "fieldRequired": "This field is required.",
   "success": "Registration successful!",
   "error": "Registration failed!",
-  "phnPholder": "Provide valid phone number"
+  "phnPholder": "Provide valid phone number",
+  "phone": "Phone number"
 }
