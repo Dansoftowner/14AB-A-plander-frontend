@@ -3,5 +3,7 @@
   "username": "Felhasználónév vagy email",
   "association": "Egyesület választása",
   "stayInCheckbox": "Bejelentkezve maradok",
-  "loginButton": "Bejelentkezés"
+  "loginButton": "Bejelentkezés",
+  "fieldMissing": "Minden mező kitöltése kötelező.",
+  "loginError": "Sikertelen bejelentkezés."
 }

@@ -1,3 +1,4 @@
+import i18n from '../i18n'
 import apiClient from '../services/apiClient'
 
 export interface Login {
@@ -21,7 +22,11 @@ export interface User {
 
 export const useLogin = (login: Login, storeMode: Storage) =>
   apiClient
-    .post('/auth', login)
+    .post('/auth', login, {
+      headers: {
+        'Accept-Language': i18n.language,
+      },
+    })
     .then((res) => {
       if (res.status === 200) {
         storeMode.setItem('user', JSON.stringify(res.data))

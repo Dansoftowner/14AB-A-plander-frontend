@@ -21,14 +21,16 @@ const NavBar = () => {
         <HStack padding={3} justifyContent='end' backgroundColor={navBarColor}>
             <ColorModeSwitch />
             <LangSelector />
-            <Button backgroundColor='transparent' onClick={() => {
-                localStorage.removeItem("user");
-                sessionStorage.removeItem("user");
-                sessionStorage.removeItem("token");
-                localStorage.removeItem("token");
-                setUser({} as User)
-                navigate('/login')
-            }}>{user?.name || 'Nincs bejelentkezve'}</Button>
+            {(localStorage.getItem('token') || sessionStorage.getItem('token')) &&
+                <Button backgroundColor='transparent' onClick={() => {
+                    localStorage.removeItem("user");
+                    sessionStorage.removeItem("user");
+                    sessionStorage.removeItem("token");
+                    localStorage.removeItem("token");
+                    setUser({} as User)
+                    navigate('/login')
+                }}>{user?.name}</Button>
+            }
         </HStack >
     )
 }

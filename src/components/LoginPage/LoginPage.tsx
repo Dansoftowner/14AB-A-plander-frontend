@@ -75,8 +75,8 @@ const LoginPage = () => {
                         }
                         else {
                             errorToast({
-                                title: res.message,
-                                description: 'Nem sikerült a belépés.',
+                                title: res.response.data.message,
+                                description: t('loginError'),
                                 status: 'error',
                                 duration: 9000,
                                 isClosable: true,
@@ -86,8 +86,8 @@ const LoginPage = () => {
                     })
                 } else {
                     errorToast({
-                        title: 'Minden mező kitöltése kötelező!',
-                        description: 'Nem sikerült a belépés.',
+                        title: t('fieldMissing'),
+                        description: t('loginError'),
                         status: 'error',
                         duration: 9000,
                         isClosable: true,
