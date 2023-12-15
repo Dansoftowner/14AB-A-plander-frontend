@@ -7,17 +7,16 @@ import * as z from 'zod'
 import { regSchema } from "./inputSchema"
 import FormInput from "./FormInput"
 import PasswordInput from "./PasswordInput"
-import { useRegister } from "../../hooks/useRegister"
 import { useLocation, useParams, useRoutes } from "react-router-dom"
 import apiClient from "../../services/apiClient"
-import { User } from "../../hooks/useMember"
 import ErrorPage from "../ErrorPage/ErrorPage"
+import { User } from "../../hooks/useLogin"
 
 
 
 
 export const RegisterForm = () => {
-    const { t } = useTranslation()
+    const { t } = useTranslation('register')
     const inputSchema = useMemo(() => regSchema(t), [t])
 
     const { id, registrationToken } = useParams();
@@ -64,7 +63,7 @@ export const RegisterForm = () => {
                 .then(res => {
                     if (res.status === 200) {
                         registerToast({
-                            title: res.status === 200 ? 'Sikeres regisztráció!' : 'Hiba történt!',
+                            title: res.status === 200 ? t('success') : t('error'),
                             status: res.status === 200 ? 'success' : 'error',
                             duration: 9000,
                             isClosable: true,
@@ -76,7 +75,7 @@ export const RegisterForm = () => {
         )}>
 
             <Stack>
-                <Heading alignSelf='center' marginBottom={10}>{t('register-header')}</Heading>
+                <Heading alignSelf='center' marginBottom={10}>{t('header')}</Heading>
             </Stack>
 
             <HStack marginBottom={5} alignContent='center'>
@@ -86,30 +85,30 @@ export const RegisterForm = () => {
             </HStack>
 
             <Stack marginBottom={5} align='center'>
-                <FormInput register={register} name="username" i18nPlaceHolder="regForm-usernamePholder" required errors={errors} i18nTitle="username" />
+                <FormInput register={register} name="username" i18nPlaceHolder="usernamePholder" required errors={errors} i18nTitle="username" />
 
-                <PasswordInput register={register} name="password" errors={errors} required i18nPlaceHolder="regForm-pwdPholder" i18nTitle="password" />
+                <PasswordInput register={register} name="password" errors={errors} required i18nPlaceHolder="pwdPholder" i18nTitle="password" />
 
-                <FormInput register={register} name="repeatedPassword" passwordConfirm i18nPlaceHolder="regForm-repeatPwd" required={true} errors={errors} />
+                <FormInput register={register} name="repeatedPassword" passwordConfirm i18nPlaceHolder="repeatPwd" required={true} errors={errors} />
             </Stack>
 
             <HStack marginBottom={5}>
                 <Divider borderColor='gray' />
-                <Heading minWidth='fit-content' size='lg'>{t('regForm-persInfo')}</Heading>
+                <Heading minWidth='fit-content' size='lg'>{t('persInfo')}</Heading>
                 <Divider borderColor='gray' />
             </HStack>
 
             <Stack marginBottom={5} align='center'>
-                <FormInput register={register} value={user.name} name="name" i18nPlaceHolder="regForm-fnPholder" i18nTitle="regForm-fullname" required={true} errors={errors} />
-                <FormInput register={register} value={user.address} name="address" i18nPlaceHolder="regForm-adPholder" i18nTitle="regForm-address" required={true} errors={errors} />
+                <FormInput register={register} value={user.name} name="name" i18nPlaceHolder="fnPholder" i18nTitle="fullname" required={true} errors={errors} />
+                <FormInput register={register} value={user.address} name="address" i18nPlaceHolder="adPholder" i18nTitle="address" required={true} errors={errors} />
 
-                <FormInput register={register} value={user.idNumber} name="idNumber" i18nPlaceHolder="regForm-idcPholder" i18nTitle="regForm-idNumber" required={true} errors={errors} />
+                <FormInput register={register} value={user.idNumber} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={true} errors={errors} />
 
-                <FormInput register={register} guard value={user.guardNumber} name="guardNumber" i18nPlaceHolder="regForm-guardNumPholder" i18nTitle="regForm-guardNumber" required={false} errors={errors} />
+                <FormInput register={register} guard value={user.guardNumber} name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
-                <FormInput register={register} tel value={user.phoneNumber} name="phoneNumber" i18nPlaceHolder="regForm-phnPholder" i18nTitle="regForm-phone" required={true} errors={errors} />
+                <FormInput register={register} tel value={user.phoneNumber} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="phone" required={true} errors={errors} />
 
-                <button name="submitbtn" type="submit" className="btn btn-primary">{t('regForm-regButton')}</button>
+                <button name="submitbtn" type="submit" className="btn btn-primary">{t('regButton')}</button>
             </Stack>
         </form >
     )

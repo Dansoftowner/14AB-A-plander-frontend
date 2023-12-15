@@ -33,7 +33,7 @@ const LoginPage = () => {
 
     const { colorMode } = useColorMode()
 
-    const { t } = useTranslation()
+    const { t } = useTranslation('login')
     const inputSchema = useMemo(() => loginSchema(t), [t])
 
     type LoginForm = z.infer<typeof inputSchema>
@@ -118,15 +118,16 @@ const LoginPage = () => {
 
                     <Stack alignItems='center' >
                         <Box width={400} margin={5}>
-                            <AutoComplete openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
+                            <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
                                 <InputGroup>
-                                    <AutoCompleteInput autoComplete="off" placeholder={t('loginPage-association')}
+                                    <AutoCompleteInput autoComplete="off" placeholder={t('association')}
                                         borderRadius={10}
                                         fontSize={20}
                                         h={10}
                                         onChange={(val: any) => {
                                             setQParam(val.target.value)
                                         }}
+
                                     />
                                     <InputRightElement
                                         children={<FaChevronDown />} />
@@ -146,7 +147,7 @@ const LoginPage = () => {
                                                     textTransform="capitalize"
                                                     color={dropDownFont}
                                                 >
-                                                    {association.name || 'nem jo'}
+                                                    {association.name || 'nem jo gec'}
                                                 </AutoCompleteItem>
                                             ))}
                                         </Fragment>)}
@@ -159,15 +160,15 @@ const LoginPage = () => {
                         </Box>
 
                         <Box margin={5}>
-                            <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="loginPage-userName" />
+                            <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="username" />
                         </Box>
                         <Box >
-                            <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="loginPage-password" i18nTitle="" />
+                            <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="password" i18nTitle="" />
                         </Box>
-                        <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('loginPage-stayInCheckbox')}</Checkbox>
+                        <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('stayInCheckbox')}</Checkbox>
                         {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
 
-                        <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginPage-loginButton')}</Button>
+                        <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginButton')}</Button>
                     </Stack>
                 </Box >
             </form >
