@@ -1,12 +1,17 @@
-import { Box, Button, FormErrorMessage, FormLabel, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Stack, Text, useColorModeValue, useToast } from '@chakra-ui/react'
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from '@choc-ui/chakra-autocomplete'
-import { Fragment, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineLocalPolice } from 'react-icons/md'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Association, useAssociations } from '../../hooks/useAssociations'
 import { useTranslation } from 'react-i18next'
-import { Form } from 'react-hook-form'
+import { Form, useForm } from 'react-hook-form'
+import { useNewPassword, useResetPassword } from '../../hooks/useResetPassword'
+import { forgotPasswordSchema } from '../RegisterForm/inputSchema'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import apiClient from '../../services/apiClient'
 
 const ForgotPassword = () => {
 
@@ -14,15 +19,64 @@ const ForgotPassword = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
 
-    const { t } = useTranslation('login')
-    const errorToast = useToast()
+    const { t } = useTranslation(['login', 'register'])
+    const toast = useToast()
+    const navigate = useNavigate()
 
     const { id, restorationToken } = useParams()
     if (id && restorationToken) {
+
+        const inputSchema = useMemo(() => forgotPasswordSchema(t), [t])
+        type ResetForm = z.infer<typeof inputSchema>
+        const { register, handleSubmit, formState: { errors } } = useForm<ResetForm>({ resolver: zodResolver(inputSchema) })
+
+        const isErrors = errors.password?.message || errors.repeatedPassword?.message
+
         return (
-            <>
-                fasza
-            </>
+            <form onSubmit={handleSubmit(e => {
+                type dataOmit = Omit<typeof e, "repeatedPassword">
+                const post: dataOmit = { password: e.password }
+
+                apiClient.post(`members/forgotten-password/${id}/${restorationToken}`, post).then(res => {
+                    toast({
+                        title: res.status === 204 ? t('login:success') : t('login:error'),
+                        status: res.status === 204 ? 'success' : 'error',
+                        duration: 9000,
+                        isClosable: true,
+                        position: 'top'
+                    })
+                    if (res.status === 204) navigate('/login')
+                }).catch(err => {
+                    toast({
+                        title: err.response.status === 204 ? t('login:success') : t('login:error'),
+                        description: err.response.data.message,
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                        position: 'top'
+                    })
+                })
+            })}>
+                <FormControl isInvalid={isErrors ? true : false}>
+                    <Stack alignItems='center' justifyContent='center' display='flex' h='90vh'>
+                        <Heading as='h1'>{t('enterNewPassword')}</Heading>
+                        <Text maxW={650} textAlign='center' fontSize='larger'>{t('newPasswordRequirements')}</Text>
+                        <Box w={400} m={5}>
+                            <Input type='password' id='pwd' {...register('password', { required: true })} borderColor='#767676' placeholder={t('register:pwdPholder')} borderRadius={10} fontSize={20} h={10} />
+                            {errors.password && <FormErrorMessage> {t('register:' + errors.password.message)} </FormErrorMessage>}
+                        </Box>
+                        <Box minH={20} w={400} m={5}>
+                            <Input type='password' {...register('repeatedPassword', { required: true })} borderColor='#767676' placeholder={t('register:repeatPwd')} borderRadius={10} fontSize={20} h={10} />
+                            {errors.repeatedPassword && <FormErrorMessage> {t('register:' + errors.repeatedPassword.message)} </FormErrorMessage>}
+                        </Box>
+                        <Button name="submitbtn" type="submit" backgroundColor={buttonBg} color={buttonColor}>{t('sendNewPWd')}</Button>
+                        <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>
+                            <Link to='/login'>{t('backToLogin')}</Link>
+                        </Button>
+                    </Stack>
+                </FormControl>
+
+            </form>
         )
     }
 
@@ -34,11 +88,22 @@ const ForgotPassword = () => {
     const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
 
     const submitHandler = (e: any) => {
+
         e.preventDefault()
         if (selectedAssociation && email) {
-            console.log(selectedAssociation, email)
+            useResetPassword(email, selectedAssociation._id).then(res => {
+                if (res == true) {
+                    toast({
+                        title: t('emailSent'),
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                        position: 'top'
+                    })
+                }
+            })
         } else {
-            errorToast({
+            toast({
                 title: t('fieldMissing'),
                 status: 'error',
                 duration: 9000,
