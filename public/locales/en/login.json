@@ -15,5 +15,6 @@
   "newPasswordRequirements": "Your new password must be at least 8 characters long and contain at least one number and one uppercase letter.",
   "success": "Password reset successful!",
   "error": "Password reset failed!",
-  "sendNewPWd": "Set new password"
+  "sendNewPWd": "Set new password",
+  "emaiSent": "An email has been sent to your email address!"
 }
