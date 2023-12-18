@@ -10,5 +10,10 @@
   "lostPassword": "Elfelejtette jelszavát? Semmi baj!",
   "explainReset": "Válassza ki egyesületét és adja meg azt e-mail címet amivel be lett Ön regisztrálva. Ezt követően rendszerünk egy automata levelet küld egy link-kel, melyet megnyitva beállíthatja új jelszavát.",
   "newPassword": "Új jelszó kérése",
-  "backToLogin": "Vissza a bejelentkezéshez"
+  "backToLogin": "Vissza a bejelentkezéshez",
+  "enterNewPassword": "Állítsa be új jelszavát!",
+  "newPasswordRequirements": "Az új jelszónak tartalmaznia kell legalább egy nagy betűt és egy számot. Legalább 8 karakter hosszúnak kell lennie.",
+  "success": "Új jelszó sikeresen beállítva!",
+  "error": "Hiba történt a jelszó beállításakor!",
+  "sendNewPWd": "Új jelszó beállítása"
 }
