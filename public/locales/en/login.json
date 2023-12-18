@@ -1,9 +1,20 @@
 {
   "password": "Password",
   "username": "Username or e-mail",
-  "association": "Choose association",
+  "associationSelector": "Choose an association",
   "stayInCheckbox": "Stay logged in",
   "loginButton": "Login",
   "fieldMissing": "All fields are required.",
-  "loginError": "Error occured while logging in."
+  "loginError": "Error occured while logging in.",
+  "forgotMyPassword": "Forgot your password?",
+  "lostPassword": "Lost your password? We can help!",
+  "explainReset": "Choose your association from the list and provide your email. After this, our system will send you an email with an url, what, if you open, you can set a new password.",
+  "newPassword": "Reset password",
+  "backToLogin": "Back to the login page",
+  "enterNewPassword": "Please enter your new password!",
+  "newPasswordRequirements": "Your new password must be at least 8 characters long and contain at least one number and one uppercase letter.",
+  "success": "Password reset successful!",
+  "error": "Password reset failed!",
+  "sendNewPWd": "Set new password",
+  "emaiSent": "An email has been sent to your email address!"
 }

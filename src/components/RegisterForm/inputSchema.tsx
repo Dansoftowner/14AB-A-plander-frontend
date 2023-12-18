@@ -23,3 +23,11 @@ export const loginSchema = (t: TFunction) => z.object({
     association: z.string().min(1, { message: 'Kötelező megadni!' }).optional(),
     autoLogin: z.boolean().default(false)
 })
+
+export const forgotPasswordSchema = (t: TFunction<'register', undefined>) => z.object({
+    password: z.string().min(8, { message: t('zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('zodPassword') }),
+    repeatedPassword: z.string(),
+}).refine(data => data.password == data.repeatedPassword, {
+    message: t('zodRepeatedPwd'),
+    path: ["repeatedPassword"]
+})

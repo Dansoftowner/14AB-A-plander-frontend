@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode, background } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -21,6 +21,7 @@ import './LoginPage.css';
 import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
 import useAuth from '../../hooks/useAuth.ts'
+import { Link } from 'react-router-dom'
 
 
 
@@ -120,7 +121,7 @@ const LoginPage = () => {
                         <Box width={400} margin={5}>
                             <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
                                 <InputGroup>
-                                    <AutoCompleteInput autoComplete="off" placeholder={t('association')}
+                                    <AutoCompleteInput autoComplete="off" placeholder={t('associationSelector')}
                                         borderRadius={10}
                                         fontSize={20}
                                         h={10}
@@ -167,12 +168,13 @@ const LoginPage = () => {
                         </Box>
                         <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('stayInCheckbox')}</Checkbox>
                         {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
+                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
                         <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginButton')}</Button>
                     </Stack>
                 </Box >
             </form >
-        </Center>
+        </Center >
     )
 }
 
