@@ -1,4 +1,4 @@
-import { Divider, HStack, Heading, Input, Stack, Text, useToast } from "@chakra-ui/react"
+import { Button, Divider, HStack, Heading, Input, Stack, Text, useColorModeValue, useToast } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -10,7 +10,7 @@ import PasswordInput from "./PasswordInput"
 import { useLocation, useParams, useRoutes } from "react-router-dom"
 import apiClient from "../../services/apiClient"
 import ErrorPage from "../ErrorPage/ErrorPage"
-import { User } from "../../hooks/useLogin"
+import { User, UserWithAssociation } from "../../hooks/useLogin"
 
 
 
@@ -19,16 +19,19 @@ export const RegisterForm = () => {
     const { t } = useTranslation('register')
     const inputSchema = useMemo(() => regSchema(t), [t])
 
+    const buttonBg = useColorModeValue('#0078d7', '#fde74c')
+    const buttonHover = useColorModeValue('#0078b0', '#fde7af')
+    const buttonColor = useColorModeValue('#ffffff', '#004881')
+
     const { id, registrationToken } = useParams();
 
     type RegForm = z.infer<typeof inputSchema>
 
     const [valid, setValid] = useState(false)
-    const [user, setUser] = useState({} as User)
+    const [user, setUser] = useState({} as UserWithAssociation)
     const [error, setError] = useState('')
 
     const registerToast = useToast()
-
     useEffect(() => {
         const fetch = () => {
             apiClient.get(`/members/register/${id}/${registrationToken}`).then(res => {
@@ -44,11 +47,18 @@ export const RegisterForm = () => {
         }
         fetch()
     }, [])
+    if (user.phoneNumber) {
+        let phone = user.phoneNumber
+        phone = phone.replace('-', ' ')
+        let prefix = phone.split(' ')[0]
+        phone = phone.substring(prefix.length)
+        user.phoneNumber = phone
+    }
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
     if (valid) return (
-        <form className="mx-auto container mt-3" onInvalid={(e) => console.log(e)} onSubmit={handleSubmit((postUser) => {
+        <form className="mx-auto container mt-3" onSubmit={handleSubmit((postUser) => {
             type dataOmit = Omit<typeof postUser, "repeatedPassword">
             const post: dataOmit = {
                 address: postUser.address,
@@ -75,7 +85,8 @@ export const RegisterForm = () => {
         )}>
 
             <Stack>
-                <Heading alignSelf='center' marginBottom={10}>{t('header')}</Heading>
+                <Heading alignSelf='center' marginBottom={1}>{t('regButton') + ": "}</Heading>
+                <Heading alignSelf='center' marginBottom={10}>{user.association.name || t('header')}</Heading>
             </Stack>
 
             <HStack marginBottom={5} alignContent='center'>
@@ -106,9 +117,9 @@ export const RegisterForm = () => {
 
                 <FormInput register={register} guard value={user.guardNumber} name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
-                <FormInput register={register} tel value={user.phoneNumber} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="phone" required={true} errors={errors} />
+                <FormInput register={register} tel value={user.phoneNumber.trim()} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="phone" required={true} errors={errors} />
 
-                <button name="submitbtn" type="submit" className="btn btn-primary">{t('regButton')}</button>
+                <Button name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('regButton')}</Button>
             </Stack>
         </form >
     )
