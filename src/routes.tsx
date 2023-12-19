@@ -9,13 +9,13 @@ import MembersList from './components/MembersList/MembersList';
 
 const router = createBrowserRouter([
     {
+        path: '/login',
+        element: <LoginPage />
+    },
+    {
         path: '/',
         element: <Layout />,
         children: [
-            {
-                path: 'login',
-                element: <LoginPage />
-            },
             {
                 path: '/register/:id/:registrationToken',
                 element: <RegisterForm />,
