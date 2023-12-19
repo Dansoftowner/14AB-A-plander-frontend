@@ -4,6 +4,7 @@ import { RegisterForm } from './components/RegisterForm/RegisterForm';
 import Layout from './components/Layout';
 import HomePage from './components/HomePage/HomePage';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import MembersList from './components/MembersList/MembersList';
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,9 @@ const router = createBrowserRouter([
                         element: <ForgotPassword />
                     }
                 ]
+            }, {
+                path: '/members',
+                element: <MembersList />
             }
         ]
     }
