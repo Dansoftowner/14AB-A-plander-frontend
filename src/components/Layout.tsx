@@ -11,8 +11,6 @@ const Layout = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
-    const location = useLocation()
-
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
     useEffect(() => {
@@ -20,44 +18,48 @@ const Layout = () => {
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
     return (
-        <Grid templateAreas={{
-            base: `
+        <>
+            <AuthContext.Provider value={{ user, setUser }}>
+
+                <Grid templateAreas={{
+                    base: `
             "header" "header"
             "nav" "main"`,
-            lg: `
+                    lg: `
             "header header"
             "nav main" 
             "footer footer"`
-        }}
-            templateColumns={{
-                base: `1fr`,
-                lg: `300px`
-            }}>
-            <AuthContext.Provider value={{ user, setUser }}>
-                <GridItem area='header'>
-                    <NavBar />
-                </GridItem>
+                }}
+                    templateColumns={{
+                        base: `1fr`,
+                        lg: `300px`
+                    }}>
+                    <GridItem area='header'>
+                        <NavBar />
+                    </GridItem>
 
-                <GridItem area='nav' backgroundColor='red' marginX={2}>
-                    <Show above='lg'>
-                        <Button backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>
-                            <Link to='/members'>Membörsz</Link>
-                        </Button>
-                    </Show>
-                </GridItem>
 
-                <GridItem area='main'>
-                    <Outlet />
-                </GridItem>
-                {
+                    <GridItem area='nav' backgroundColor='red' marginX={2}>
+                        <Show above='lg'>
+                            <Button backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>
+                                <Link to='/members'>Membörsz</Link>
+                            </Button>
+                        </Show>
+                    </GridItem>
+
+                    <GridItem area='main'>
+                        <Outlet />
+                    </GridItem>
+
+
                     <GridItem margin={2} area='footer' backgroundColor='orange'>
                         <p>fúter</p>
                     </GridItem>
-                }
 
-            </AuthContext.Provider>
 
-        </Grid>
+                </Grid >
+            </AuthContext.Provider >
+        </>
     )
 }
 
