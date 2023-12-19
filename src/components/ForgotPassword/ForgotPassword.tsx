@@ -18,6 +18,7 @@ const ForgotPassword = () => {
 
     const dropDownFont = useColorModeValue('#808080', '#ffffff')
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
+    const buttonHover = useColorModeValue('#0078b0', '#fde7af')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
 
     const { t } = useTranslation(['login', 'register'])
@@ -42,16 +43,16 @@ const ForgotPassword = () => {
 
                 apiClient.post(`members/forgotten-password/${id}/${restorationToken}`, post).then(res => {
                     toast({
-                        title: res.status === 204 ? t('login:success') : t('login:error'),
-                        status: res.status === 204 ? 'success' : 'error',
+                        title: res.status === 202 ? t('login:success') : t('login:error'),
+                        status: res.status === 202 ? 'success' : 'error',
                         duration: 9000,
                         isClosable: true,
                         position: 'top'
                     })
-                    if (res.status === 204) navigate('/login')
+                    if (res.status === 202) navigate('/login')
                 }).catch(err => {
                     toast({
-                        title: err.response.status === 204 ? t('login:success') : t('login:error'),
+                        title: err.response.status === 202 ? t('login:success') : t('login:error'),
                         description: err.response.data.message,
                         status: 'error',
                         duration: 9000,
@@ -182,8 +183,8 @@ const ForgotPassword = () => {
                     <Input type='email' borderColor='#767676' placeholder={t('common:emailAddress')} onChangeCapture={(e) => setEmail((e.target as HTMLInputElement).value)} borderRadius={10} fontSize={20} h={10} />
                 </Box>
 
-                <Button type='submit' margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>{t('newPassword')}</Button>
-                <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>
+                <Button type='submit' margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }}>{t('newPassword')}</Button>
+                <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }}>
                     <Link to='/login'>{t('backToLogin')}</Link>
                 </Button>
             </Stack>

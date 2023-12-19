@@ -31,6 +31,7 @@ const LoginPage = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const textColor = useColorModeValue('#0078D7', '#004881')
+    const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
     const { colorMode } = useColorMode()
 
@@ -170,7 +171,7 @@ const LoginPage = () => {
                         {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
                         <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
-                        <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit'>{t('loginButton')}</Button>
+                        <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>{t('loginButton')}</Button>
                     </Stack>
                 </Box >
             </form >

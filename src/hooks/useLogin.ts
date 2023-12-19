@@ -19,6 +19,12 @@ export interface User {
   guardNumber: string
   roles: string[]
 }
+export interface UserWithAssociation extends User {
+  association: {
+    _id: string
+    name: string
+  }
+}
 
 export const useLogin = (login: Login, storeMode: Storage) =>
   apiClient
