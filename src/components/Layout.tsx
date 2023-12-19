@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Button, Grid, GridItem, Show, useColorModeValue } from '@chakra-ui/react'
+import { Button, Grid, GridItem, HStack, Show, useColorModeValue } from '@chakra-ui/react'
 import MembersList from './MembersList/MembersList'
 
 const Layout = () => {
@@ -24,7 +24,8 @@ const Layout = () => {
                 <Grid templateAreas={{
                     base: `
             "header" "header"
-            "nav" "main"`,
+            "main" "main"
+            "footer" "footer"`,
                     lg: `
             "header header"
             "nav main" 
@@ -34,12 +35,13 @@ const Layout = () => {
                         base: `1fr`,
                         lg: `300px`
                     }}>
+
                     <GridItem area='header'>
                         <NavBar />
                     </GridItem>
 
 
-                    <GridItem area='nav' backgroundColor='red' marginX={2}>
+                    <GridItem area='nav' backgroundColor='red'>
                         <Show above='lg'>
                             <Button backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>
                                 <Link to='/members'>Membörsz</Link>
