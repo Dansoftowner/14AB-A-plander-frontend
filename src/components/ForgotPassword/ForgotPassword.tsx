@@ -12,6 +12,7 @@ import { forgotPasswordSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import apiClient from '../../services/apiClient'
+import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
 const ForgotPassword = () => {
 
@@ -31,6 +32,8 @@ const ForgotPassword = () => {
         const { register, handleSubmit, formState: { errors } } = useForm<ResetForm>({ resolver: zodResolver(inputSchema) })
 
         const isErrors = errors.password?.message || errors.repeatedPassword?.message
+        const [repeatPwdVisible, setRepeatPwdVisible] = useState(false)
+        const [passwordVisible, setPasswordVisible] = useState(false)
 
         return (
             <form onSubmit={handleSubmit(e => {
@@ -62,11 +65,25 @@ const ForgotPassword = () => {
                         <Heading as='h1'>{t('enterNewPassword')}</Heading>
                         <Text maxW={650} textAlign='center' fontSize='larger'>{t('newPasswordRequirements')}</Text>
                         <Box w={400} m={5}>
-                            <Input type='password' id='pwd' {...register('password', { required: true })} borderColor='#767676' placeholder={t('register:pwdPholder')} borderRadius={10} fontSize={20} h={10} />
+                            <InputGroup>
+                                <Input type={passwordVisible ? 'text' : 'password'} id='pwd' {...register('password', { required: true })} borderColor='#767676' placeholder={t('register:pwdPholder')} borderRadius={10} fontSize={20} h={10} />
+                                <InputRightElement width="4.5rem">
+                                    <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setPasswordVisible(!passwordVisible)}>
+                                        {(passwordVisible ? <IoMdEyeOff /> : <IoMdEye />)}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {errors.password && <FormErrorMessage> {t('register:' + errors.password.message)} </FormErrorMessage>}
                         </Box>
                         <Box minH={20} w={400} m={5}>
-                            <Input type='password' {...register('repeatedPassword', { required: true })} borderColor='#767676' placeholder={t('register:repeatPwd')} borderRadius={10} fontSize={20} h={10} />
+                            <InputGroup>
+                                <Input type={repeatPwdVisible ? 'text' : 'password'} {...register('repeatedPassword', { required: true })} borderColor='#767676' placeholder={t('register:repeatPwd')} borderRadius={10} fontSize={20} h={10} />
+                                <InputRightElement width="4.5rem">
+                                    <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setRepeatPwdVisible(!repeatPwdVisible)}>
+                                        {(repeatPwdVisible ? <IoMdEyeOff /> : <IoMdEye />)}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             {errors.repeatedPassword && <FormErrorMessage> {t('register:' + errors.repeatedPassword.message)} </FormErrorMessage>}
                         </Box>
                         <Button name="submitbtn" type="submit" backgroundColor={buttonBg} color={buttonColor}>{t('sendNewPWd')}</Button>
@@ -76,7 +93,7 @@ const ForgotPassword = () => {
                     </Stack>
                 </FormControl>
 
-            </form>
+            </form >
         )
     }
 
