@@ -93,8 +93,9 @@ const FormInput = <FormData extends FieldValues>({
 
     if (login) {
         return (
-            <FormControl isRequired={required} isInvalid={isError} width={400}>
-                {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
+            <FormControl isRequired={required} isInvalid={isError} width={400} maxW='90vw'>
+                {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>
+                }
                 <InputGroup>
                     <InputLeftElement>
                         <FaRegUser />
@@ -111,7 +112,7 @@ const FormInput = <FormData extends FieldValues>({
                     />
                 </InputGroup>
                 {isError && <FormErrorMessage> {error} </FormErrorMessage>}
-            </FormControl>
+            </FormControl >
         )
     }
 

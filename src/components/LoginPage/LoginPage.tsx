@@ -100,12 +100,12 @@ const LoginPage = () => {
                     }
                 }}>
                     <Box
-                        className="mx-auto container"
                         borderRadius="xl"
                         bg={cardBackground}
                         color="white"
+                        maxW='100vw'
                         h={600}
-                        w={500}
+
                     >
 
                         <HStack alignContent='center' justifyContent='center'>
@@ -121,7 +121,7 @@ const LoginPage = () => {
                         </HStack>
 
                         <Stack alignItems='center' >
-                            <Box width={400} margin={5}>
+                            <Box width={400} maxW='90vw' margin={5}>
                                 <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
                                     <InputGroup>
                                         <AutoCompleteInput autoComplete="off" placeholder={t('associationSelector')}
@@ -173,7 +173,7 @@ const LoginPage = () => {
                             {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
                             <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
-                            <Button w={400} mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>{t('loginButton')}</Button>
+                            <Button w={400} maxW='85vw' mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>{t('loginButton')}</Button>
                         </Stack>
                     </Box >
                 </form >

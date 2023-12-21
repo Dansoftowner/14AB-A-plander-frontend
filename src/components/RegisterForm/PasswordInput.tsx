@@ -36,7 +36,7 @@ const PasswordInput = <FormData extends FieldValues>({ login, register, errors, 
 
     if (login) {
         return (
-            <FormControl isRequired={required} isInvalid={isError} width={400}>
+            <FormControl isRequired={required} isInvalid={isError} width={400} maxW='90vw'>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
                 <InputGroup>
                     <InputLeftElement>
