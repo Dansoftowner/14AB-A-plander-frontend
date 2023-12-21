@@ -4,9 +4,9 @@ import { AsQuery } from './useAssociations'
 
 interface Response {
   metadata: {
-    offset?: number
-    limit?: number
-    total?: number
+    offset: number
+    limit: number
+    total: number
   }
   items: Member[]
 }
@@ -26,7 +26,7 @@ interface Member {
 
 export const useMembers = (q: AsQuery) =>
   useQuery<Response>({
-    queryKey: ['members'],
+    queryKey: ['members', q],
     queryFn: () =>
       apiClient
         .get<Response>('/members', {
