@@ -1,9 +1,8 @@
-import { Button, Spinner, VStack, Text, useColorModeValue, Stack, HStack } from "@chakra-ui/react"
+import { Button, Spinner, useColorModeValue, HStack, Box } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
-import { useMembers } from "../../hooks/useMembers"
-import { AsQuery } from "../../hooks/useAssociations"
+import { useMembers, useRemoveMember } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
 
 const MembersList = () => {
@@ -12,31 +11,40 @@ const MembersList = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
-    const queryClient = useQueryClient()
-
-
     const [valid, setValid] = useState(true)
     useEffect(() => {
         queryClient.removeQueries(['members'])
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
     }, [])
 
-    if (!valid) return <Navigate to='/login' />
 
     const [page, setPage] = useState(1)
     const limit = 4
-    const { data, isFetching, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit) })
+    const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit) })
 
+    const queryClient = useQueryClient()
+    const removeMember = (_id: string) => {
+        let answer = false
+        useRemoveMember(_id, 'Apple123').then(res => {
+            if (res.status === 200) {
+                console.log(res)
+                queryClient.refetchQueries()
+            }
+        })
+    }
+
+    if (!valid) return <Navigate to='/login' />
 
 
     return (
         <>
             {
-                isLoading && <Text textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Text>
+                isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
             }
             {
                 data?.items.map((member, index) => {
-                    return <MemberCard key={index} email={member.email} name={member.name} phone={member.phoneNumber} />
+                    return <MemberCard removeHandler={() => removeMember(member._id)} key={index}
+                        email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
                 })
             }
             {

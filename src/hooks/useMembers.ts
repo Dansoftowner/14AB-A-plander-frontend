@@ -33,3 +33,12 @@ export const useMembers = (q: AsQuery) =>
         .then((res) => res.data),
     staleTime: 1000 * 60,
   })
+
+export const useRemoveMember = (id: string, pwd: string) =>
+  apiClient.delete('/members/' + id, {
+    headers: {
+      'x-plander-auth':
+        localStorage.getItem('token') || sessionStorage.getItem('token'),
+      'x-current-pass': pwd,
+    },
+  })
