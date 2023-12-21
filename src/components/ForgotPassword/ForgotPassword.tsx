@@ -6,8 +6,8 @@ import { MdOutlineLocalPolice } from 'react-icons/md'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Association, useAssociations } from '../../hooks/useAssociations'
 import { useTranslation } from 'react-i18next'
-import { Form, useForm } from 'react-hook-form'
-import { useNewPassword, useResetPassword } from '../../hooks/useResetPassword'
+import { useForm } from 'react-hook-form'
+import { useResetPassword } from '../../hooks/useResetPassword'
 import { forgotPasswordSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -67,9 +67,9 @@ const ForgotPassword = () => {
                 })}>
                     <FormControl isInvalid={isErrors ? true : false}>
                         <Stack alignItems='center' justifyContent='center' display='flex' h='90vh'>
-                            <Heading as='h1'>{t('enterNewPassword')}</Heading>
-                            <Text maxW={650} textAlign='center' fontSize='larger'>{t('newPasswordRequirements')}</Text>
-                            <Box w={400} m={5}>
+                            <Heading as='h1' maxW='90vw' textAlign='center'>{t('enterNewPassword')}</Heading>
+                            <Text w={650} maxW='90vw' textAlign='center' fontSize='larger'>{t('newPasswordRequirements')}</Text>
+                            <Box w={400} maxW='90vw' m={5}>
                                 <InputGroup>
                                     <Input type={passwordVisible ? 'text' : 'password'} id='pwd' {...register('password', { required: true })} borderColor='#767676' placeholder={t('register:pwdPholder')} borderRadius={10} fontSize={20} h={10} />
                                     <InputRightElement width="4.5rem">
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
                                 </InputGroup>
                                 {errors.password && <FormErrorMessage> {t('register:' + errors.password.message)} </FormErrorMessage>}
                             </Box>
-                            <Box minH={20} w={400} m={5}>
+                            <Box minH={20} w={400} maxW='90vw' m={5}>
                                 <InputGroup>
                                     <Input type={repeatPwdVisible ? 'text' : 'password'} {...register('repeatedPassword', { required: true })} borderColor='#767676' placeholder={t('register:repeatPwd')} borderRadius={10} fontSize={20} h={10} />
                                     <InputRightElement width="4.5rem">
