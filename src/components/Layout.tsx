@@ -63,11 +63,6 @@ const Layout = () => {
                     </GridItem>
 
 
-                    <GridItem margin={2} area='footer' backgroundColor='orange'>
-                        <p>fúter</p>
-                    </GridItem>
-
-
                 </Grid >
             </AuthContext.Provider >
         </>
