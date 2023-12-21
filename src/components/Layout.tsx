@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { Button, Grid, GridItem, HStack, Show, useColorModeValue } from '@chakra-ui/react'
 import MembersList from './MembersList/MembersList'
 
@@ -17,6 +17,7 @@ const Layout = () => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
+
     return (
         <>
             <AuthContext.Provider value={{ user, setUser }}>

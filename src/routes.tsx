@@ -13,6 +13,16 @@ const router = createBrowserRouter([
         element: <LoginPage />
     },
     {
+        path: '/forgotten-password',
+        element: <ForgotPassword />,
+        children: [
+            {
+                path: ':id/:restorationToken',
+                element: <ForgotPassword />
+            }
+        ]
+    },
+    {
         path: '/',
         element: <Layout />,
         children: [
@@ -26,15 +36,6 @@ const router = createBrowserRouter([
                 element: <HomePage />
             },
             {
-                path: 'forgotten-password',
-                element: <ForgotPassword />,
-                children: [
-                    {
-                        path: ':id/:restorationToken',
-                        element: <ForgotPassword />
-                    }
-                ]
-            }, {
                 path: '/members',
                 element: <MembersList />
             }
