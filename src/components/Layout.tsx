@@ -23,12 +23,10 @@ const Layout = () => {
                 <Grid templateAreas={{
                     base: `
             "header" "header"
-            "main" "main"
-            "footer" "footer"`,
+            "main" "main"`,
                     lg: `
             "header header"
-            "nav main" 
-            "footer footer"`
+            "nav main" `
                 }}
                     templateColumns={{
                         base: `1fr`,

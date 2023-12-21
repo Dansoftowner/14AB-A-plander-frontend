@@ -23,14 +23,14 @@ const router = createBrowserRouter([
         ]
     },
     {
+        path: '/register/:id/:registrationToken',
+        element: <RegisterForm />,
+
+    },
+    {
         path: '/',
         element: <Layout />,
         children: [
-            {
-                path: '/register/:id/:registrationToken',
-                element: <RegisterForm />,
-
-            },
             {
                 path: '',
                 element: <HomePage />
