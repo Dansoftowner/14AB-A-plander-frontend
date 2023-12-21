@@ -32,5 +32,7 @@
   "fieldRequired": "A mező kitöltése kötelező.",
   "login-details": "Belépési adatok",
   "phnPholder": "Adja meg a telefonszámát",
-  "phone": "Telefonszám"
+  "phone": "Telefonszám",
+  "success": "Sikeres regisztráció!",
+  "error": "Hiba történt a regisztráció közben."
 }
