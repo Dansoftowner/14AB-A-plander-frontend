@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import apiClient from '../services/apiClient'
 import { AsQuery } from './useAssociations'
+import { User } from './useLogin'
 
 interface Response {
   metadata: {
@@ -8,20 +9,7 @@ interface Response {
     limit: number
     total: number
   }
-  items: Member[]
-}
-
-interface Member {
-  _id: string
-  isRegistered: boolean
-  email: string
-  username: string
-  name: string
-  address: string
-  idNumber: string
-  phoneNumber: string
-  guardNumber: string
-  roles: string[]
+  items: User[]
 }
 
 export const useMembers = (q: AsQuery) =>
