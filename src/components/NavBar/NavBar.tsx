@@ -15,22 +15,26 @@ const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false)
 
 
-    const { user, setUser } = useAuth()
+    // const { user, setUser } = useAuth()
+
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
+
     useEffect(() => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
-
+    console.log(user)
     return (
         <>
-            <HStack padding={3} justifyContent='end' backgroundColor={navBarColor}>
-                <Show below='lg'>
-                    <Box mr='auto'>
-                        <Button backgroundColor='transparent' onClick={() => setIsOpen(!isOpen)}>
-                            {isOpen ? <MdClose /> : <MdMenu />}
-                        </Button>
-                    </Box>
-                </Show>
+            <HStack padding={3} justifyContent='end' backgroundColor={navBarColor} minW='100%'>
+                {user != null &&
+                    <Show below='lg'>
+                        <Box mr='auto'>
+                            <Button backgroundColor='transparent' onClick={() => setIsOpen(!isOpen)}>
+                                {isOpen ? <MdClose /> : <MdMenu />}
+                            </Button>
+                        </Box>
+                    </Show>}
                 <ColorModeSwitch />
                 <LangSelector />
                 {(localStorage.getItem('token') || sessionStorage.getItem('token')) &&
@@ -44,10 +48,13 @@ const NavBar = () => {
                     }}>{user?.name}</Button>
                 }
             </HStack >
-            <ScaleFade in={isOpen} initialScale={0.9} style={{ zIndex: 10 }}>
-                <Box backgroundColor='yellow' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
 
-                    <Link to='/members'>
+            <ScaleFade in={isOpen} initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
+                <Box width='100vw' backgroundColor='yellow' textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
+                    <Link to='/' onClick={() => setIsOpen(false)}>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.1s ease-in-out' }}>Főoldal</Text>
+                    </Link>
+                    <Link to='/members' onClick={() => setIsOpen(false)}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.1s ease-in-out' }}>Tagok</Text>
                     </Link>
                 </Box>
