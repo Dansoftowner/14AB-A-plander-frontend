@@ -1,9 +1,11 @@
 import { Button, Spinner, useColorModeValue, HStack, Box } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Navigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers, useRemoveMember } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
+
+
 
 const MembersList = () => {
 
@@ -23,8 +25,8 @@ const MembersList = () => {
     const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit) })
 
     const queryClient = useQueryClient()
+    
     const removeMember = (_id: string) => {
-        let answer = false
         useRemoveMember(_id, 'Apple123').then(res => {
             if (res.status === 200) {
                 console.log(res)

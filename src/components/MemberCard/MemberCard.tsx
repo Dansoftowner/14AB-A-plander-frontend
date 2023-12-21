@@ -1,7 +1,8 @@
-import { Box, HStack, Stack, VStack, Text, Button, Show } from '@chakra-ui/react'
+import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure } from '@chakra-ui/react'
 import { FaUserAlt, FaTrash } from "react-icons/fa";
 import { MdOutlineWarning } from "react-icons/md";
 import useAuth from '../../hooks/useAuth';
+import { useRef } from 'react';
 
 interface Props {
     name: string;
@@ -13,6 +14,9 @@ interface Props {
 
 const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) => {
     const { user } = useAuth()
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef<HTMLButtonElement>(null)
+
 
     return (
         <HStack direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
@@ -32,9 +36,37 @@ const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) 
             {user?.roles.includes('president') &&
                 <Box ml='auto'>
                     <Box>
-                        <Button onClick={removeHandler}>
+                        <Button onClick={onOpen}>
                             <Text margin={0} color='red'><FaTrash /></Text>
                         </Button>
+
+                        <AlertDialog
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            leastDestructiveRef={cancelRef}
+                            isCentered={true}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                        Tag törlése
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                        Biztosan szeretnéd törölni <i>{name}</i> tagot az egyesületből?
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                        <Button onClick={onClose}>
+                                            Mégse
+                                        </Button>
+                                        <Button colorScheme='red' onClick={removeHandler} ml={3}>
+                                            Törlés
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
                     </Box>
                 </Box>
             }
