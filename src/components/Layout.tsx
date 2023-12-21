@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
-import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom'
-import { Button, Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
-import MembersList from './MembersList/MembersList'
+import { NavLink, Outlet } from 'react-router-dom'
+import { Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
 
 const Layout = () => {
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
-    const buttonColor = useColorModeValue('#ffffff', '#004881')
-    const buttonHover = useColorModeValue('#0078b0', '#fde7af')
     const textColor = useColorModeValue('#000000', '#ffffff')
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))

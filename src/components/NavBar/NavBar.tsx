@@ -1,12 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
-import { Box, Button, Flex, HStack, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, HStack, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import useAuth from '../../hooks/useAuth'
 import { User } from '../../hooks/useLogin'
 import { MdMenu, MdClose } from "react-icons/md"
-import { easeInOut } from 'framer-motion'
 
 
 const NavBar = () => {
@@ -14,16 +12,12 @@ const NavBar = () => {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
 
-
-    // const { user, setUser } = useAuth()
-
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
     useEffect(() => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
-    console.log(user)
     return (
         <>
             <HStack padding={3} justifyContent='end' backgroundColor={navBarColor} minW='100%'>
