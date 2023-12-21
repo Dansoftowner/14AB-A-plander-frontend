@@ -44,7 +44,7 @@ const NavBar = () => {
             </HStack >
 
             <ScaleFade in={isOpen} initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
-                <Box width='100vw' backgroundColor='yellow' textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
+                <Box width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
                     <Link to='/' onClick={() => setIsOpen(false)}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.1s ease-in-out' }}>Főoldal</Text>
                     </Link>
