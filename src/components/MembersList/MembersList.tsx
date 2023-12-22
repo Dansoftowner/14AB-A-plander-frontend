@@ -1,9 +1,13 @@
-import { Button, Spinner, useColorModeValue, HStack, Box } from "@chakra-ui/react"
+import { Button, Spinner, useColorModeValue, HStack, Box, VStack, Text, Icon } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
 import { Navigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers, useRemoveMember } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
+
+import { FaPlus } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth"
+
 
 
 
@@ -25,7 +29,7 @@ const MembersList = () => {
     const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit) })
 
     const queryClient = useQueryClient()
-    
+
     const removeMember = (_id: string) => {
         useRemoveMember(_id, 'Apple123').then(res => {
             if (res.status === 200) {
@@ -35,6 +39,8 @@ const MembersList = () => {
         })
     }
 
+    const { user } = useAuth()
+
     if (!valid) return <Navigate to='/login' />
 
 
@@ -42,6 +48,17 @@ const MembersList = () => {
         <>
             {
                 isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
+            }
+            {
+                user?.roles.includes('president') &&
+                <HStack justifyContent='center' direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
+                    <Button textAlign='center'>
+                        <HStack h={40} verticalAlign='middle' alignItems='center' justifyContent='center'>
+                            <FaPlus />
+                            <Text h={1} verticalAlign='middle'>Új tag meghívása</Text>
+                        </HStack>
+                    </Button>
+                </HStack>
             }
             {
                 data?.items.map((member, index) => {
