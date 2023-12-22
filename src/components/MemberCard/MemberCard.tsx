@@ -1,21 +1,43 @@
-import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure } from '@chakra-ui/react'
+import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { FaUserAlt, FaTrash } from "react-icons/fa";
 import { MdOutlineWarning } from "react-icons/md";
 import useAuth from '../../hooks/useAuth';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useRemoveMember } from '../../hooks/useMembers';
+import { useQueryClient } from '@tanstack/react-query';
+import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 
 interface Props {
     name: string;
     email: string;
     phone: string;
-    removeHandler: () => void;
     isRegistered: boolean;
+    _id: string;
 }
 
-const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) => {
+const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     const { user } = useAuth()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef<HTMLButtonElement>(null)
+    const queryClient = useQueryClient()
+
+    const [password, setPassword] = useState('')
+    const [confirmError, setConfirmError] = useState('')
+
+    const [show, setShow] = useState(false)
+    const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
+
+    const removeMember = (_id: string) => {
+        useRemoveMember(_id, password).then(res => {
+            if (res.status === 200) {
+                queryClient.refetchQueries()
+                onClose()
+                setConfirmError('')
+            }
+        }).catch(err => {
+            setConfirmError(err.response.data.message)
+        })
+    }
 
     return (
         <HStack direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
@@ -52,16 +74,29 @@ const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) 
                                     </AlertDialogHeader>
 
                                     <AlertDialogBody>
-                                        Biztosan szeretnéd törölni <i>{name}</i> tagot az egyesületből?
+                                        A törlés megerősítéséhez adja meg jelszavát!
+                                        <InputGroup my={2}>
+                                            <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
+                                            <InputRightElement width="4.5rem">
+                                                <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
+                                                    {isVisible()}
+                                                </Button>
+                                            </InputRightElement>
+                                        </InputGroup>
+                                        {confirmError && <Text color='red'>{confirmError}</Text>}
                                     </AlertDialogBody>
 
                                     <AlertDialogFooter>
-                                        <Button onClick={onClose}>
+                                        <Button onClick={() => {
+                                            setConfirmError('')
+                                            onClose()
+                                        }}>
                                             Mégse
                                         </Button>
                                         <Button colorScheme='red' onClick={() => {
-                                            removeHandler()
-                                            onClose()
+                                            if (password) {
+                                                removeMember(_id)
+                                            }
                                         }} ml={3}>
                                             Törlés
                                         </Button>
