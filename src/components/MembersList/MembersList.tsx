@@ -2,7 +2,7 @@ import { Button, Spinner, useColorModeValue, HStack, Box, Text } from "@chakra-u
 import { useState, useEffect } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
-import { useMembers, useRemoveMember } from "../../hooks/useMembers"
+import { useMembers } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
 
 import { FaPlus } from "react-icons/fa";
@@ -30,14 +30,6 @@ const MembersList = () => {
 
     const queryClient = useQueryClient()
 
-    const removeMember = (_id: string) => {
-        useRemoveMember(_id, 'Apple123').then(res => {
-            if (res.status === 200) {
-                queryClient.refetchQueries()
-            }
-        })
-    }
-
     const { user } = useAuth()
     const navigate = useNavigate()
 
@@ -62,7 +54,7 @@ const MembersList = () => {
             }
             {
                 data?.items.map((member, index) => {
-                    return <MemberCard removeHandler={() => removeMember(member._id)} key={index}
+                    return <MemberCard _id={member._id} key={index}
                         email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
                 })
             }
