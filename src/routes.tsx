@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import HomePage from './components/HomePage/HomePage';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import MembersList from './components/MembersList/MembersList';
+import InviteMember from './components/MembersList/InviteMember';
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: '/members',
                 element: <MembersList />
+            },
+            {
+                path: '/members/invite',
+                element: <InviteMember />
             }
         ]
     }
