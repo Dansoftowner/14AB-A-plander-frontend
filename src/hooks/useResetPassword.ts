@@ -18,14 +18,3 @@ export const useResetPassword = (email: string, associationId: string) =>
     .catch((err) => {
       return err
     })
-
-export const useNewPassword = (
-  id: string,
-  restorationToken: string,
-  body: any,
-) =>
-  apiClient
-    .post(`members/forgotten-password/${id}/${restorationToken}`, {
-      body,
-    })
-    .then((res) => res.data)
