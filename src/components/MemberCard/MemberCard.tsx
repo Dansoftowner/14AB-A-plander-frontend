@@ -17,7 +17,6 @@ const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef<HTMLButtonElement>(null)
 
-
     return (
         <HStack direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
             <Show above='lg'>
@@ -60,7 +59,10 @@ const MemberCard = ({ email, name, phone, removeHandler, isRegistered }: Props) 
                                         <Button onClick={onClose}>
                                             Mégse
                                         </Button>
-                                        <Button colorScheme='red' onClick={removeHandler} ml={3}>
+                                        <Button colorScheme='red' onClick={() => {
+                                            removeHandler()
+                                            onClose()
+                                        }} ml={3}>
                                             Törlés
                                         </Button>
                                     </AlertDialogFooter>
