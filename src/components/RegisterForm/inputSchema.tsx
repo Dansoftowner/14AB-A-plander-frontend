@@ -31,3 +31,13 @@ export const forgotPasswordSchema = (t: TFunction<'register', undefined>) => z.o
     message: t('zodRepeatedPwd'),
     path: ["repeatedPassword"]
 })
+
+export const inviteSchema = (t: TFunction<'register', undefined>) => z.object({
+    email: z.string().email({ message: t('zodEmail') }),
+    name: z.string().min(5, { message: t('zodFullname') }).max(40).refine(str => /^[^\d]+\s+[^\d]+(\s[^\d]+)*$/g.test(str), { message: t('zodInvalidName') })
+        .refine(str => !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str), { message: t('zodInvalidName') }).optional(),
+    address: z.string().min(5, { message: t('zodAddress') }).refine(str => /[0-9]/.test(str), { message: t('zodAddress') }),
+    idNumber: z.string().min(3).optional(),
+    guardNumber: z.string().min(1, { message: t('zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('zodGuardNumber') }).optional(),
+    phoneNumber: z.string().min(1).optional(),
+})
