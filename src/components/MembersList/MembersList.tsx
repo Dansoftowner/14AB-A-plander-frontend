@@ -1,6 +1,6 @@
 import { Button, Spinner, useColorModeValue, HStack, Box, VStack, Text, Icon } from "@chakra-ui/react"
 import { useState, useEffect, useRef } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers, useRemoveMember } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
@@ -40,6 +40,7 @@ const MembersList = () => {
     }
 
     const { user } = useAuth()
+    const navigate = useNavigate()
 
     if (!valid) return <Navigate to='/login' />
 
@@ -52,7 +53,7 @@ const MembersList = () => {
             {
                 user?.roles.includes('president') &&
                 <HStack justifyContent='center' direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
-                    <Button textAlign='center'>
+                    <Button textAlign='center' onClick={() => navigate('/members/invite')}>
                         <HStack h={40} verticalAlign='middle' alignItems='center' justifyContent='center'>
                             <FaPlus />
                             <Text h={1} verticalAlign='middle'>Új tag meghívása</Text>
