@@ -1,5 +1,5 @@
-import { Button, Spinner, useColorModeValue, HStack, Box, VStack, Text, Icon } from "@chakra-ui/react"
-import { useState, useEffect, useRef } from "react"
+import { Button, Spinner, useColorModeValue, HStack, Box, Text } from "@chakra-ui/react"
+import { useState, useEffect } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers, useRemoveMember } from "../../hooks/useMembers"
@@ -33,7 +33,6 @@ const MembersList = () => {
     const removeMember = (_id: string) => {
         useRemoveMember(_id, 'Apple123').then(res => {
             if (res.status === 200) {
-                console.log(res)
                 queryClient.refetchQueries()
             }
         })
