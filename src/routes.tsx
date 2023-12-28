@@ -6,6 +6,7 @@ import HomePage from './components/HomePage/HomePage';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import MembersList from './components/MembersList/MembersList';
 import InviteMember from './components/MembersList/InviteMember';
+import MemberDetail from './components/MemberDetail/MemberDetail';
 
 
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: '/members/invite',
                 element: <InviteMember />
+            },
+            {
+                path: '/member',
+                element: <MemberDetail />
             }
         ]
     }
