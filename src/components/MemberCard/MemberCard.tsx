@@ -57,7 +57,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
             <VStack textAlign='start' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                 <HStack>
                     <Text width={isRegistered ? 400 : 370} maxW={isRegistered ? '70vw' : '64vw'} margin={1}><b>Név:</b> {name}</Text>
-                    {isRegistered == false && <Box color='yellow' title='A felhasználó nem fejezte be még a regisztrációt.'><MdOutlineWarning /></Box>}
+                    {isRegistered == false && <Box color='orange' title='A felhasználó nem fejezte be még a regisztrációt.'><MdOutlineWarning /></Box>}
                 </HStack>
                 <Text width={400} maxW='70vw' margin={1}><b>Email cím:</b> {email}</Text>
                 <Text width={400} maxW='70vw' margin={1}><b>Telefonszám:</b> {phone}</Text>
@@ -65,7 +65,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
             {user?.roles.includes('president') &&
                 <Box ml='auto'>
                     <Box>
-                        <Button onClick={onOpen}>
+                        <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
                             <Text margin={0} color='red'><FaTrash /></Text>
                         </Button>
 
