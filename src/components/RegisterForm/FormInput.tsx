@@ -1,8 +1,7 @@
 import {
-    FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputLeftAddon, HStack, VStack, Menu, InputLeftElement,
+    FormControl, FormLabel, Input, FormErrorMessage, InputGroup, HStack, VStack, Menu, InputLeftElement,
 } from '@chakra-ui/react'
-import { t } from 'i18next'
-import { FormEvent, useMemo, useState } from 'react'
+import { FormEvent, useMemo } from 'react'
 import {
     FieldErrors,
     FieldValues,
@@ -13,8 +12,6 @@ import {
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { regSchema } from './inputSchema'
-import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
-import { phoneMap, PhoneFormat } from '../PhoneDropdownList/phones'
 import { FaRegUser } from "react-icons/fa";
 import { useTranslation } from 'react-i18next'
 
@@ -26,7 +23,7 @@ interface Props<FormData extends FieldValues> {
     name: Path<FormData>
     register: UseFormRegister<FormData>
     errors: FieldErrors
-    tel?: boolean
+    telPrefix?: string
     guard?: boolean
     passwordConfirm?: boolean
     login?: boolean,
@@ -37,7 +34,7 @@ interface Props<FormData extends FieldValues> {
 const FormInput = <FormData extends FieldValues>({
     register,
     guard,
-    tel,
+    telPrefix,
     passwordConfirm,
     errors,
     name,
@@ -55,11 +52,6 @@ const FormInput = <FormData extends FieldValues>({
         formState: { },
     } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
-    const [phone, setPhone] = useState<PhoneFormat>({
-        src: '/assets/flags/hu.svg',
-        prefix: '+36',
-        length: 7,
-    })
     const error = errors?.[name]?.message as string | undefined
     const isError = error != undefined
 
@@ -77,8 +69,6 @@ const FormInput = <FormData extends FieldValues>({
     }
 
     const spacePos = [2, 6]
-    const length = phone.length + spacePos.length + 2
-
     let prevTelValue = 0
     const telHandler = (e: FormEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement
@@ -126,15 +116,15 @@ const FormInput = <FormData extends FieldValues>({
                         <HStack justifyContent="space-evenly">
                             <Input
                                 {...register(name)}
-                                width={tel ? 240 : 400}
+                                width={telPrefix ? 240 : 400}
                                 maxLength={
-                                    guard ? 13 : tel && phone.prefix == '+36' ? length : 20
+                                    guard ? 13 : telPrefix == "+36" ? 11 : 20
                                 }
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
                                 onChangeCapture={(e) => {
                                     if (guard) guardNumberHandler(e)
-                                    if (tel && phone.prefix == '+36') telHandler(e)
+                                    if (telPrefix == '+36') telHandler(e)
                                 }}
                                 defaultValue={value}
                             />

@@ -142,7 +142,7 @@ export const RegisterForm = () => {
                                             selectionChange={(p) => setPhone(p)}
                                         />
                                     </Box>
-                                    <FormInput register={register} tel value={user.phoneNumber.trim()} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="" required={true} errors={errors} />
+                                    <FormInput register={register} telPrefix={phone.prefix} value={user.phoneNumber?.trim()} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="" required={true} errors={errors} />
                                 </InputGroup>
                             </HStack>
                         </FormControl>
