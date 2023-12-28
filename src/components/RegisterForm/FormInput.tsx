@@ -124,19 +124,6 @@ const FormInput = <FormData extends FieldValues>({
                 <VStack maxW={400}>
                     <InputGroup as={Menu} alignItems="start">
                         <HStack justifyContent="space-evenly">
-                            {tel && (
-                                <InputLeftAddon
-                                    width={150}
-                                    borderRadius={10}
-                                    children={
-                                        <PhoneDropdownList
-                                            selectedPhone={phone}
-                                            items={phoneMap}
-                                            selectionChange={(p) => setPhone(p)}
-                                        />
-                                    }
-                                />
-                            )}
                             <Input
                                 {...register(name)}
                                 width={tel ? 240 : 400}

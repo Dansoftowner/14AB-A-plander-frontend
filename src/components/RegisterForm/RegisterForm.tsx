@@ -1,4 +1,4 @@
-import { Button, Divider, HStack, Heading, Input, Stack, Text, useColorModeValue, useToast } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -7,11 +7,13 @@ import * as z from 'zod'
 import { regSchema } from "./inputSchema"
 import FormInput from "./FormInput"
 import PasswordInput from "./PasswordInput"
-import { useLocation, useParams, useRoutes } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import apiClient from "../../services/apiClient"
 import ErrorPage from "../ErrorPage/ErrorPage"
-import { User, UserWithAssociation } from "../../hooks/useLogin"
+import { UserWithAssociation } from "../../hooks/useLogin"
 import NavBar from "../NavBar/NavBar"
+import PhoneDropdownList from "../PhoneDropdownList/PhoneDropdownList"
+import { PhoneFormat, phoneMap } from "../PhoneDropdownList/phones"
 
 
 
@@ -31,8 +33,15 @@ export const RegisterForm = () => {
     const [valid, setValid] = useState(false)
     const [user, setUser] = useState({} as UserWithAssociation)
     const [error, setError] = useState('')
+    const [phone, setPhone] = useState<PhoneFormat>({
+        src: '/assets/flags/hu.svg',
+        prefix: '+36',
+        length: 7,
+    })
 
     const registerToast = useToast()
+    const navigate = useNavigate()
+
     useEffect(() => {
         const fetch = () => {
             apiClient.get(`/members/register/${id}/${registrationToken}`).then(res => {
@@ -66,7 +75,7 @@ export const RegisterForm = () => {
                 const post: dataOmit = {
                     address: postUser.address,
                     name: postUser.name,
-                    phoneNumber: postUser.phoneNumber,
+                    phoneNumber: phone.prefix + " " + postUser.phoneNumber,
                     guardNumber: postUser.guardNumber,
                     idNumber: postUser.idNumber,
                     username: postUser.username,
@@ -82,12 +91,13 @@ export const RegisterForm = () => {
                                 isClosable: true,
                                 position: 'top'
                             })
+                            navigate('/login')
                         }
                     })
             }
             )}>
 
-                <Stack>
+                <Stack maxW='90vw'>
                     <Heading alignSelf='center' marginBottom={1}>{t('regButton') + ": "}</Heading>
                     <Heading alignSelf='center' marginBottom={10}>{user.association.name || t('header')}</Heading>
                 </Stack>
@@ -120,7 +130,23 @@ export const RegisterForm = () => {
 
                     <FormInput register={register} guard value={user.guardNumber} name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
-                    <FormInput register={register} tel value={user.phoneNumber.trim()} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="phone" required={true} errors={errors} />
+                    <VStack>
+                        <FormControl isRequired>
+                            <FormLabel mr='auto'>{t('phone')}</FormLabel>
+                            <HStack>
+                                <InputGroup as={Menu} alignItems='start'>
+                                    <Box mb={4}>
+                                        <PhoneDropdownList
+                                            selectedPhone={phone}
+                                            items={phoneMap}
+                                            selectionChange={(p) => setPhone(p)}
+                                        />
+                                    </Box>
+                                    <FormInput register={register} tel value={user.phoneNumber.trim()} name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="" required={true} errors={errors} />
+                                </InputGroup>
+                            </HStack>
+                        </FormControl>
+                    </VStack>
 
                     <Button name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('regButton')}</Button>
                 </Stack>
