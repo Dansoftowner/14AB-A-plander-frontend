@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { Box, Button, HStack, Stack, useColorModeValue, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, HStack, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from '@chakra-ui/react'
 import FormInput from '../RegisterForm/FormInput'
 import { inviteSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -9,6 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import apiClient from '../../services/apiClient'
+import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
+import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
 
 const InviteMember = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
@@ -18,6 +20,12 @@ const InviteMember = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
     const inviteToast = useToast()
+
+    const [phone, setPhone] = useState<PhoneFormat>({
+        src: '/assets/flags/hu.svg',
+        prefix: '+36',
+        length: 7,
+    })
 
     const { t } = useTranslation('register')
     const inputSchema = useMemo(() => inviteSchema(t), [t])
@@ -30,7 +38,8 @@ const InviteMember = () => {
     return (
         <Box mt={20} maxW='95vw' mx={5}>
             <form onSubmit={handleSubmit((e) => {
-                const invited = Object.fromEntries(Object.entries(e).filter(([key, value]) => value != ""))
+                const invited = Object.fromEntries(Object.entries(e).filter(([_key, value]) => value != ""))
+                if (e.phoneNumber) invited.phoneNumber = phone.prefix + " " + e.phoneNumber
                 apiClient.post('/members', invited, {
                     headers: {
                         'x-plander-auth':
@@ -65,7 +74,23 @@ const InviteMember = () => {
 
                     <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
-                    <FormInput register={register} tel name="phoneNumber" i18nPlaceHolder="phnPholder" i18nTitle="phone" required={false} errors={errors} />
+                    <VStack>
+                        <FormControl isRequired>
+                            <FormLabel mr='auto'>{t('phone')}</FormLabel>
+                            <HStack>
+                                <InputGroup as={Menu} alignItems='start'>
+                                    <Box mb={4}>
+                                        <PhoneDropdownList
+                                            selectedPhone={phone}
+                                            items={phoneMap}
+                                            selectionChange={(p) => setPhone(p)}
+                                        />
+                                    </Box>
+                                    <FormInput register={register} telPrefix={phone.prefix} name="phoneNumber" i18nPlaceHolder="phnPholder" required={false} errors={errors} />
+                                </InputGroup>
+                            </HStack>
+                        </FormControl>
+                    </VStack>
 
                 </Stack>
 
