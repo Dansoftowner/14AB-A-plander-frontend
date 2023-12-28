@@ -13,6 +13,7 @@
   "emailPHolder": "Please provide your email address",
   "repeatPwd": "Please type your password again",
   "fullname": "Full name",
+  "email": "E-mail address",
   "address": "Address",
   "idNumber": "Identity card number",
   "regButton": "Registration",
@@ -31,5 +32,8 @@
   "success": "Registration successful!",
   "error": "Registration failed!",
   "phnPholder": "Provide valid phone number",
-  "phone": "Phone number"
+  "phone": "Phone number",
+  "finishedRegistration": "Registration finished",
+  "contacts": "Contacts",
+  "userData": "'s detailis"
 }
