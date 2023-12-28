@@ -1,5 +1,7 @@
 {
   "langSelectorAlt": "Kiválasztott nyelv módosítása",
   "association": "Egyesület",
-  "emailAddress": "E-mail cím"
+  "emailAddress": "E-mail cím",
+  "back": "Vissza",
+  "president": "Egyesületelnök"
 }

@@ -1,5 +1,7 @@
 {
   "langSelectorAlt": "Change selected language",
   "association": "Association",
-  "emailAddress": "Email address"
+  "emailAddress": "Email address",
+  "back": "Back",
+  "president": "President"
 }

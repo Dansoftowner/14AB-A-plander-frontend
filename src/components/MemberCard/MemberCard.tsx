@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { useRemoveMember } from '../../hooks/useMembers';
 import { useQueryClient } from '@tanstack/react-query';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     name: string;
@@ -20,6 +21,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef<HTMLButtonElement>(null)
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
 
     const [password, setPassword] = useState('')
     const [confirmError, setConfirmError] = useState('')
@@ -39,17 +41,23 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
         })
     }
 
+    const detailNavigator = () => {
+        navigate('/member', {
+            state: { id: _id }
+        })
+    }
+
     return (
         <HStack direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
             <Show above='lg'>
-                <Stack width={55}>
+                <Stack width={55} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                     <Text fontSize={40}><FaUserAlt /></Text>
                 </Stack>
             </Show>
-            <VStack textAlign='start'>
+            <VStack textAlign='start' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                 <HStack>
                     <Text width={isRegistered ? 400 : 370} maxW={isRegistered ? '70vw' : '64vw'} margin={1}><b>Név:</b> {name}</Text>
-                    {isRegistered == false && <Box color='yellow' title='A felhasználó nem fejezte be még a regisztrációt.'><MdOutlineWarning /></Box>}
+                    {isRegistered == false && <Box color='orange' title='A felhasználó nem fejezte be még a regisztrációt.'><MdOutlineWarning /></Box>}
                 </HStack>
                 <Text width={400} maxW='70vw' margin={1}><b>Email cím:</b> {email}</Text>
                 <Text width={400} maxW='70vw' margin={1}><b>Telefonszám:</b> {phone}</Text>
@@ -57,7 +65,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
             {user?.roles.includes('president') &&
                 <Box ml='auto'>
                     <Box>
-                        <Button onClick={onOpen}>
+                        <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
                             <Text margin={0} color='red'><FaTrash /></Text>
                         </Button>
 
