@@ -7,6 +7,7 @@ import { useRemoveMember } from '../../hooks/useMembers';
 import { useQueryClient } from '@tanstack/react-query';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     name: string;
@@ -19,6 +20,7 @@ interface Props {
 const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     const { user } = useAuth()
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { t } = useTranslation('register')
     const cancelRef = useRef<HTMLButtonElement>(null)
     const queryClient = useQueryClient()
     const navigate = useNavigate()
@@ -56,11 +58,11 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
             </Show>
             <VStack textAlign='start' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                 <HStack>
-                    <Text width={isRegistered ? 400 : 370} maxW={isRegistered ? '70vw' : '64vw'} margin={1}><b>Név:</b> {name}</Text>
-                    {isRegistered == false && <Box color='orange' title='A felhasználó nem fejezte be még a regisztrációt.'><MdOutlineWarning /></Box>}
+                    <Text width={isRegistered ? 400 : 370} maxW={isRegistered ? '70vw' : '64vw'} margin={1}><b>{t('fullname')}:</b> {name}</Text>
+                    {isRegistered == false && <Box color='orange' title={t('notRegistered')}><MdOutlineWarning /></Box>}
                 </HStack>
-                <Text width={400} maxW='70vw' margin={1}><b>Email cím:</b> {email}</Text>
-                <Text width={400} maxW='70vw' margin={1}><b>Telefonszám:</b> {phone}</Text>
+                <Text width={400} maxW='70vw' margin={1}><b>{t('email')}:</b> {email}</Text>
+                <Text width={400} maxW='70vw' margin={1}><b>{t('phone')}:</b> {phone}</Text>
             </VStack>
             {user?.roles.includes('president') &&
                 <Box ml='auto'>
@@ -78,11 +80,11 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                             <AlertDialogOverlay>
                                 <AlertDialogContent>
                                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                        Tag törlése
+                                        {t('removeUser')}
                                     </AlertDialogHeader>
 
                                     <AlertDialogBody>
-                                        A törlés megerősítéséhez adja meg jelszavát!
+                                        {t('pwdToDelete')}
                                         <InputGroup my={2}>
                                             <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
                                             <InputRightElement width="4.5rem">
@@ -99,14 +101,14 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                                             setConfirmError('')
                                             onClose()
                                         }}>
-                                            Mégse
+                                            {t('cancel')}
                                         </Button>
                                         <Button colorScheme='red' onClick={() => {
                                             if (password) {
                                                 removeMember(_id)
                                             }
                                         }} ml={3}>
-                                            Törlés
+                                            {t('kick')}
                                         </Button>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>

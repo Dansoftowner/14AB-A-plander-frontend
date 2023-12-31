@@ -6,7 +6,11 @@ import { useMembers } from "../../hooks/useMembers"
 import { useQueryClient } from "@tanstack/react-query"
 
 import { FaPlus } from "react-icons/fa";
+import { MdNavigateNext, MdNavigateBefore, MdLastPage, MdFirstPage } from "react-icons/md";
+
+
 import useAuth from "../../hooks/useAuth"
+import { useTranslation } from "react-i18next"
 
 
 
@@ -29,6 +33,7 @@ const MembersList = () => {
     const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit) })
 
     const queryClient = useQueryClient()
+    const { t } = useTranslation('register')
 
     const { user } = useAuth()
     const navigate = useNavigate()
@@ -47,7 +52,7 @@ const MembersList = () => {
                     <Button textAlign='center' onClick={() => navigate('/members/invite')}>
                         <HStack h={40} verticalAlign='middle' alignItems='center' justifyContent='center'>
                             <FaPlus />
-                            <Text h={1} verticalAlign='middle'>Új tag meghívása</Text>
+                            <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
                         </HStack>
                     </Button>
                 </HStack>
@@ -60,10 +65,10 @@ const MembersList = () => {
             }
             {
                 data && <HStack justifyContent='space-around' mx={10}>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}>First</Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(page - 1)}>Prev</Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata.total / data!.metadata.limit)} onClick={() => setPage(page + 1)}>Next</Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}>Last</Button>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}> <MdFirstPage/> </Button>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata.total / data!.metadata.limit)} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
                 </HStack>
             }
         </>

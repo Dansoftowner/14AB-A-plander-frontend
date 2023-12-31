@@ -3,5 +3,8 @@
   "association": "Association",
   "emailAddress": "Email address",
   "back": "Back",
-  "president": "President"
+  "president": "President",
+  "cancel": "Cancel",
+  "home": "Home",
+  "members": "Members"
 }

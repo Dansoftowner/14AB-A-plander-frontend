@@ -35,5 +35,10 @@
   "phone": "Phone number",
   "finishedRegistration": "Registration finished",
   "contacts": "Contacts",
-  "userData": "'s detailis"
+  "userData": "'s detailis",
+  "removeUser": "Kick member",
+  "pwdToDelete": "Please type your password again to confirm the deletion!",
+  "kick": "Kick",
+  "inviteMember": "Invite member",
+  "notRegistered": "The member is not finished the registration process yet."
 }

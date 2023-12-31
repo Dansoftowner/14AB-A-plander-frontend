@@ -3,11 +3,13 @@ import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 
 const Layout = () => {
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const textColor = useColorModeValue('#000000', '#ffffff')
+    const { t } = useTranslation('')
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
@@ -43,12 +45,12 @@ const Layout = () => {
                             <NavLink to='/' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
                             })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>Főoldal</Text>
+                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
                             </NavLink>
                             <NavLink to='/members' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
                             })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>Tagok</Text>
+                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('members')}</Text>
                             </NavLink>
                         </Show>
                     </GridItem>

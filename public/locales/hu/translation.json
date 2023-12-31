@@ -3,5 +3,8 @@
   "association": "Egyesület",
   "emailAddress": "E-mail cím",
   "back": "Vissza",
-  "president": "Egyesületelnök"
+  "president": "Egyesületelnök",
+  "cancel": "Mégse",
+  "home": "Főoldal",
+  "members": "Tagok"
 }
