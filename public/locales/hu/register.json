@@ -37,5 +37,10 @@
   "error": "Hiba történt a regisztráció közben.",
   "finishedRegistration": "Regisztrációt befejezte",
   "contacts": "Elérhetőségei",
-  "userData": " adatai"
+  "userData": " adatai",
+  "removeUser": "Tag törlése",
+  "pwdToDelete": "A tag törléséhez adja meg a jelszavát!",
+  "kick": "Tag törlése",
+  "inviteMember": "Új tag meghívása",
+  "notRegistered": "A tag még nem fejezte be a regisztrációt!"
 }
