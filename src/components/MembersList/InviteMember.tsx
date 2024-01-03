@@ -47,7 +47,7 @@ const InviteMember = () => {
                     }
                 }).then(res => {
                     inviteToast({
-                        title: res.status === 202 ? t('success') : t('error'),
+                        title: res.status === 202 ? t('inviteSuccess') : t('error'),
                         status: res.status === 202 ? 'success' : 'error',
                         duration: 9000,
                         isClosable: true,
@@ -75,7 +75,7 @@ const InviteMember = () => {
                     <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
                     <VStack>
-                        <FormControl isRequired>
+                        <FormControl isRequired={false}>
                             <FormLabel mr='auto'>{t('phone')}</FormLabel>
                             <HStack>
                                 <InputGroup as={Menu} alignItems='start'>
