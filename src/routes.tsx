@@ -46,7 +46,7 @@ const router = createBrowserRouter([
                 element: <InviteMember />
             },
             {
-                path: '/member',
+                path: '/member/:id',
                 element: <MemberDetail />
             }
         ]
