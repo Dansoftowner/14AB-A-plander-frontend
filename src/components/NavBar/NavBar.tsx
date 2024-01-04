@@ -1,10 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
-import { Box, Button, HStack, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { User } from '../../hooks/useLogin'
 import { MdMenu, MdClose } from "react-icons/md"
+import { FaUserAlt, FaCaretDown, FaPowerOff } from "react-icons/fa";
 
 
 const NavBar = () => {
@@ -32,14 +33,41 @@ const NavBar = () => {
                 <ColorModeSwitch />
                 <LangSelector />
                 {(localStorage.getItem('token') || sessionStorage.getItem('token')) &&
-                    <Button backgroundColor='transparent' onClick={() => {
-                        localStorage.removeItem("user");
-                        sessionStorage.removeItem("user");
-                        sessionStorage.removeItem("token");
-                        localStorage.removeItem("token");
-                        setUser({} as User)
-                        navigate('/login')
-                    }}>{user?.name}</Button>
+                    <Menu>
+                        <MenuButton backgroundColor='transparent'>
+                            <HStack>
+                                <FaUserAlt />
+                                <FaCaretDown />
+                            </HStack>
+                        </MenuButton>
+                        <MenuList >
+                            <MenuItem onClick={() => {
+                                navigate('member/' + user._id!, {
+                                    state: { id: user._id }
+                                })
+                            }}>
+                                <HStack>
+                                    <FaUserAlt />
+                                    <Text mt={4}>Profilom</Text>
+                                </HStack>
+                            </MenuItem>
+                            <Divider />
+                            <MenuItem onClick={() => {
+                                localStorage.removeItem("user");
+                                sessionStorage.removeItem("user");
+                                sessionStorage.removeItem("token");
+                                localStorage.removeItem("token");
+                                setUser({} as User)
+                                navigate('/login')
+                            }}>
+                                <HStack>
+                                    <FaPowerOff />
+                                    <Text mt={3}>Kijelentkezés</Text>
+                                </HStack>
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+
                 }
             </HStack >
 
