@@ -44,7 +44,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     }
 
     const detailNavigator = () => {
-        navigate('/member', {
+        navigate('/member/' + _id, {
             state: { id: _id }
         })
     }
@@ -101,7 +101,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                                             setConfirmError('')
                                             onClose()
                                         }}>
-                                            {t('cancel')}
+                                            {t('common:cancel')}
                                         </Button>
                                         <Button colorScheme='red' onClick={() => {
                                             if (password) {
