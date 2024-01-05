@@ -3,7 +3,8 @@ import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
-import { useTranslation } from 'react-i18next'
+import { Translation, useTranslation } from 'react-i18next'
+import { InitialTransition } from './LoginPage/InitialTransition'
 
 const Layout = () => {
 

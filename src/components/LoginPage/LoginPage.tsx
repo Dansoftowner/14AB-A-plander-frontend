@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router'
 import useAuth from '../../hooks/useAuth.ts'
 import { Link } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar.tsx'
+import { InitialTransition } from './InitialTransition.tsx'
 
 
 
@@ -66,6 +67,7 @@ const LoginPage = () => {
 
     return (
         <>
+            <InitialTransition />
             <NavBar />
             <Center display='flex' justifyContent='center' alignItems='center' h='90vh'>
                 <form onSubmit={(e) => {
