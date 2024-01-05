@@ -5,13 +5,16 @@ import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, Sca
 import { useEffect, useState } from 'react'
 import { User } from '../../hooks/useLogin'
 import { MdMenu, MdClose } from "react-icons/md"
-import { FaUserAlt, FaCaretDown, FaPowerOff } from "react-icons/fa";
+import { FaUserAlt, FaCaretDown, FaPowerOff, FaBell } from "react-icons/fa";
+import { useTranslation } from 'react-i18next'
 
 
 const NavBar = () => {
     const navBarColor = useColorModeValue('#0078D7', '#004881')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
+    const [openMenu, setOpenMenu] = useState(false)
+    const { t } = useTranslation()
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
@@ -34,7 +37,7 @@ const NavBar = () => {
                 <LangSelector />
                 {(localStorage.getItem('token') || sessionStorage.getItem('token')) &&
                     <Menu>
-                        <MenuButton backgroundColor='transparent'>
+                        <MenuButton onClick={() => setOpenMenu(true)} backgroundColor='transparent'>
                             <HStack>
                                 <FaUserAlt />
                                 <FaCaretDown />
@@ -48,7 +51,13 @@ const NavBar = () => {
                             }}>
                                 <HStack>
                                     <FaUserAlt />
-                                    <Text mt={4}>Profilom</Text>
+                                    <Text mt={4}>{t('myProfile')}</Text>
+                                </HStack>
+                            </MenuItem>
+                            <MenuItem onClick={() => console.log("nincs")}>
+                                <HStack>
+                                    <FaBell />
+                                    <Text mt={4}>{t('notifications')}</Text>
                                 </HStack>
                             </MenuItem>
                             <Divider />
@@ -62,7 +71,7 @@ const NavBar = () => {
                             }}>
                                 <HStack>
                                     <FaPowerOff />
-                                    <Text mt={3}>Kijelentkezés</Text>
+                                    <Text mt={3}>{t('logout')}</Text>
                                 </HStack>
                             </MenuItem>
                         </MenuList>
@@ -71,13 +80,13 @@ const NavBar = () => {
                 }
             </HStack >
 
-            <ScaleFade in={isOpen} initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
+            <ScaleFade in={isOpen} unmountOnExit initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
                 <Box width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
                     <Link to='/' onClick={() => setIsOpen(false)}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.1s ease-in-out' }}>Főoldal</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
                     </Link>
                     <Link to='/members' onClick={() => setIsOpen(false)}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.1s ease-in-out' }}>Tagok</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
                     </Link>
                 </Box>
             </ScaleFade>

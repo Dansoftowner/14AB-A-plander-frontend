@@ -6,5 +6,8 @@
   "president": "President",
   "cancel": "Cancel",
   "home": "Home",
-  "members": "Members"
+  "members": "Members",
+  "myProfile": "My profile",
+  "notifications": "Notifications",
+  "logout": "Logout"
 }
