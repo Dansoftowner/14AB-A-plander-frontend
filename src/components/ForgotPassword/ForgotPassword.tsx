@@ -47,8 +47,8 @@ const ForgotPassword = () => {
 
                     apiClient.post(`members/forgotten-password/${id}/${restorationToken}`, post).then(res => {
                         toast({
-                            title: res.status === 202 ? t('login:success') : t('login:error'),
-                            status: res.status === 202 ? 'success' : 'error',
+                            title: res.status === 204 ? t('login:success') : t('login:error'),
+                            status: res.status === 204 ? 'success' : 'error',
                             duration: 9000,
                             isClosable: true,
                             position: 'top'

@@ -13,7 +13,7 @@ export const useResetPassword = (email: string, associationId: string) =>
       },
     )
     .then((res) => {
-      if (res.status === 204) return true
+      if (res.status === 202) return true
     })
     .catch((err) => {
       return err
