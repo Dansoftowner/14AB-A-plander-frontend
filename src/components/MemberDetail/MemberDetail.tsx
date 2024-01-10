@@ -21,6 +21,8 @@ const MemberDetail = () => {
 
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
+    const [newPwd, setNewPwd] = useState("KetajtosSzekreny")
+
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
             headers: {
@@ -33,21 +35,18 @@ const MemberDetail = () => {
         }).then(res => {
             if (res.status === 200)
                 setMember(res.data)
-                setOldMember(res.data)
+            setOldMember(res.data)
         })
     }, [location.state.id])
 
     const isPresident = user?.roles?.includes('president') || false
     const isOwnProfile = user._id == member._id
     const [isEditing, setIsEditing] = useState(false);
-
-    const editHandler = () => {
-        setIsEditing(!isEditing)
-
-        if(isEditing){
-            setMember(oldMember)
-        }
-    }    
+    const [isEnabledInput, setIsEnabledInput] = useState({
+        email: false,
+        username: false,
+        password: false,
+    });
 
     return (
         <VStack spacing={6} mt={10}>
@@ -56,40 +55,60 @@ const MemberDetail = () => {
             <VStack maxW='90vw'>
                 <Text fontSize={20}><b>{t('contacts')}:</b></Text>
                 <HStack >
-                    <FormLabel width={350}>{t('email')}: </FormLabel>
-                    <Input borderColor='#767676' disabled={!isEditing} value={member.email} onChange={(e)=> {setMember({...member, email: e.target.value})} }/>
+                    <FormLabel width={isEditing ? 295 : 350}>{t('email')}: </FormLabel>
+                    <Input borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
+                    {isEditing &&
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
+                            <FaPencilAlt />
+                        </Button>}
                 </HStack>
 
                 {
                     isOwnProfile &&
-                    <VStack >
+                    <VStack>
                         <HStack>
-                            <FormLabel width={350}>Felhasználónév: </FormLabel>
-                            <Input borderColor='#767676' disabled={!isEditing} value={member.username} onChange={(e)=> {setMember({...member, username: e.target.value})} }/>
+                            <FormLabel width={isEditing ? 295 : 350}>Felhasználónév: </FormLabel>
+                            <Input borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
+                            {isEditing &&
+                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
+                                    <FaPencilAlt />
+                                </Button>}
                         </HStack>
-{isEditing &&                        <HStack>
-                            <FormLabel width={350}>Jelszó: </FormLabel>
-                            <Input borderColor='#767676' type='password' disabled={!isEditing} value="Supersecretpwd" onChange={(e)=> {setMember({...member, username: e.target.value})} }/>
-                        </HStack>}
+                        <HStack>
+                            <FormLabel width={isEditing ? 295 : 350}>Jelszó: </FormLabel>
+                            <Input borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
+                            {isEditing &&
+                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                    setNewPwd("")
+                                    setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
+                                }}>
+                                    <FaPencilAlt />
+                                </Button>}
+                        </HStack>
                         <HStack my={10}>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={editHandler}>
-                            {!isEditing && <FaPencilAlt />}
-                            <Text mb={0} mx={3}>{isEditing ? 'Mégse' : 'Szerkesztés'}</Text>
-                        </Button>
-                        {
-                        isEditing &&
-                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEditing(!isEditing)}>
-                                <Text mb={0} mx={3}>Mentés</Text>
+                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                setIsEditing(!isEditing)
+                                setNewPwd("KetajtosSzekreny")
+                                setIsEnabledInput({ email: false, username: false, password: false })
+                                setMember(oldMember)
+                            }}>
+                                {!isEditing && <FaPencilAlt />}
+                                <Text mb={0} mx={3}>{isEditing ? 'Mégse' : 'Szerkesztés'}</Text>
                             </Button>
-                        }
-                                                </HStack>
+                            {
+                                isEditing &&
+                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEditing(!isEditing)}>
+                                    <Text mb={0} mx={3}>Mentés</Text>
+                                </Button>
+                            }
+                        </HStack>
                     </VStack>
-                    
+
                 }
 
                 <HStack >
                     <FormLabel width={350}>{t('phone')}: </FormLabel>
-                    <Input borderColor='#767676' disabled value={member.phoneNumber}/>
+                    <Input borderColor='#767676' disabled value={member.phoneNumber} />
                 </HStack>
                 {(isPresident || isOwnProfile) &&
                     <HStack>
