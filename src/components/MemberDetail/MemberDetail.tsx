@@ -20,6 +20,7 @@ const MemberDetail = () => {
     const { t } = useTranslation('register')
 
     const [member, setMember] = useState({} as User)
+    const [oldMember, setOldMember] = useState({} as User)
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
             headers: {
@@ -32,10 +33,9 @@ const MemberDetail = () => {
         }).then(res => {
             if (res.status === 200)
                 setMember(res.data)
+                setOldMember(res.data)
         })
     }, [location.state.id])
-
-    let oldMember = member
 
     const isPresident = user?.roles?.includes('president') || false
     const isOwnProfile = user._id == member._id
@@ -43,8 +43,6 @@ const MemberDetail = () => {
 
     const editHandler = () => {
         setIsEditing(!isEditing)
-
-        if (isEditing) { }
     }
 
     return (
@@ -55,16 +53,16 @@ const MemberDetail = () => {
                 <Text fontSize={20}><b>{t('contacts')}:</b></Text>
                 <HStack >
                     <FormLabel width={350}>{t('email')}: </FormLabel>
-                    <Input borderColor='#767676' disabled={!isEditing} value={oldMember.email} />
+                    <Input borderColor='#767676' disabled={!isEditing} value={oldMember.email}/>
                 </HStack>
                 <HStack >
                     <FormLabel width={350}>{t('phone')}: </FormLabel>
-                    <Input borderColor='#767676' disabled={!isEditing} defaultValue={oldMember.phoneNumber} />
+                    <Input borderColor='#767676' disabled={!isEditing} value={oldMember.phoneNumber} />
                 </HStack>
                 {(isPresident || isOwnProfile) &&
                     <HStack>
                         <FormLabel width={350}>{t('address')}: </FormLabel>
-                        <Input borderColor='#767676' disabled={!isEditing} defaultValue={oldMember.address} />
+                        <Input borderColor='#767676' disabled={!isEditing} value={oldMember.address} />
                     </HStack>
                 }
                 <HStack>
@@ -88,11 +86,11 @@ const MemberDetail = () => {
                     <>
                         <HStack>
                             <FormLabel width={350}>{t('idNumber')}: </FormLabel>
-                            <Input borderColor='#767676' disabled defaultValue={oldMember.idNumber} />
+                            <Input borderColor='#767676' disabled value={oldMember.idNumber} />
                         </HStack>
                         <HStack>
                             <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
-                            <Input borderColor='#767676' disabled defaultValue={oldMember.guardNumber} />
+                            <Input borderColor='#767676' disabled value={oldMember.guardNumber} />
                         </HStack>
                     </>
                 }
