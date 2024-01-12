@@ -9,5 +9,6 @@
   "members": "Tagok",
   "myProfile": "Profilom",
   "notifications": "Értesítések",
-  "logout": "Kijelentkezés"
+  "logout": "Kijelentkezés",
+  "save": "Mentés"
 }

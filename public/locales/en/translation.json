@@ -9,5 +9,6 @@
   "members": "Members",
   "myProfile": "My profile",
   "notifications": "Notifications",
-  "logout": "Logout"
+  "logout": "Logout",
+  "save": "Save"
 }

@@ -176,7 +176,7 @@ const MemberDetail = () => {
                             <Button colorScheme='green' onClick={() => {
                                 if (password) {
                                     apiClient
-                                        .post('/members/me/credentials', {
+                                        .patch('/members/me/credentials', {
                                             member,
                                             headers: {
                                                 'x-current-pass': password,
@@ -185,13 +185,13 @@ const MemberDetail = () => {
                                         .then((res) => res.data)
                                 }
                             }} ml={3}>
-                                Mentés
+                                {t('common:save')}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
-            
+
             <Button mb={8} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
 
         </VStack>
