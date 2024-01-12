@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { User } from '../../hooks/useLogin'
-import { Button, Checkbox, FormLabel, HStack, Heading, Input, Text, VStack, useColorModeValue } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Text, VStack, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import useAuth from '../../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 
 import { FaPencilAlt } from "react-icons/fa";
-
+import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 
 const MemberDetail = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
@@ -18,10 +18,16 @@ const MemberDetail = () => {
     const navigate = useNavigate()
     const { user } = useAuth()
     const { t } = useTranslation('register')
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef<HTMLButtonElement>(null)
 
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
     const [newPwd, setNewPwd] = useState("KetajtosSzekreny")
+    const [password, setPassword] = useState('')
+
+    const [show, setShow] = useState(false)
+    const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
 
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
@@ -62,7 +68,6 @@ const MemberDetail = () => {
                             <FaPencilAlt />
                         </Button>}
                 </HStack>
-
                 {
                     isOwnProfile &&
                     <VStack>
@@ -79,7 +84,7 @@ const MemberDetail = () => {
                             <Input borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
                             {isEditing &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                    setNewPwd("")
+                                    if (!isEnabledInput.password) setNewPwd("")
                                     setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
                                 }}>
                                     <FaPencilAlt />
@@ -97,13 +102,15 @@ const MemberDetail = () => {
                             </Button>
                             {
                                 isEditing &&
-                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEditing(!isEditing)}>
+                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                    setIsEditing(!isEditing)
+                                    onOpen()
+                                }}>
                                     <Text mb={0} mx={3}>Mentés</Text>
                                 </Button>
                             }
                         </HStack>
                     </VStack>
-
                 }
 
                 <HStack >
@@ -136,6 +143,55 @@ const MemberDetail = () => {
                 }
             </VStack>
 
+            <AlertDialog
+                isOpen={isOpen}
+                onClose={onClose}
+                leastDestructiveRef={cancelRef}
+                isCentered={true}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Adatok módosítása
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            A módosítások mentéséhez adja meg mostani jelszavát!
+                            <InputGroup my={2}>
+                                <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
+                                <InputRightElement width="4.5rem">
+                                    <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
+                                        {isVisible()}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button onClick={() => {
+                                onClose()
+                            }}>
+                                {t('common:cancel')}
+                            </Button>
+                            <Button colorScheme='green' onClick={() => {
+                                if (password) {
+                                    apiClient
+                                        .post('/members/me/credentials', {
+                                            member,
+                                            headers: {
+                                                'x-current-pass': password,
+                                            },
+                                        })
+                                        .then((res) => res.data)
+                                }
+                            }} ml={3}>
+                                Mentés
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+            
             <Button mb={8} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
 
         </VStack>
