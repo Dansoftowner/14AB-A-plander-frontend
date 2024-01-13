@@ -7,6 +7,7 @@ import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import MembersList from './components/MembersList/MembersList';
 import InviteMember from './components/MembersList/InviteMember';
 import MemberDetail from './components/MemberDetail/MemberDetail';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 
 const router = createBrowserRouter([
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                 element: <MemberDetail />
             }
         ]
+    },
+    {
+        path: '*',
+        element: <ErrorPage status={404} message='404' />
     }
 
 ])
