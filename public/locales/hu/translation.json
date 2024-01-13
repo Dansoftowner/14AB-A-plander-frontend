@@ -10,5 +10,8 @@
   "myProfile": "Profilom",
   "notifications": "Értesítések",
   "logout": "Kijelentkezés",
-  "save": "Mentés"
+  "save": "Mentés",
+  "edit": "Szerkesztés",
+  "error": "Hiba!",
+  "success": "Siker!"
 }

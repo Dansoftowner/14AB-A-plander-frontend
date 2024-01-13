@@ -10,5 +10,8 @@
   "myProfile": "My profile",
   "notifications": "Notifications",
   "logout": "Logout",
-  "save": "Save"
+  "save": "Save",
+  "edit": "Edit",
+  "error": "Error!",
+  "success": "Success!"
 }
