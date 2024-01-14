@@ -41,5 +41,6 @@
   "pwdToDelete": "Please type your password again to confirm the deletion!",
   "kick": "Kick",
   "inviteMember": "Invite member",
-  "notRegistered": "The member is not finished the registration process yet."
+  "notRegistered": "The member is not finished the registration process yet.",
+  "searchByName": "Search by name"
 }
