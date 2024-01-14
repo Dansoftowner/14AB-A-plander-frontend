@@ -6,5 +6,12 @@
   "president": "Egyesületelnök",
   "cancel": "Mégse",
   "home": "Főoldal",
-  "members": "Tagok"
+  "members": "Tagok",
+  "myProfile": "Profilom",
+  "notifications": "Értesítések",
+  "logout": "Kijelentkezés",
+  "save": "Mentés",
+  "edit": "Szerkesztés",
+  "error": "Hiba!",
+  "success": "Siker!"
 }

@@ -30,11 +30,3 @@ npm run build
 ### 🏋️ Függőségek
 
 A használt "third-party" szoftverek az [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) állományban vannak listázva.
-
-# Jegyzetek
-*Fejlesztési jegyzeteket tudsz itt elmenteni.*
-
-- Routing  hiánya
-- Teljes reszponzivitás ellenőrzése
-- A MUI komponensek hibamentes használata a Chakra UI mellett (témaváltás... stb)
-

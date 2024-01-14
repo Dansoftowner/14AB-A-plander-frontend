@@ -16,5 +16,9 @@
   "success": "Új jelszó sikeresen beállítva!",
   "error": "Hiba történt a jelszó beállításakor!",
   "sendNewPWd": "Új jelszó beállítása",
-  "emailSent": "A visszaállítási email sikeresen elküldve!"
+  "emailSent": "A visszaállítási email sikeresen elküldve!",
+  "editCredentials": "Adatok módosítása",
+  "reEnterPwd": "Adja meg jelenlegi jelszavát a módosítások mentéséhez!",
+  "reLogin": "Kérjük jelentkezzen be újra adataival.",
+  "noChange": "Nem történt változás."
 }
