@@ -13,5 +13,7 @@
   "save": "Mentés",
   "edit": "Szerkesztés",
   "error": "Hiba!",
-  "success": "Siker!"
+  "success": "Siker!",
+  "backToHome": "Vissza a főoldalra...",
+  "404": "A keresett oldal nem található!"
 }

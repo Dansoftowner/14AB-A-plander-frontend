@@ -13,5 +13,7 @@
   "save": "Save",
   "edit": "Edit",
   "error": "Error!",
-  "success": "Success!"
+  "success": "Success!",
+  "backToHome": "Back to home...",
+  "404": "Page not found!"
 }
