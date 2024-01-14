@@ -45,7 +45,7 @@ const MembersList = () => {
             }
             {
                 data &&
-                <HStack justifyContent='center' direction='column' maxW='95vw' borderRadius={4} padding={4} margin={2}>
+                <HStack justifyContent='center' direction='column' maxW='95vw' borderRadius={4} mx={2} marginY={10}>
                     <InputGroup>
                         <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
                         {search &&
