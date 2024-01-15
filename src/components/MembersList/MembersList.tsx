@@ -1,5 +1,5 @@
 import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, KeyboardEvent } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers } from "../../hooks/useMembers"
@@ -36,6 +36,11 @@ const MembersList = () => {
     const { user } = useAuth()
     const navigate = useNavigate()
 
+    const handleKeyPress = (e: KeyboardEvent) => {
+        if (e.key === 'Enter')
+            setQ(search)
+    }
+
     if (!valid) return <Navigate to='/login' />
 
     return (
@@ -47,7 +52,7 @@ const MembersList = () => {
                 data &&
                 <HStack justifyContent='center' direction='column' maxW='95vw' borderRadius={4} mx={2} marginY={10}>
                     <InputGroup>
-                        <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
+                        <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
                         {search &&
                             <InputRightElement>
                                 <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
