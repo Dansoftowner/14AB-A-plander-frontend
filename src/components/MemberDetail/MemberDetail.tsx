@@ -117,7 +117,7 @@ const MemberDetail = () => {
                                 <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
                             </Button>
                             {
-                                (isEditing && oldMember != member || newPwd != 'KetajtosSzekreny') &&
+                                (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                     setIsEditing(!isEditing)
                                     onOpen()
@@ -190,7 +190,7 @@ const MemberDetail = () => {
                                 {t('common:cancel')}
                             </Button>
                             <Button colorScheme='green' onClick={() => {
-                                if (oldMember != member || newPwd != 'KetajtosSzekreny') {
+                                if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') {
                                     apiClient
                                         .patch('/members/me/credentials', {
                                             username: member.username === oldMember.username ? undefined : member.username,
