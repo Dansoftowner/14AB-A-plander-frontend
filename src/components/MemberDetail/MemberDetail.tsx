@@ -2,13 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { User } from '../../hooks/useLogin'
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import useAuth from '../../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import i18n from '../../i18n'
+
+interface Alert {
+    header: string,
+    body: string
+    handleClick?: () => void
+}
 
 const MemberDetail = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
@@ -56,6 +62,8 @@ const MemberDetail = () => {
         password: false,
     });
 
+    const [dialog, setDialog] = useState({} as Alert)
+
     const reset = () => {
         onClose()
         setIsEditing(false)
@@ -69,6 +77,86 @@ const MemberDetail = () => {
         localStorage.removeItem("token");
         setUser({} as User)
         navigate('/login')
+    }
+
+    const confirmOpen = (body: string, header: string, handleClick?: () => void) => {
+        onOpen()
+        setDialog({
+            header: header,
+            body: body,
+            handleClick: handleClick
+        })
+    }
+
+    const save = () => {
+        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') {
+            apiClient
+                .patch('/members/me/credentials', {
+                    username: member.username === oldMember.username ? undefined : member.username,
+                    email: member.email === oldMember.email ? undefined : member.email,
+                    password: newPwd == 'KetajtosSzekreny' ? undefined : newPwd
+                }, {
+                    headers: {
+                        'x-current-pass': password,
+                        'x-plander-auth':
+                            localStorage.getItem('token') || sessionStorage.getItem('token'),
+                        'Accept-Language': i18n.language,
+                    }
+                })
+                .then((res) => {
+                    if (res.status == 204) {
+                        feedbeckToast({
+                            title: t('common:success'),
+                            description: t('login:reLogin'),
+                            status: 'success',
+                            duration: 9000,
+                            position: 'top'
+                        })
+                        reset()
+                        logout()
+                    }
+                }).catch(err => {
+                    feedbeckToast({
+                        title: t('common:error'),
+                        description: err.response.data.message,
+                        status: 'error',
+                        duration: 9000,
+                        position: 'top'
+                    })
+                    reset()
+                    setNewPwd("KetajtosSzekreny")
+                })
+        } else {
+            feedbeckToast({
+                title: t('common:error'),
+                description: t('login:noChange'),
+                status: 'warning',
+                duration: 9000,
+                position: 'top'
+            })
+            reset()
+
+        }
+    }
+    const transferRoles = () => {
+        apiClient.patch(`/members/transfer-my-roles/${member._id}?q=true`, {
+            headers: {
+                'x-plander-auth':
+                    localStorage.getItem('token') || sessionStorage.getItem('token'),
+                'x-current-pwd': password,
+            }
+        }).then(res => {
+            if (res.status === 204) {
+                feedbeckToast({
+                    title: 'kesz',
+                    description: 'rang atadva',
+                    status: 'success',
+                    duration: 9000,
+                    position: 'top'
+                })
+                setPassword('')
+            }
+        })
     }
 
     return (
@@ -120,7 +208,7 @@ const MemberDetail = () => {
                                 (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                     setIsEditing(!isEditing)
-                                    onOpen()
+                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'), save)
                                 }}>
                                     <Text mb={0} mx={3}>{t('common:save')}</Text>
                                 </Button>
@@ -157,8 +245,16 @@ const MemberDetail = () => {
                         </HStack>
                     </>
                 }
+
+                {
+                    (isPresident && !member.roles?.includes('president')) &&
+                    <Stack my={10}>
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen('a', 'b')}>Egyesületelnökké léptetés</Button>
+                    </Stack>
+                }
             </VStack>
 
+            {/* pwd confirmation panel */}
             <AlertDialog
                 isOpen={isOpen}
                 onClose={onClose}
@@ -167,12 +263,13 @@ const MemberDetail = () => {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            {t('login:editCredentials')}
-                        </AlertDialogHeader>
+
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold' children={dialog.header} />
+                        {/* {t('login:editCredentials')} */}
 
                         <AlertDialogBody>
-                            {t('login:reEnterPwd')}
+                            {dialog.body}
+                            {/* {t('login:reEnterPwd')} */}
                             <InputGroup my={2}>
                                 <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
                                 <InputRightElement width="4.5rem">
@@ -189,56 +286,7 @@ const MemberDetail = () => {
                             }}>
                                 {t('common:cancel')}
                             </Button>
-                            <Button colorScheme='green' onClick={() => {
-                                if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') {
-                                    apiClient
-                                        .patch('/members/me/credentials', {
-                                            username: member.username === oldMember.username ? undefined : member.username,
-                                            email: member.email === oldMember.email ? undefined : member.email,
-                                            password: newPwd == 'KetajtosSzekreny' ? undefined : newPwd
-                                        }, {
-                                            headers: {
-                                                'x-current-pass': password,
-                                                'x-plander-auth':
-                                                    localStorage.getItem('token') || sessionStorage.getItem('token'),
-                                                'Accept-Language': i18n.language,
-                                            }
-                                        })
-                                        .then((res) => {
-                                            if (res.status == 204) {
-                                                feedbeckToast({
-                                                    title: t('common:success'),
-                                                    description: t('login:reLogin'),
-                                                    status: 'success',
-                                                    duration: 9000,
-                                                    position: 'top'
-                                                })
-                                                reset()
-                                                logout()
-                                            }
-                                        }).catch(err => {
-                                            feedbeckToast({
-                                                title: t('common:error'),
-                                                description: err.response.data.message,
-                                                status: 'error',
-                                                duration: 9000,
-                                                position: 'top'
-                                            })
-                                            reset()
-                                            setNewPwd("KetajtosSzekreny")
-                                        })
-                                } else {
-                                    feedbeckToast({
-                                        title: t('common:error'),
-                                        description: t('login:noChange'),
-                                        status: 'warning',
-                                        duration: 9000,
-                                        position: 'top'
-                                    })
-                                    reset()
-
-                                }
-                            }} ml={3}>
+                            <Button colorScheme='green' onClick={dialog.handleClick} ml={3}>
                                 {t('common:save')}
                             </Button>
                         </AlertDialogFooter>
