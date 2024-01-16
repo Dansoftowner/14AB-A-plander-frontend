@@ -13,16 +13,21 @@ import commonTranslationEN from '../public/locales/en/translation.json'
 import registerTranslationEN from '../public/locales/en/register.json'
 import registerTranslationHU from '../public/locales/hu/register.json'
 
+import memberTranslationHU from '../public/locales/hu/member.json'
+import memberTranslationEN from '../public/locales/en/member.json'
+
 const resources = {
   en: {
     login: loginTranslationEN,
     register: registerTranslationEN,
     common: commonTranslationEN,
+    member: memberTranslationEN,
   },
   hu: {
     login: loginTranslationHU,
     register: registerTranslationHU,
     common: commonTranslationHU,
+    member: memberTranslationHU,
   },
 }
 
