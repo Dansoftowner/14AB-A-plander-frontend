@@ -1,19 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
-import { User } from '../../hooks/useLogin'
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import useAuth from '../../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
-import i18n from '../../i18n'
+import { User } from '../../hooks/useLogin'
+import { useAuth, useCredentials, useTransfer } from '../../hooks/hooks'
 
 interface Alert {
     header: string,
     body: string
-    handleClick?: () => void
 }
 
 const MemberDetail = () => {
@@ -32,10 +30,19 @@ const MemberDetail = () => {
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
     const [newPwd, setNewPwd] = useState("KetajtosSzekreny")
-    const [password, setPassword] = useState('')
 
+    const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
     const isVisible = () => (show ? <IoMdEyeOff /> : <IoMdEye />)
+
+    const isPresident = user?.roles?.includes('president') || false
+    const isOwnProfile = user._id == member._id
+    const [isEditing, setIsEditing] = useState(false);
+    const [isEnabledInput, setIsEnabledInput] = useState({
+        email: false,
+        username: false,
+        password: false,
+    });
 
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
@@ -53,14 +60,6 @@ const MemberDetail = () => {
         })
     }, [location.state.id])
 
-    const isPresident = user?.roles?.includes('president') || false
-    const isOwnProfile = user._id == member._id
-    const [isEditing, setIsEditing] = useState(false);
-    const [isEnabledInput, setIsEnabledInput] = useState({
-        email: false,
-        username: false,
-        password: false,
-    });
 
     const [dialog, setDialog] = useState({} as Alert)
 
@@ -79,57 +78,43 @@ const MemberDetail = () => {
         navigate('/login')
     }
 
-    const confirmOpen = (body: string, header: string, handleClick?: () => void) => {
+    const confirmOpen = (body: string, header: string) => {
         onOpen()
         setDialog({
             header: header,
             body: body,
-            handleClick: handleClick
         })
     }
 
     const save = () => {
         if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') {
-            apiClient
-                .patch('/members/me/credentials', {
-                    username: member.username === oldMember.username ? undefined : member.username,
-                    email: member.email === oldMember.email ? undefined : member.email,
-                    password: newPwd == 'KetajtosSzekreny' ? undefined : newPwd
-                }, {
-                    headers: {
-                        'x-current-pass': password,
-                        'x-plander-auth':
-                            localStorage.getItem('token') || sessionStorage.getItem('token'),
-                        'Accept-Language': i18n.language,
-                    }
-                })
+            useCredentials(member, oldMember, password, newPwd)
                 .then((res) => {
                     if (res.status == 204) {
                         feedbeckToast({
                             title: t('common:success'),
-                            description: t('login:reLogin'),
+                            description: t('member:reLogin'),
                             status: 'success',
                             duration: 9000,
                             position: 'top'
                         })
-                        reset()
                         logout()
+                    } else {
+                        feedbeckToast({
+                            title: t('common:error'),
+                            description: res.response.data.message,
+                            status: 'error',
+                            duration: 9000,
+                            position: 'top'
+                        })
+                        setNewPwd("KetajtosSzekreny")
                     }
-                }).catch(err => {
-                    feedbeckToast({
-                        title: t('common:error'),
-                        description: err.response.data.message,
-                        status: 'error',
-                        duration: 9000,
-                        position: 'top'
-                    })
                     reset()
-                    setNewPwd("KetajtosSzekreny")
                 })
         } else {
             feedbeckToast({
                 title: t('common:error'),
-                description: t('login:noChange'),
+                description: t('member:noChange'),
                 status: 'warning',
                 duration: 9000,
                 position: 'top'
@@ -139,24 +124,28 @@ const MemberDetail = () => {
         }
     }
     const transferRoles = () => {
-        apiClient.patch(`/members/transfer-my-roles/${member._id}?q=true`, {
-            headers: {
-                'x-plander-auth':
-                    localStorage.getItem('token') || sessionStorage.getItem('token'),
-                'x-current-pwd': password,
-            }
-        }).then(res => {
-            if (res.status === 204) {
-                feedbeckToast({
-                    title: 'kesz',
-                    description: 'rang atadva',
-                    status: 'success',
-                    duration: 9000,
-                    position: 'top'
-                })
-                setPassword('')
-            }
-        })
+        useTransfer(member._id, password)
+            .then(res => {
+                if (res.status === 200) {
+                    feedbeckToast({
+                        title: 'a',
+                        description: 'jo',
+                        status: 'error',
+                        duration: 9000,
+                        position: 'top',
+                    })
+                } else {
+                    feedbeckToast({
+                        title: t('common:error'),
+                        description: res.response.data.message,
+                        status: 'error',
+                        duration: 9000,
+                        position: 'top',
+                    })
+                }
+                onClose()
+
+            })
     }
 
     return (
@@ -208,7 +197,7 @@ const MemberDetail = () => {
                                 (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                     setIsEditing(!isEditing)
-                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'), save)
+                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
                                 }}>
                                     <Text mb={0} mx={3}>{t('common:save')}</Text>
                                 </Button>
@@ -249,7 +238,7 @@ const MemberDetail = () => {
                 {
                     (isPresident && !member.roles?.includes('president')) &&
                     <Stack my={10}>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen('a', 'b')}>Egyesületelnökké léptetés</Button>
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
                     </Stack>
                 }
             </VStack>
@@ -286,7 +275,19 @@ const MemberDetail = () => {
                             }}>
                                 {t('common:cancel')}
                             </Button>
-                            <Button colorScheme='green' onClick={dialog.handleClick} ml={3}>
+                            <Button colorScheme='green' onClick={() => {
+                                if (location.state.id == user._id) {
+                                    save()
+                                    setIsEditing(!isEditing)
+                                    setNewPwd("KetajtosSzekreny")
+                                    setIsEnabledInput({ email: false, username: false, password: false })
+                                    setMember(oldMember)
+                                }
+                                else {
+                                    console.log(password)
+                                    transferRoles()
+                                }
+                            }} ml={3}>
                                 {t('common:save')}
                             </Button>
                         </AlertDialogFooter>
