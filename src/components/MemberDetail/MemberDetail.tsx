@@ -252,13 +252,9 @@ const MemberDetail = () => {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-
                         <AlertDialogHeader fontSize='lg' fontWeight='bold' children={dialog.header} />
-                        {/* {t('login:editCredentials')} */}
-
                         <AlertDialogBody>
                             {dialog.body}
-                            {/* {t('login:reEnterPwd')} */}
                             <InputGroup my={2}>
                                 <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
                                 <InputRightElement width="4.5rem">
