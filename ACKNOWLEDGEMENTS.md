@@ -11,8 +11,11 @@
 - React-hook-form
 - MUI
 - AXIOS
+- Date-fns
+- React-big-calendar
 
 ## Fejlesztési
 - Vite
 - Prettier
 - ESLint
+- React-query
