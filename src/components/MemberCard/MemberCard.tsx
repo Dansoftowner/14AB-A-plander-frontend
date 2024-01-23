@@ -1,4 +1,4 @@
-import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue } from '@chakra-ui/react'
 import { FaUserAlt, FaTrash } from "react-icons/fa";
 import { MdOutlineWarning } from "react-icons/md";
 import useAuth from '../../hooks/useAuth';
@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { useRemoveMember } from '../../hooks/useMembers';
 import { useQueryClient } from '@tanstack/react-query';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 }
 
 const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
+    const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const { user } = useAuth()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { t } = useTranslation('register')
@@ -94,6 +95,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                                             </InputRightElement>
                                         </InputGroup>
                                         {confirmError && <Text color='red'>{confirmError}</Text>}
+                                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
                                     </AlertDialogBody>
 
                                     <AlertDialogFooter>

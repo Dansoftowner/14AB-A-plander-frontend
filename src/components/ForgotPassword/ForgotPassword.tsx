@@ -92,11 +92,11 @@ const ForgotPassword = () => {
                                 {errors.repeatedPassword && <FormErrorMessage> {t('register:' + errors.repeatedPassword.message)} </FormErrorMessage>}
                             </Box>
                             <Button name="submitbtn" type="submit" backgroundColor={buttonBg} color={buttonColor}>{t('sendNewPWd')}</Button>
-                            <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor}>
-                                <Link to='/login'>{t('backToLogin')}</Link>
-                            </Button>
-                        </Stack>
-                    </FormControl>
+                            <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/login')}>
+                                {t('backToLogin')}
+                            </Button >
+                        </Stack >
+                    </FormControl >
                 </form >
             </>
         )
@@ -190,8 +190,8 @@ const ForgotPassword = () => {
                     </Box>
 
                     <Button type='submit' margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }}>{t('newPassword')}</Button>
-                    <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }}>
-                        <Link to='/login'>{t('backToLogin')}</Link>
+                    <Button margin={5} padding={5} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={() => navigate(-1)}>
+                        {t('common:back')}
                     </Button>
                 </Stack>
             </ form>
