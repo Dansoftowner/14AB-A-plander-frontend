@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
@@ -263,6 +263,7 @@ const MemberDetail = () => {
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
+                            <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
