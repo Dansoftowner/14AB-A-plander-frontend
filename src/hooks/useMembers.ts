@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import apiClient from '../services/apiClient'
 import { AsQuery } from './useAssociations'
 import { User } from './useLogin'
+import i18n from '../i18n'
 
 interface Response {
   metadata: {
@@ -40,5 +41,6 @@ export const useRemoveMember = (id: string, pwd: string) =>
       'x-plander-auth':
         localStorage.getItem('token') || sessionStorage.getItem('token'),
       'x-current-pass': pwd,
+      'Accept-Language': i18n.language,
     },
   })
