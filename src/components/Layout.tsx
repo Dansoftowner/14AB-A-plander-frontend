@@ -55,7 +55,7 @@ const Layout = () => {
                             <NavLink to='/assignments' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
                             })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>Beosztások</Text>
+                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
                             </NavLink>
                         </Show>
                     </GridItem>
