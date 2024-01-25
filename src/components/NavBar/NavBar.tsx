@@ -43,7 +43,7 @@ const NavBar = () => {
                                 <FaCaretDown />
                             </HStack>
                         </MenuButton>
-                        <MenuList >
+                        <MenuList zIndex={330}>
                             <MenuItem onClick={() => {
                                 navigate('member/' + user._id!, {
                                     state: { id: user._id }
