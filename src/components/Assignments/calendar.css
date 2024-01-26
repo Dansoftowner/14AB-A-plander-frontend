@@ -41,3 +41,26 @@
   background-color: red;
   pointer-events: none;
 }
+.rbc-day-bg::after {
+  border-radius: 10px;
+}
+.rbc-month-view {
+  border-radius: 10px;
+}
+.rbc-month-view .rbc-month-row {
+  border-bottom-right-radius: 10px;
+}
+
+.rbc-time-view {
+  border-radius: 10px;
+}
+.rbc-timeslot-group:nth-child(12) {
+  border-bottom: none;
+}
+.rbc-time-gutter.rbc-time-column
+  + .rbc-day-slot.rbc-time-column.rbc-now.rbc-today {
+  border-bottom-right-radius: 10px;
+}
+.rbc-day-bg.rbc-today:nth-child(1) {
+  border-top-right-radius: 10px;
+}
