@@ -6,6 +6,16 @@ import { FaChevronDown } from "react-icons/fa"
 import { MdOutlineLocalPolice } from "react-icons/md"
 import { useInfiniteMembers } from "../../hooks/useMembers"
 import { User } from "../../hooks/useLogin"
+import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
+
+import '@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+
+
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const AddAssignment = () => {
 
@@ -14,6 +24,8 @@ const AddAssignment = () => {
     const [selectedMember, setSelectedMember] = useState({} as User)
 
     const [inDuty, setInDuty] = useState([] as User[])
+
+    const [value, onChange] = useState<Value>(new Date());
 
     return (
         <>
@@ -69,7 +81,9 @@ const AddAssignment = () => {
                 ))}
             </List>
 
-              
+            <Heading mt={5} fontSize='medium'>Szolgálat ideje</Heading>
+            <DateTimeRangePicker value={value} onChange={onChange} />
+                    {/*Minden szolgálat 3 órás? --> akk nem kell range picker, csak picked+3*/ }
         </>
     )
 }

@@ -13,6 +13,7 @@
 - AXIOS
 - Date-fns
 - React-big-calendar
+- React-datetime-picker
 
 ## Fejlesztési
 - Vite
