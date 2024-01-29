@@ -2,6 +2,7 @@ import React from 'react'
 import CalendarComponent from './CalendarComponent'
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack } from '@chakra-ui/react'
 import { useAuth } from '../../hooks/hooks'
+import AddAssignment from './AddAssignment'
 
 const Assignments = () => {
 
@@ -38,7 +39,7 @@ const Assignments = () => {
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure? You can't undo this action afterwards.
+                            <AddAssignment />
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
