@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CalendarComponent from './CalendarComponent'
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast } from '@chakra-ui/react'
 import { useAuth } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 import { User } from '../../hooks/useLogin'
@@ -16,6 +16,7 @@ const Assignments = () => {
     const { user } = useAuth()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef<HTMLButtonElement>(null)
+    const toast = useToast()
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
@@ -77,8 +78,14 @@ const Assignments = () => {
                                     const end = value[1] as Date
                                     const assignees = inDuty.map(x => x._id)
 
-                                    usePostAssignment(title, location, start, end, assignees)
-
+                                    usePostAssignment(title || 'Általános szolgálat', location || 'Nem megadott', start, end, assignees)
+                                    toast({
+                                        title: 'Sikeres létrehozás',
+                                        description: 'A szolgálat sikeresen rögzítve lett',
+                                        status: 'success',
+                                        position: 'top',
+                                        colorScheme: 'green'
+                                    })
                                 }
                             }} ml={3}>
                                 Rögzítés

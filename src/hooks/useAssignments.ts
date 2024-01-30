@@ -49,6 +49,21 @@ export const useAssignments = (query: AssignmentsQuery) =>
         .then((res) => res.data),
   })
 
+export const useAssignment = (_id: string) =>
+  useQuery({
+    queryKey: ['assignment', _id],
+    queryFn: () =>
+      apiClient
+        .get(`/assignments/${_id}?projection=full`, {
+          headers: {
+            'x-plander-auth':
+              localStorage.getItem('token') || sessionStorage.getItem('token'),
+            'Accept-Language': i18n.language,
+          },
+        })
+        .then((res) => res.data),
+  })
+
 export const usePostAssignment = (
   title: string,
   location: string,
@@ -75,3 +90,38 @@ export const usePostAssignment = (
       },
     )
     .then((res) => res.data)
+
+export const useDeleteAssignment = (_id: string) =>
+  apiClient.delete(`/assignments/${_id}`, {
+    headers: {
+      'x-plander-auth':
+        localStorage.getItem('token') || sessionStorage.getItem('token'),
+      'Accept-Language': i18n.language,
+    },
+  })
+
+export const usePatchAssignment = (
+  _id: string,
+  title: string,
+  location: string,
+  start: Date,
+  end: Date,
+  assignees: string[],
+) =>
+  apiClient.patch(
+    `/assignments/${_id}`,
+    {
+      title,
+      location,
+      start,
+      end,
+      assignees,
+    },
+    {
+      headers: {
+        'x-plander-auth':
+          localStorage.getItem('token') || sessionStorage.getItem('token'),
+        'Accept-Language': i18n.language,
+      },
+    },
+  )
