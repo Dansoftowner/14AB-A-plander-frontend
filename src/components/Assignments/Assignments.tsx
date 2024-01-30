@@ -4,8 +4,10 @@ import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
 import { useAuth } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 import { User } from '../../hooks/useLogin'
-import { ISOStringFormat, set } from 'date-fns'
+
 import { usePostAssignment } from '../../hooks/useAssignments'
+import { useQueryClient } from '@tanstack/react-query'
+
 
 type ValuePiece = Date | null;
 
@@ -17,6 +19,7 @@ const Assignments = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef<HTMLButtonElement>(null)
     const toast = useToast()
+    const queryClient = useQueryClient()
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
@@ -27,7 +30,6 @@ const Assignments = () => {
     const [value, setValue] = useState<Value>(new Date());
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
-
 
     const reset = () => {
         onClose()
@@ -78,13 +80,15 @@ const Assignments = () => {
                                     const end = value[1] as Date
                                     const assignees = inDuty.map(x => x._id)
 
-                                    usePostAssignment(title || 'Általános szolgálat', location || 'Nem megadott', start, end, assignees)
-                                    toast({
-                                        title: 'Sikeres létrehozás',
-                                        description: 'A szolgálat sikeresen rögzítve lett',
-                                        status: 'success',
-                                        position: 'top',
-                                        colorScheme: 'green'
+                                    usePostAssignment(title || 'Általános szolgálat', location || 'Nem megadott', start, end, assignees).then(() => {
+                                        queryClient.refetchQueries(['assignments'])
+                                        toast({
+                                            title: 'Sikeres létrehozás',
+                                            description: 'A szolgálat sikeresen rögzítve lett',
+                                            status: 'success',
+                                            position: 'top',
+                                            colorScheme: 'green'
+                                        })
                                     })
                                 }
                             }} ml={3}>

@@ -59,13 +59,13 @@ const CalendarComponent = () => {
     const [valid, setValid] = useState(true)
     const queryClient = useQueryClient()
 
-    const [period, setPeriod] = useState({ start: startOfMonth(new Date()).toISOString(), end: add(new Date().toISOString(), { months: 1 }).toISOString(), orderBy: 'title', projection: 'full' } as AssignmentsQuery)
-    const { data: events } = useAssignments(period)
+    const [period, setPeriod] = useState({ start: startOfMonth(new Date()).toISOString(), end: add(startOfMonth(new Date()).toISOString(), { months: 1, weeks: 1 }).toISOString(), orderBy: 'start', projection: 'full' } as AssignmentsQuery)
+    const { data } = useAssignments(period)
 
     useEffect(() => {
-        queryClient.removeQueries(['assignments'])
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
-    }, [events])
+    }, [])
+
 
     const locales = {
         'hu-HU': huHU,
@@ -135,17 +135,16 @@ const CalendarComponent = () => {
                                     <Button colorScheme='red' onClick={() => {
                                         setShowAlert(false)
                                         reset()
-                                        useDeleteAssignment(assigmentId)
-                                        toast({
-                                            title: 'Sikeres törlés',
-                                            description: 'A beosztás sikeresen törölve lett',
-                                            status: 'success',
-                                            position: 'top',
-                                            colorScheme: 'green'
+                                        useDeleteAssignment(assigmentId).then(() => {
+                                            queryClient.refetchQueries(['assignments'])
+                                            toast({
+                                                title: 'Sikeres törlés',
+                                                description: 'A szolgálat törölve lett',
+                                                status: 'success',
+                                                position: 'top',
+                                                colorScheme: 'green'
+                                            })
                                         })
-                                        queryClient.removeQueries(['assignments'])
-                                        queryClient.refetchQueries(['assignments'])
-                                        setAssigmentId('')
                                     }} ml={3}>
                                         Törlés
                                     </Button>
@@ -154,7 +153,16 @@ const CalendarComponent = () => {
                                 <Button colorScheme='green' onClick={() => {
                                     if (value instanceof Array) {
                                         // console.log(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id))
-                                        usePatchAssignment(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id))
+                                        usePatchAssignment(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id)).then(() => {
+                                            queryClient.refetchQueries(['assignments'])
+                                            toast({
+                                                title: 'Sikeres mentés',
+                                                description: 'A beosztás módosítva lett!',
+                                                status: 'success',
+                                                position: 'top',
+                                                colorScheme: 'green'
+                                            })
+                                        })
                                     }
                                     setShowAlert(false)
                                 }} ml={3}>
@@ -177,11 +185,12 @@ const CalendarComponent = () => {
                     startAccessor="start"
                     endAccessor="end"
                     step={60}
-                    events={events?.items}
+                    events={data?.items}
                     messages={i18n.language == 'hu' ? lang['hu'] : lang['en']}
                     views={['month', 'week', 'day']}
                     culture={i18n.language == 'hu' ? 'hu-HU' : 'en-US'}
                     onSelectEvent={onSelectEvent}
+                    showAllEvents={true}
                 />
             </Box>
         </>

@@ -1,8 +1,7 @@
-import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, InputRightElement, List, ListItem, Spinner, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, List, ListItem, Spinner, Text, VStack } from "@chakra-ui/react"
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from "@choc-ui/chakra-autocomplete"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 import { FaChevronDown } from "react-icons/fa"
-import { MdOutlineLocalPolice } from "react-icons/md"
 import { useInfiniteMembers } from "../../hooks/useMembers"
 import { User } from "../../hooks/useLogin"
 import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
