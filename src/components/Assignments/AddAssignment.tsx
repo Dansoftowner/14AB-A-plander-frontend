@@ -58,7 +58,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
                 <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedMember(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
                     <InputGroup>
-                        <AutoCompleteInput autoComplete="off" placeholder='Tag neve' value={selectedMember.name || ''}
+                        <AutoCompleteInput autoComplete="off" placeholder='Tag neve' value={selectedMember.name || qParam}
                             borderRadius={10}
                             fontSize={18}
                             h={10}
@@ -68,9 +68,6 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                         />
                         <InputRightElement
                             children={<FaChevronDown />} />
-                        <InputLeftElement>
-                            <MdOutlineLocalPolice />
-                        </InputLeftElement>
                     </InputGroup>
 
                     <AutoCompleteList loadingState={<Spinner />}>
@@ -98,6 +95,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                         setInDuty([...inDuty, selectedMember])
                     }
                     setSelectedMember({} as User)
+                    setQParam('')
                 }}><Text mb={0}>Felvétel</Text></Button>
             </HStack >
 
