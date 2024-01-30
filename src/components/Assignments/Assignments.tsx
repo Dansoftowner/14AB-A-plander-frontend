@@ -4,6 +4,8 @@ import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader,
 import { useAuth } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 import { User } from '../../hooks/useLogin'
+import { ISOStringFormat, set } from 'date-fns'
+import { usePostAssignment } from '../../hooks/useAssignments'
 
 type ValuePiece = Date | null;
 
@@ -21,9 +23,18 @@ const Assignments = () => {
 
     //for prop passing
     const [inDuty, setInDuty] = useState([] as User[])
-
     const [value, setValue] = useState<Value>(new Date());
+    const [title, setTitle] = useState('')
+    const [location, setLocation] = useState('')
 
+
+    const reset = () => {
+        onClose()
+        setInDuty([])
+        setValue(new Date())
+        setTitle('')
+        setLocation('')
+    }
 
     return (
         <div>
@@ -49,18 +60,27 @@ const Assignments = () => {
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} />
+                            <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
+                                setTitle={setTitle} setLocation={setLocation} />
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={() => {
-                                onClose()
-                                setInDuty([])
-                                setValue(new Date())
+                                reset()
                             }}>
                                 Mégse
                             </Button>
-                            <Button colorScheme='green' onClick={onClose} ml={3}>
+                            <Button colorScheme='green' onClick={() => {
+                                reset()
+                                if (value instanceof Array) {
+                                    const start = value[0] as Date
+                                    const end = value[1] as Date
+                                    const assignees = inDuty.map(x => x._id)
+
+                                    usePostAssignment(title, location, start, end, assignees)
+
+                                }
+                            }} ml={3}>
                                 Rögzítés
                             </Button>
                         </AlertDialogFooter>

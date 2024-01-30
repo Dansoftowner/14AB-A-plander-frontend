@@ -1,6 +1,5 @@
-import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, InputRightElement, List, ListItem, Spinner, Text, UnorderedList, VStack, border, useColorModeValue } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputLeftElement, InputRightElement, List, ListItem, Spinner, Text, VStack } from "@chakra-ui/react"
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from "@choc-ui/chakra-autocomplete"
-import { t } from "i18next"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 import { FaChevronDown } from "react-icons/fa"
 import { MdOutlineLocalPolice } from "react-icons/md"
@@ -24,10 +23,13 @@ interface Props {
     setInDuty: Dispatch<SetStateAction<User[]>>
     value: Value,
     setValue: Dispatch<SetStateAction<Value>>
-    
+    title: string,
+    setTitle: Dispatch<SetStateAction<string>>
+    location: string,
+    setLocation: Dispatch<SetStateAction<string>>
 }
 
-const AddAssignment = ({ inDuty, setInDuty, value, setValue }: Props) => {
+const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, setLocation, setTitle }: Props) => {
 
     const [qParam, setQParam] = useState('')
     const { data: members, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteMembers({ limit: 4, projection: 'lite', q: qParam })
@@ -40,17 +42,18 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue }: Props) => {
                 <FormControl my={5}>
                     <FormLabel>Szolgálat neve</FormLabel>
                     <InputGroup>
-                        <Input placeholder='Nem kötelező.' />
+                        <Input placeholder='Nem kötelező.' value={title} onChange={(e) => setTitle(e.target.value)} />
                     </InputGroup>
                 </FormControl>
 
                 <FormControl mb={10}>
                     <FormLabel>Szolgálat helyszíne</FormLabel>
                     <InputGroup>
-                        <Input placeholder='Nem kötelező.' />
+                        <Input placeholder='Nem kötelező.' value={location} onChange={(e) => setLocation(e.target.value)} />
                     </InputGroup>
                 </FormControl>
             </VStack>
+
             <HStack>
 
                 <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedMember(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
@@ -69,6 +72,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue }: Props) => {
                             <MdOutlineLocalPolice />
                         </InputLeftElement>
                     </InputGroup>
+
                     <AutoCompleteList loadingState={<Spinner />}>
                         {members?.pages.map((page, index) =>
                             <Fragment key={index} >
@@ -93,8 +97,6 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue }: Props) => {
                     if (selectedMember._id) {
                         setInDuty([...inDuty, selectedMember])
                     }
-                    console.log(value)
-                    console.log(inDuty)
                     setSelectedMember({} as User)
                 }}><Text mb={0}>Felvétel</Text></Button>
             </HStack >

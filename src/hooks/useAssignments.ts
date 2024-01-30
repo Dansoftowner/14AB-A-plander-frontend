@@ -48,3 +48,30 @@ export const useAssignments = (query: AssignmentsQuery) =>
         })
         .then((res) => res.data),
   })
+
+export const usePostAssignment = (
+  title: string,
+  location: string,
+  start: Date,
+  end: Date,
+  assignees: string[],
+) =>
+  apiClient
+    .post(
+      '/assignments',
+      {
+        title,
+        location,
+        start: start.toISOString(),
+        end: end.toISOString(),
+        assignees,
+      },
+      {
+        headers: {
+          'x-plander-auth':
+            localStorage.getItem('token') || sessionStorage.getItem('token'),
+          'Accept-Language': i18n.language,
+        },
+      },
+    )
+    .then((res) => res.data)
