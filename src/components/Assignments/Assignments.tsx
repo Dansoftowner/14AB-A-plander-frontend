@@ -7,11 +7,8 @@ import { User } from '../../hooks/useLogin'
 
 import { usePostAssignment } from '../../hooks/useAssignments'
 import { useQueryClient } from '@tanstack/react-query'
+import { add } from 'date-fns'
 
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Assignments = () => {
 
@@ -27,14 +24,14 @@ const Assignments = () => {
 
     //for prop passing
     const [inDuty, setInDuty] = useState([] as User[])
-    const [value, setValue] = useState<Value>(new Date());
+    const [value, setValue] = useState<string[]>([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()]);
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
 
     const reset = () => {
         onClose()
         setInDuty([])
-        setValue(new Date())
+        setValue([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()])
         setTitle('')
         setLocation('')
     }
@@ -76,8 +73,8 @@ const Assignments = () => {
                             <Button colorScheme='green' onClick={() => {
                                 reset()
                                 if (value instanceof Array) {
-                                    const start = value[0] as Date
-                                    const end = value[1] as Date
+                                    const start = value[0]
+                                    const end = value[1]
                                     const assignees = inDuty.map(x => x._id)
 
                                     usePostAssignment(title || 'Általános szolgálat', location || 'Nem megadott', start, end, assignees).then(() => {

@@ -12,16 +12,11 @@ import 'react-clock/dist/Clock.css';
 import './calendar.css'
 import i18n from "../../i18n"
 
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 interface Props {
     inDuty: User[],
     setInDuty: Dispatch<SetStateAction<User[]>>
-    value: Value,
-    setValue: Dispatch<SetStateAction<Value>>
+    value: string[],
+    setValue: Dispatch<SetStateAction<string[]>>
     title: string,
     setTitle: Dispatch<SetStateAction<string>>
     location: string,
@@ -33,7 +28,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
     const [qParam, setQParam] = useState('')
     const { data: members, hasNextPage, fetchNextPage, isFetchingNextPage, isLoading } = useInfiniteMembers({ limit: 4, projection: 'lite', q: qParam })
     const [selectedMember, setSelectedMember] = useState({} as User)
-
+    const [content, setContent] = useState('')
 
     return (
         <>
@@ -55,14 +50,15 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <HStack>
 
-                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedMember(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen egyesület!</Text>}>
+                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => { setSelectedMember(val.originalValue); setContent(val.originalValue.name) }} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen nevű tag!</Text>}>
                     <InputGroup>
-                        <AutoCompleteInput autoComplete="off" placeholder='Tag neve' value={selectedMember.name || qParam}
+                        <AutoCompleteInput autoComplete="off" placeholder='Tag neve' value={content}
                             borderRadius={10}
                             fontSize={18}
                             h={10}
                             onChange={(val: any) => {
                                 setQParam(val.target.value)
+                                setContent(val.target.value)
                             }}
                         />
                         <InputRightElement
@@ -90,11 +86,12 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                     </AutoCompleteList>
                 </AutoComplete>
                 <Button onClick={() => {
-                    if (selectedMember._id) {
+                    if (selectedMember._id && !inDuty.includes(selectedMember)) {
                         setInDuty([...inDuty, selectedMember])
                     }
                     setSelectedMember({} as User)
                     setQParam('')
+                    setContent('')
                 }}><Text mb={0}>Felvétel</Text></Button>
             </HStack >
 
@@ -111,7 +108,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <Heading mt={5} fontSize='medium'>Szolgálat ideje</Heading>
             <Box>
-                <DateTimeRangePicker locale={i18n.language == 'hu' ? 'hu-HU' : 'en-US'} value={value} onChange={setValue} />
+                <DateTimeRangePicker locale={i18n.language == 'hu' ? 'hu-HU' : 'en-US'} value={[value[0], value[1]]} onChange={setValue} />
             </Box>
         </>
     )
