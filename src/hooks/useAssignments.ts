@@ -68,8 +68,8 @@ export const useAssignment = (_id: string) =>
 export const usePostAssignment = (
   title: string,
   location: string,
-  start: Date,
-  end: Date,
+  start: string,
+  end: string,
   assignees: string[],
 ) =>
   apiClient
@@ -78,8 +78,10 @@ export const usePostAssignment = (
       {
         title,
         location,
-        start: start.toISOString(),
-        end: end.toISOString(),
+        // start: start.toISOString(),
+        // end: end.toISOString(),
+        start,
+        end,
         assignees,
       },
       {
