@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import apiClient from '../services/apiClient'
 import i18n from '../i18n'
 
-interface Assignment {
+export interface Assignment {
   _id: string
   title: string
   location: string
@@ -62,6 +62,7 @@ export const useAssignment = (_id: string) =>
           },
         })
         .then((res) => res.data),
+    retry: 1,
   })
 
 export const usePostAssignment = (
