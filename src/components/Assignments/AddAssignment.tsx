@@ -109,7 +109,9 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                     <ListItem key={index} mx={0}>
                         <HStack>
                             <Text mb={0}>{member.name}</Text>
-                            <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 20, transition: '.1s ease-out' }} ml='auto'>
+                            <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 20, transition: '.1s ease-out' }} ml='auto' onClick={() => {
+                                setInDuty(inDuty.filter(x => x._id !== member._id))
+                            }}>
                                 <Text mb={0} color='red'><FaTrash /></Text>
                             </Button>
                         </HStack>
