@@ -139,8 +139,8 @@ const CalendarComponent = () => {
                                         useDeleteAssignment(assigmentId).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
-                                                title: 'Sikeres törlés',
-                                                description: 'A szolgálat törölve lett',
+                                                title: t('common:success'),
+                                                description: t('removedAssignment'),
                                                 status: 'success',
                                                 position: 'top',
                                                 colorScheme: 'green'
@@ -156,8 +156,8 @@ const CalendarComponent = () => {
                                         usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
-                                                title: 'Sikeres mentés',
-                                                description: 'A beosztás módosítva lett!',
+                                                title: t('common:success'),
+                                                description: t('modofiedAssignment'),
                                                 status: 'success',
                                                 position: 'top',
                                                 colorScheme: 'green'

@@ -91,8 +91,8 @@ const Assignments = () => {
                                     usePostAssignment(title || 'Általános szolgálat', location || 'Nem megadott', start, end, assignees).then(() => {
                                         queryClient.refetchQueries(['assignments'])
                                         toast({
-                                            title: 'Sikeres létrehozás',
-                                            description: 'A szolgálat sikeresen rögzítve lett',
+                                            title: t('common:success'),
+                                            description: t('addedAssignment'),
                                             status: 'success',
                                             position: 'top',
                                             colorScheme: 'green'
