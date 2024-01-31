@@ -107,8 +107,8 @@ export const usePatchAssignment = (
   _id: string,
   title: string,
   location: string,
-  start: Date,
-  end: Date,
+  start: string,
+  end: string,
   assignees: string[],
 ) =>
   apiClient.patch(
