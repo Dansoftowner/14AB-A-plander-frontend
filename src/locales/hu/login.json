@@ -18,5 +18,6 @@
   "sendNewPWd": "Új jelszó beállítása",
   "emailSent": "A visszaállítási email sikeresen elküldve!",
   "editCredentials": "Adatok módosítása",
-  "reEnterPwd": "Adja meg jelenlegi jelszavát a módosítások mentéséhez!"
+  "reEnterPwd": "Adja meg jelenlegi jelszavát a módosítások mentéséhez!",
+  "noAssociationFound": "Nem található ilyen egyesület"
 }
