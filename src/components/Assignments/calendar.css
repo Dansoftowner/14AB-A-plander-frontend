@@ -72,3 +72,8 @@
 .react-calendar__month-view__days__day--weekend {
   color: #d10000;
 }
+.rbc-toolbar-label {
+  min-width: 100vw;
+  margin: 10px;
+  font-weight: bold;
+}

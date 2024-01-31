@@ -178,7 +178,7 @@ const CalendarComponent = () => {
                 '.rbc-toolbar button.rbc-active': { bg: buttonBg, color: buttonColor, '&:hover': { bg: buttonHover } },
                 '.rbc-toolbar button:hover': { bg: buttonHover, color: buttonColor },
                 '.rbc-toolbar button:focus': { bg: buttonBg, color: buttonColor }, '.rbc-toolbar button': { color: textColor },
-            }} margin={15} height={600} maxW='95vw'>
+            }} my={15} mx={2} height={600} maxW='95vw'>
                 <Calendar
                     localizer={localizer}
                     onRangeChange={onRangeChange}

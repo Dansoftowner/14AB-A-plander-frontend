@@ -1,7 +1,7 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
-import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { User } from '../../hooks/useLogin'
 import { MdMenu, MdClose } from "react-icons/md"
@@ -87,6 +87,9 @@ const NavBar = () => {
                     </Link>
                     <Link to='/members' onClick={() => setIsOpen(false)}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
+                    </Link>
+                    <Link to='/assignments' onClick={() => setIsOpen(false)}>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Beosztások</Text>
                     </Link>
                 </Box>
             </ScaleFade>
