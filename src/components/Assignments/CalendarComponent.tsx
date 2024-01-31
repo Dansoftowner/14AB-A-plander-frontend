@@ -88,7 +88,7 @@ const CalendarComponent = () => {
         if (!range.length) {
             setPeriod({ ...period, start: range.start.toISOString(), end: range.end.toISOString() })
         } else if (range.length == 7) {
-            setPeriod({ ...period, start: range[0].toISOString(), end: range[6].toISOString() })
+            setPeriod({ ...period, start: range[0].toISOString(), end: add(range[6], { days: 1 }).toISOString() })
         } else if (range.length == 1) {
             setPeriod({ ...period, start: startOfDay(range[0]), end: endOfDay(range[0]) })
         }
@@ -139,8 +139,8 @@ const CalendarComponent = () => {
                                         useDeleteAssignment(assigmentId).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
-                                                title: 'Sikeres törlés',
-                                                description: 'A szolgálat törölve lett',
+                                                title: t('common:success'),
+                                                description: t('removedAssignment'),
                                                 status: 'success',
                                                 position: 'top',
                                                 colorScheme: 'green'
@@ -156,8 +156,8 @@ const CalendarComponent = () => {
                                         usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
-                                                title: 'Sikeres mentés',
-                                                description: 'A beosztás módosítva lett!',
+                                                title: t('common:success'),
+                                                description: t('modifiedAssignment'),
                                                 status: 'success',
                                                 position: 'top',
                                                 colorScheme: 'green'

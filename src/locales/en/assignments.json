@@ -8,5 +8,8 @@
   "add": "Add",
   "membersInDuty": "Members in duty",
   "dateOfAssignment": "Date of the assignment",
-  "addAssignment": "Add assignment"
+  "addAssignment": "Add assignment",
+  "removedAssignment": "The assignment is successfully removed.",
+  "modifiedAssignment": "The assignment is successfully modified.",
+  "addedAssignment": "The assignment is successfully added."
 }

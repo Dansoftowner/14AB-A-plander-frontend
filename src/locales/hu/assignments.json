@@ -8,5 +8,8 @@
   "add": "Felvétel",
   "membersInDuty": "Beosztott tagok",
   "dateOfAssignment": "Szolgálat ideje",
-  "addAssignment": "Beosztás felvétele"
+  "addAssignment": "Beosztás felvétele",
+  "removedAssignment": "A szolgálat törölve lett.",
+  "modifiedAssignment": "A szolgálat módosítva lett.",
+  "addedAssignment": "A szolgálat sikeresen rögzítve lett."
 }
