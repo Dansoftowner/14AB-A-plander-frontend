@@ -51,7 +51,11 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <HStack>
 
-                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => { setSelectedMember(val.originalValue); setContent(val.originalValue.name) }} isLoading={isLoading} emptyState={<Text textAlign='center'>{t('noMemberFound')}</Text>}>
+                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => {
+                    setContent('')
+                    setSelectedMember(val.originalValue);
+                    setContent(val.originalValue.name)
+                }} value={content} isLoading={isLoading} emptyState={<Text textAlign='center'>{t('noMemberFound')}</Text>}>
                     <InputGroup>
                         <AutoCompleteInput autoComplete="off" placeholder={t('memberName')} value={content}
                             borderRadius={10}
@@ -87,12 +91,16 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                     </AutoCompleteList>
                 </AutoComplete>
                 <Button onClick={() => {
-                    if (selectedMember._id && !inDuty.includes(selectedMember)) {
-                        setInDuty([...inDuty, selectedMember])
+                    if (selectedMember._id) {
+                        if (!inDuty.map(x => x.name).includes(content)) {
+                            console.log(inDuty.includes(selectedMember))
+                            setInDuty([...inDuty, selectedMember])
+                        }
                     }
                     setSelectedMember({} as User)
                     setQParam('')
                     setContent('')
+                    console.log(selectedMember, qParam, content)
                 }}><Text mb={0}>{t('add')}</Text></Button>
             </HStack >
 
