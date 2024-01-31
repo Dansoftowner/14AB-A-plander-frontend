@@ -73,7 +73,7 @@
   color: #d10000;
 }
 .rbc-toolbar-label {
-  min-width: 100vw;
   margin: 10px;
   font-weight: bold;
+  min-width: 55vw;
 }

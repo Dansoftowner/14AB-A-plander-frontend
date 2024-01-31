@@ -2,7 +2,7 @@ import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, I
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from "@choc-ui/chakra-autocomplete"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 import { FaChevronDown } from "react-icons/fa"
-import { User, useInfiniteMembers } from "../../hooks/hooks"
+import { User, useAuth, useInfiniteMembers } from "../../hooks/hooks"
 import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
 
 import '@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css';
@@ -31,6 +31,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
     const [content, setContent] = useState('')
 
     const { t } = useTranslation('assignments')
+    const { user } = useAuth()
 
     return (
         <>
@@ -50,58 +51,59 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                 </FormControl>
             </VStack>
 
-            <HStack>
+            {user.roles?.includes('president') &&
+                <HStack>
+                    <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => {
+                        setContent('')
+                        setSelectedMember(val.originalValue);
+                        setContent(val.originalValue.name)
+                    }} value={content} isLoading={isLoading} emptyState={<Text textAlign='center'>{t('noMemberFound')}</Text>}>
+                        <InputGroup>
+                            <AutoCompleteInput autoComplete="off" placeholder={t('memberName')} value={content}
+                                borderRadius={10}
+                                fontSize={18}
+                                h={10}
+                                onChange={(val: any) => {
+                                    setQParam(val.target.value)
+                                    setContent(val.target.value)
+                                }}
+                            />
+                            <InputRightElement
+                                children={<FaChevronDown />} />
+                        </InputGroup>
 
-                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => {
-                    setContent('')
-                    setSelectedMember(val.originalValue);
-                    setContent(val.originalValue.name)
-                }} value={content} isLoading={isLoading} emptyState={<Text textAlign='center'>{t('noMemberFound')}</Text>}>
-                    <InputGroup>
-                        <AutoCompleteInput autoComplete="off" placeholder={t('memberName')} value={content}
-                            borderRadius={10}
-                            fontSize={18}
-                            h={10}
-                            onChange={(val: any) => {
-                                setQParam(val.target.value)
-                                setContent(val.target.value)
-                            }}
-                        />
-                        <InputRightElement
-                            children={<FaChevronDown />} />
-                    </InputGroup>
-
-                    <AutoCompleteList loadingState={<Spinner />}>
-                        {members?.pages.map((page, index) =>
-                            <Fragment key={index} >
-                                {page.items.map(member => (
-                                    <AutoCompleteItem
-                                        key={member._id}
-                                        value={member}
-                                        label={member.name}
-                                        textTransform="capitalize"
-                                    >
-                                        {member.name || 'nem jo gec'}
-                                    </AutoCompleteItem>
-                                ))}
-                            </Fragment>)}
-                        {hasNextPage &&
-                            <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-                                {isFetchingNextPage ? <Spinner /> : '...'}
-                            </Button>}
-                    </AutoCompleteList>
-                </AutoComplete>
-                <Button onClick={() => {
-                    if (selectedMember._id) {
-                        if (!inDuty.map(x => x.name).includes(content)) {
-                            setInDuty([...inDuty, selectedMember])
+                        <AutoCompleteList loadingState={<Spinner />}>
+                            {members?.pages.map((page, index) =>
+                                <Fragment key={index} >
+                                    {page.items.map(member => (
+                                        <AutoCompleteItem
+                                            key={member._id}
+                                            value={member}
+                                            label={member.name}
+                                            textTransform="capitalize"
+                                        >
+                                            {member.name || 'nem jo gec'}
+                                        </AutoCompleteItem>
+                                    ))}
+                                </Fragment>)}
+                            {hasNextPage &&
+                                <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+                                    {isFetchingNextPage ? <Spinner /> : '...'}
+                                </Button>}
+                        </AutoCompleteList>
+                    </AutoComplete>
+                    <Button onClick={() => {
+                        if (selectedMember._id) {
+                            if (!inDuty.map(x => x.name).includes(content)) {
+                                setInDuty([...inDuty, selectedMember])
+                            }
                         }
-                    }
-                    setSelectedMember({} as User)
-                    setQParam('')
-                    setContent('')
-                }}><Text mb={0}>{t('add')}</Text></Button>
-            </HStack >
+                        setSelectedMember({} as User)
+                        setQParam('')
+                        setContent('')
+                    }}><Text mb={0}>{t('add')}</Text></Button>
+                </HStack >
+            }
 
             <Heading mt={5} fontSize='medium'>{t('membersInDuty')}</Heading>
             <List mb={5} borderRadius={5}>
@@ -109,11 +111,14 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                     <ListItem key={index} mx={0}>
                         <HStack>
                             <Text mb={0}>{member.name}</Text>
-                            <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 20, transition: '.1s ease-out' }} ml='auto' onClick={() => {
-                                setInDuty(inDuty.filter(x => x._id !== member._id))
-                            }}>
-                                <Text mb={0} color='red'><FaTrash /></Text>
-                            </Button>
+                            {
+                                user.roles?.includes('president') &&
+                                <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 20, transition: '.1s ease-out' }} ml='auto' onClick={() => {
+                                    setInDuty(inDuty.filter(x => x._id !== member._id))
+                                }}>
+                                    <Text mb={0} color='red'><FaTrash /></Text>
+                                </Button>
+                            }
                         </HStack>
                     </ListItem>
                 ))}
@@ -123,7 +128,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <Heading mt={5} fontSize='medium'>{t('dateOfAssignment')}</Heading>
             <Box>
-                <DateTimeRangePicker locale='hu-HU' value={[value[0], value[1]]} onChange={setValue} />
+                <DateTimeRangePicker locale='hu-HU' value={value} onChange={setValue} />
             </Box>
         </>
     )

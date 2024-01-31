@@ -151,23 +151,25 @@ const CalendarComponent = () => {
                                     </Button>
                                 }
 
-                                <Button colorScheme='green' onClick={() => {
-                                    if (value instanceof Array) {
-                                        usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
-                                            queryClient.refetchQueries(['assignments'])
-                                            toast({
-                                                title: t('common:success'),
-                                                description: t('modifiedAssignment'),
-                                                status: 'success',
-                                                position: 'top',
-                                                colorScheme: 'green'
+                                {user.roles?.includes('president') &&
+                                    <Button colorScheme='green' onClick={() => {
+                                        if (value instanceof Array) {
+                                            usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('modifiedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
                                             })
-                                        })
-                                    }
-                                    setShowAlert(false)
-                                }} ml={3}>
-                                    {t('common:save')}
-                                </Button>
+                                        }
+                                        setShowAlert(false)
+                                    }} ml={3}>
+                                        {t('common:save')}
+                                    </Button>
+                                }
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialogOverlay>
@@ -178,7 +180,7 @@ const CalendarComponent = () => {
                 '.rbc-toolbar button.rbc-active': { bg: buttonBg, color: buttonColor, '&:hover': { bg: buttonHover } },
                 '.rbc-toolbar button:hover': { bg: buttonHover, color: buttonColor },
                 '.rbc-toolbar button:focus': { bg: buttonBg, color: buttonColor }, '.rbc-toolbar button': { color: textColor },
-            }} my={15} mx={2} height={600} maxW='95vw'>
+            }} m={15} height={600} maxW='95vw'>
                 <Calendar
                     localizer={localizer}
                     onRangeChange={onRangeChange}
