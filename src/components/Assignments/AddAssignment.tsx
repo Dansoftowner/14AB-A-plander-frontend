@@ -9,6 +9,7 @@ import '@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import './calendar.css'
+import { FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next"
 
 interface Props {
@@ -93,14 +94,12 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                 <Button onClick={() => {
                     if (selectedMember._id) {
                         if (!inDuty.map(x => x.name).includes(content)) {
-                            console.log(inDuty.includes(selectedMember))
                             setInDuty([...inDuty, selectedMember])
                         }
                     }
                     setSelectedMember({} as User)
                     setQParam('')
                     setContent('')
-                    console.log(selectedMember, qParam, content)
                 }}><Text mb={0}>{t('add')}</Text></Button>
             </HStack >
 
@@ -108,7 +107,12 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
             <List mb={5} borderRadius={5}>
                 {inDuty.map((member, index) => (
                     <ListItem key={index} mx={0}>
-                        <Text>{member.name}</Text>
+                        <HStack>
+                            <Text mb={0}>{member.name}</Text>
+                            <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 20, transition: '.1s ease-out' }} ml='auto'>
+                                <Text mb={0} color='red'><FaTrash /></Text>
+                            </Button>
+                        </HStack>
                     </ListItem>
                 ))}
             </List>
