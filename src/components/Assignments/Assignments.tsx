@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import CalendarComponent from './CalendarComponent'
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast } from '@chakra-ui/react'
-import { useAuth } from '../../hooks/hooks'
+import { useAuth, User, usePostAssignment } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
-import { User } from '../../hooks/useLogin'
 
-import { usePostAssignment } from '../../hooks/useAssignments'
 import { useQueryClient } from '@tanstack/react-query'
 import { add } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 
 const Assignments = () => {
@@ -17,6 +16,8 @@ const Assignments = () => {
     const cancelRef = React.useRef<HTMLButtonElement>(null)
     const toast = useToast()
     const queryClient = useQueryClient()
+
+    const { t } = useTranslation('assignments')
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
@@ -41,7 +42,7 @@ const Assignments = () => {
             <CalendarComponent />
             {user.roles?.includes('president') &&
                 <Stack alignItems='center' mt={10}>
-                    <Button width={250} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={onOpen}>Beosztás felvétele</Button>
+                    <Button width={250} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={onOpen}>{t('addAssignment')}</Button>
                 </Stack>
             }
 
@@ -56,7 +57,7 @@ const Assignments = () => {
                 <AlertDialogOverlay >
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            Beosztás rögzítése
+                            {t('addAssignment')}
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
@@ -68,7 +69,7 @@ const Assignments = () => {
                             <Button ref={cancelRef} onClick={() => {
                                 reset()
                             }}>
-                                Mégse
+                                {t('common:cancel')}
                             </Button>
                             <Button colorScheme='green' onClick={() => {
                                 reset()
@@ -89,7 +90,7 @@ const Assignments = () => {
                                     })
                                 }
                             }} ml={3}>
-                                Rögzítés
+                                {t('common:save')}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

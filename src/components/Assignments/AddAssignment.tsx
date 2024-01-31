@@ -2,15 +2,14 @@ import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, I
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from "@choc-ui/chakra-autocomplete"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
 import { FaChevronDown } from "react-icons/fa"
-import { useInfiniteMembers } from "../../hooks/useMembers"
-import { User } from "../../hooks/useLogin"
+import { User, useInfiniteMembers } from "../../hooks/hooks"
 import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
 
 import '@wojtekmaj/react-datetimerange-picker/dist/DateTimeRangePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import './calendar.css'
-import i18n from "../../i18n"
+import { useTranslation } from "react-i18next"
 
 interface Props {
     inDuty: User[],
@@ -30,29 +29,31 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
     const [selectedMember, setSelectedMember] = useState({} as User)
     const [content, setContent] = useState('')
 
+    const { t } = useTranslation('assignments')
+
     return (
         <>
             <VStack>
                 <FormControl my={5}>
-                    <FormLabel>Szolgálat neve</FormLabel>
+                    <FormLabel>{t('assignmentName')}</FormLabel>
                     <InputGroup>
-                        <Input placeholder='Nem kötelező.' value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <Input placeholder={t('optional')} value={title} onChange={(e) => setTitle(e.target.value)} />
                     </InputGroup>
                 </FormControl>
 
                 <FormControl mb={10}>
-                    <FormLabel>Szolgálat helyszíne</FormLabel>
+                    <FormLabel>{t('assignmentLocation')}</FormLabel>
                     <InputGroup>
-                        <Input placeholder='Nem kötelező.' value={location} onChange={(e) => setLocation(e.target.value)} />
+                        <Input placeholder={t('optional')} value={location} onChange={(e) => setLocation(e.target.value)} />
                     </InputGroup>
                 </FormControl>
             </VStack>
 
             <HStack>
 
-                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => { setSelectedMember(val.originalValue); setContent(val.originalValue.name) }} isLoading={isLoading} emptyState={<Text textAlign='center'>Nincs ilyen nevű tag!</Text>}>
+                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => { setSelectedMember(val.originalValue); setContent(val.originalValue.name) }} isLoading={isLoading} emptyState={<Text textAlign='center'>{t('noMemberFound')}</Text>}>
                     <InputGroup>
-                        <AutoCompleteInput autoComplete="off" placeholder='Tag neve' value={content}
+                        <AutoCompleteInput autoComplete="off" placeholder={t('memberName')} value={content}
                             borderRadius={10}
                             fontSize={18}
                             h={10}
@@ -92,10 +93,10 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                     setSelectedMember({} as User)
                     setQParam('')
                     setContent('')
-                }}><Text mb={0}>Felvétel</Text></Button>
+                }}><Text mb={0}>{t('add')}</Text></Button>
             </HStack >
 
-            <Heading mt={5} fontSize='medium'>Beosztott tagok</Heading>
+            <Heading mt={5} fontSize='medium'>{t('membersInDuty')}</Heading>
             <List mb={5} borderRadius={5}>
                 {inDuty.map((member, index) => (
                     <ListItem key={index} mx={0}>
@@ -106,9 +107,9 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <Divider />
 
-            <Heading mt={5} fontSize='medium'>Szolgálat ideje</Heading>
+            <Heading mt={5} fontSize='medium'>{t('dateOfAssignment')}</Heading>
             <Box>
-                <DateTimeRangePicker locale={i18n.language == 'hu' ? 'hu-HU' : 'en-US'} value={[value[0], value[1]]} onChange={setValue} />
+                <DateTimeRangePicker locale='hu-HU' value={[value[0], value[1]]} onChange={setValue} />
             </Box>
         </>
     )

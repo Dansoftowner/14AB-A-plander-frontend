@@ -1,6 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from 'react'
-import { Assignment, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/useAssignments'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './calendar.css'
@@ -12,19 +11,15 @@ import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
+
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { add, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
-import { User } from '../../hooks/useLogin'
 import React from 'react'
-import useAuth from '../../hooks/useAuth'
 import apiClient from '../../services/apiClient'
-
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 
 const CalendarComponent = () => {
 
@@ -38,7 +33,7 @@ const CalendarComponent = () => {
     const [showAlert, setShowAlert] = useState(false)
     const [assigmentId, setAssigmentId] = useState('')
 
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation('assignments')
     const { user } = useAuth()
 
     const calendarColor = useColorModeValue('#E2E8F0', '#4a5568')
@@ -68,12 +63,12 @@ const CalendarComponent = () => {
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
     }, [])
 
-    apiClient.interceptors.response.use(res =>{
-        if(!res.data.items) return res
-        res.data.items = res.data.items.map((item:any) => ({
-           ...item,
-           start: new Date(item.start),
-           end: new Date(item.end) 
+    apiClient.interceptors.response.use(res => {
+        if (!res.data.items) return res
+        res.data.items = res.data.items.map((item: any) => ({
+            ...item,
+            start: new Date(item.start),
+            end: new Date(item.end)
         }))
         return res
     })
@@ -123,10 +118,10 @@ const CalendarComponent = () => {
                     onClose={onClose}
                     closeOnEsc={true}
                 >
-                    <AlertDialogOverlay >
+                    <AlertDialogOverlay>
                         <AlertDialogContent>
                             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                Beosztás szerkesztése
+                                {t('editAssignment')}
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
@@ -139,7 +134,7 @@ const CalendarComponent = () => {
                                     setShowAlert(false)
                                     reset()
                                 }} >
-                                    Mégse
+                                    {t('common:cancel')}
                                 </Button>
 
                                 {user.roles?.includes('president') &&
@@ -157,13 +152,12 @@ const CalendarComponent = () => {
                                             })
                                         })
                                     }} ml={3}>
-                                        Törlés
+                                        {t('common:delete')}
                                     </Button>
                                 }
 
                                 <Button colorScheme='green' onClick={() => {
                                     if (value instanceof Array) {
-                                        // console.log(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id))
                                         usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
@@ -177,7 +171,7 @@ const CalendarComponent = () => {
                                     }
                                     setShowAlert(false)
                                 }} ml={3}>
-                                    Mentés
+                                    {t('common:save')}
                                 </Button>
                             </AlertDialogFooter>
                         </AlertDialogContent>

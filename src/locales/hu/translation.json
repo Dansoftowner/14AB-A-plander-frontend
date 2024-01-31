@@ -16,5 +16,6 @@
   "success": "Siker!",
   "backToHome": "Vissza a főoldalra...",
   "404": "A keresett oldal nem található!",
-  "assignments": "Beosztások"
+  "assignments": "Beosztások",
+  "delete": "Törlés"
 }
