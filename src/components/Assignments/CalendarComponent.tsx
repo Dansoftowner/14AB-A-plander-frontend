@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useState } from 'react'
-import { AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/useAssignments'
+import { Assignment, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/useAssignments'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './calendar.css'
@@ -13,13 +13,14 @@ import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import { add, startOfMonth } from 'date-fns'
+import { add, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
 import { User } from '../../hooks/useLogin'
 import React from 'react'
 import useAuth from '../../hooks/useAuth'
+import apiClient from '../../services/apiClient'
 
 type ValuePiece = Date | null;
 
@@ -29,7 +30,7 @@ const CalendarComponent = () => {
 
     //for prop passing
     const [inDuty, setInDuty] = useState([] as User[])
-    const [value, setValue] = useState<Value>(new Date());
+    const [value, setValue] = useState<string[]>([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()]);
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
     const { onClose } = useDisclosure()
@@ -50,7 +51,7 @@ const CalendarComponent = () => {
     const reset = () => {
         onClose()
         setInDuty([])
-        setValue(new Date())
+        setValue([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()])
         setTitle('')
         setLocation('')
     }
@@ -63,9 +64,19 @@ const CalendarComponent = () => {
     const { data } = useAssignments(period)
 
     useEffect(() => {
+
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
     }, [])
 
+    apiClient.interceptors.response.use(res =>{
+        if(!res.data.items) return res
+        res.data.items = res.data.items.map((item:any) => ({
+           ...item,
+           start: new Date(item.start),
+           end: new Date(item.end) 
+        }))
+        return res
+    })
 
     const locales = {
         'hu-HU': huHU,
@@ -89,7 +100,7 @@ const CalendarComponent = () => {
         } else if (range.length == 7) {
             setPeriod({ ...period, start: range[0].toISOString(), end: range[6].toISOString() })
         } else if (range.length == 1) {
-            setPeriod({ ...period, start: range[0].toISOString(), end: range[0].toISOString() })
+            setPeriod({ ...period, start: startOfDay(range[0]), end: endOfDay(range[0]) })
         }
     }, [])
 
@@ -153,7 +164,7 @@ const CalendarComponent = () => {
                                 <Button colorScheme='green' onClick={() => {
                                     if (value instanceof Array) {
                                         // console.log(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id))
-                                        usePatchAssignment(assigmentId, title, location, value[0] as Date, value[1] as Date, inDuty.map(x => x._id)).then(() => {
+                                        usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
                                                 title: 'Sikeres mentés',
