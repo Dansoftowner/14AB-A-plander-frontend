@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './calendar.css'
@@ -52,16 +52,11 @@ const CalendarComponent = () => {
     }
     const toast = useToast()
 
-    const [valid, setValid] = useState(true)
     const queryClient = useQueryClient()
 
     const [period, setPeriod] = useState({ start: startOfMonth(new Date()).toISOString(), end: add(startOfMonth(new Date()).toISOString(), { months: 1, weeks: 1 }).toISOString(), orderBy: 'start', projection: 'full' } as AssignmentsQuery)
     const { data } = useAssignments(period)
 
-    useEffect(() => {
-
-        if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
-    }, [])
 
     apiClient.interceptors.response.use(res => {
         if (!res.data.items) return res
@@ -109,7 +104,7 @@ const CalendarComponent = () => {
 
     }, [])
 
-    if (valid) return (
+    return (
         <>
             {showAlert &&
                 <AlertDialog

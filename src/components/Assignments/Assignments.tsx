@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalendarComponent from './CalendarComponent'
 import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast } from '@chakra-ui/react'
 import { useAuth, User, usePostAssignment } from '../../hooks/hooks'
@@ -7,9 +7,16 @@ import AddAssignment from './AddAssignment'
 import { useQueryClient } from '@tanstack/react-query'
 import { add } from 'date-fns'
 import { useTranslation } from 'react-i18next'
+import { Navigate } from 'react-router-dom'
 
 
 const Assignments = () => {
+
+    const [valid, setValid] = useState(true)
+
+    useEffect(() => {
+        if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
+    }, [])
 
     const { user } = useAuth()
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -37,10 +44,13 @@ const Assignments = () => {
         setLocation('')
     }
 
+
+    if (!valid) return <Navigate to='/login' />
+
     return (
         <div>
             <CalendarComponent />
-            {user.roles?.includes('president') &&
+            {user?.roles?.includes('president') &&
                 <Stack alignItems='center' mt={10}>
                     <Button width={250} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={onOpen}>{t('addAssignment')}</Button>
                 </Stack>
