@@ -157,7 +157,7 @@ const CalendarComponent = () => {
                                             queryClient.refetchQueries(['assignments'])
                                             toast({
                                                 title: t('common:success'),
-                                                description: t('modifiedAssignment'),
+                                                description: t('modofiedAssignment'),
                                                 status: 'success',
                                                 position: 'top',
                                                 colorScheme: 'green'
