@@ -122,7 +122,7 @@ const LoginPage = () => {
 
                         <Stack alignItems='center' >
                             <Box width={400} maxW='90vw' margin={5}>
-                                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>Nincs ilyen egyesület!</Text>}>
+                                <AutoComplete freeSolo openOnFocus onChange={(_e: any, val: any) => setSelectedAssociation(val.originalValue)} isLoading={isLoading} emptyState={<Text textAlign='center' color={dropDownFont}>{t('noAssociationFound')}</Text>}>
                                     <InputGroup>
                                         <AutoCompleteInput autoComplete="off" placeholder={t('associationSelector')}
                                             borderRadius={10}

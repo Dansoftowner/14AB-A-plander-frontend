@@ -1,0 +1,15 @@
+{
+  "editAssignment": "Beosztás szerkesztése",
+  "assignmentName": "Szolgálat neve",
+  "assignmentLocation": "Szolgálat helyszíne",
+  "optional": "Opcionális",
+  "memberName": "Tag neve",
+  "noMemberFound": "Nincs ilyen tag!",
+  "add": "Felvétel",
+  "membersInDuty": "Beosztott tagok",
+  "dateOfAssignment": "Szolgálat ideje",
+  "addAssignment": "Beosztás felvétele",
+  "removedAssignment": "A szolgálat törölve lett.",
+  "modifiedAssignment": "A szolgálat módosítva lett.",
+  "addedAssignment": "A szolgálat sikeresen rögzítve lett."
+}

@@ -18,5 +18,6 @@
   "sendNewPWd": "Set new password",
   "emaiSent": "An email has been sent to your email address!",
   "editCredentials": "Edit credentials",
-  "reEnterPwd": "Please re-enter your password to save the changes!"
+  "reEnterPwd": "Please re-enter your password to save the changes!",
+  "noAssociationFound": "No association found"
 }

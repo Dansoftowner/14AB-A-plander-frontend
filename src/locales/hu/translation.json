@@ -15,5 +15,7 @@
   "error": "Hiba!",
   "success": "Siker!",
   "backToHome": "Vissza a főoldalra...",
-  "404": "A keresett oldal nem található!"
+  "404": "A keresett oldal nem található!",
+  "assignments": "Beosztások",
+  "delete": "Törlés"
 }

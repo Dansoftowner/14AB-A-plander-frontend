@@ -8,6 +8,7 @@ import MembersList from './components/MembersList/MembersList';
 import InviteMember from './components/MembersList/InviteMember';
 import MemberDetail from './components/MemberDetail/MemberDetail';
 import ErrorPage from './components/ErrorPage/ErrorPage';
+import Assignments from './components/Assignments/Assignments';
 
 
 const router = createBrowserRouter([
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
             {
                 path: '/member/:id',
                 element: <MemberDetail />
+            },
+            {
+                path: '/assignments',
+                element: <Assignments />
             }
         ]
     },
