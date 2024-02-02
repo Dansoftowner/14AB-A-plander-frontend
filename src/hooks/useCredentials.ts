@@ -15,7 +15,7 @@ export const useCredentials = (
         username:
           member.username === oldMember.username ? undefined : member.username,
         email: member.email === oldMember.email ? undefined : member.email,
-        password: newPwd == 'KetajtosSzekreny' ? undefined : newPwd,
+        password: newPwd == '00000000' ? undefined : newPwd,
       },
       {
         headers: {
