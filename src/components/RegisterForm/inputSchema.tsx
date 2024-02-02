@@ -9,7 +9,7 @@ export const regSchema = (t: TFunction<'register', undefined>) => z.object({
         .refine(str => !/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str), { message: t('zodInvalidName') }),
     address: z.string().min(5, { message: t('zodAddress') }).refine(str => /[0-9]/.test(str), { message: t('zodAddress') }),
     idNumber: z.string().min(3),
-    guardNumber: z.union([z.string().min(1, { message: t('zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('zodGuardNumber') }).optional().nullish(), z.literal("")]),
+    guardNumber: z.union([z.string().min(1, { message: t('zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('zodGuardNumber') }).optional().nullable(), z.literal("")]),
     phoneNumber: z.string().min(1),
 }).refine(data => data.password == data.repeatedPassword, {
     message: t('zodRepeatedPwd'),

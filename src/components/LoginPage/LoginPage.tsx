@@ -22,8 +22,6 @@ import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar.tsx'
-import { set } from 'lodash'
-
 
 
 const LoginPage = () => {
@@ -138,7 +136,6 @@ const LoginPage = () => {
                                             onChange={(val: any) => {
                                                 setQParam(val.target.value)
                                             }}
-
                                         />
                                         <InputRightElement
                                             children={<FaChevronDown />} />

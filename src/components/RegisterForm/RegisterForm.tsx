@@ -76,7 +76,7 @@ export const RegisterForm = () => {
                     address: postUser.address,
                     name: postUser.name,
                     phoneNumber: phone.prefix + " " + postUser.phoneNumber,
-                    guardNumber: postUser.guardNumber,
+                    guardNumber: postUser.guardNumber == "" ? undefined : postUser.guardNumber,
                     idNumber: postUser.idNumber,
                     username: postUser.username,
                     password: postUser.password
