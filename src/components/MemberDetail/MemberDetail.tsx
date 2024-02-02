@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Checkbox, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Checkbox, Circle, FormLabel, HStack, Heading, Icon, Image, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaUserAlt } from "react-icons/fa";
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import { User } from '../../hooks/useLogin'
 import { useAuth, useCredentials, useTransfer } from '../../hooks/hooks'
@@ -18,6 +18,10 @@ const MemberDetail = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
+
+    const bodyColor = useColorModeValue('#ffffff', '#1A202C')
+    const iconColor = useColorModeValue('#000', '#fff')
+    const borderColor = useColorModeValue('#000', '#fff')
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -149,13 +153,18 @@ const MemberDetail = () => {
     }
 
     return (
-        <VStack spacing={6} mt={10}>
-            <Heading maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
+        <VStack spacing={6} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={10}
+            boxShadow='dark-lg'>
+            <Box backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={20} padding={74} borderRadius='50%' />
+            <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={20} mt={1} width='fit-content' h='fit-content' padding={25} borderRadius='50%' >
+                <Icon as={FaUserAlt} color={iconColor} fontSize={90} />
+            </Box>
+            <Heading mt={20} maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
             {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
             <VStack maxW='90vw'>
                 <HStack maxW='95vw'>
                     <FormLabel width={isEditing ? 295 : 350}>{t('email')}: </FormLabel>
-                    <Input borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
+                    <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
                     {isEditing &&
                         <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
                             <FaPencilAlt />
@@ -166,7 +175,7 @@ const MemberDetail = () => {
                     <VStack>
                         <HStack maxW='95vw'>
                             <FormLabel width={isEditing ? 295 : 350}>{t('username')}: </FormLabel>
-                            <Input borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
+                            <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
                             {isEditing &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
                                     <FaPencilAlt />
@@ -174,7 +183,7 @@ const MemberDetail = () => {
                         </HStack>
                         <HStack maxW='95vw'>
                             <FormLabel width={isEditing ? 295 : 350}>{t('password')}: </FormLabel>
-                            <Input borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
+                            <Input boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
                             {isEditing &&
                                 <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                     if (!isEnabledInput.password) setNewPwd("")
@@ -208,37 +217,37 @@ const MemberDetail = () => {
 
                 <HStack maxW='95vw'>
                     <FormLabel width={350}>{t('phone')}: </FormLabel>
-                    <Input borderColor='#767676' disabled value={member.phoneNumber} />
+                    <Input boxShadow='md' borderColor='#767676' disabled value={member.phoneNumber} />
                 </HStack>
                 {(isPresident || isOwnProfile) &&
                     <HStack maxW='95vw'>
                         <FormLabel width={350}>{t('address')}: </FormLabel>
-                        <Input borderColor='#767676' disabled value={oldMember.address} />
+                        <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.address} />
                     </HStack>
                 }
                 <HStack>
 
                 </HStack>
             </VStack>
-            <VStack mt={10} maxW='90vw'>
+            <VStack maxW='90vw'>
                 <Checkbox my={10} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
                 {(isPresident || isOwnProfile) &&
                     <>
                         <HStack maxW='95vw'>
                             <FormLabel width={350}>{t('idNumber')}: </FormLabel>
-                            <Input borderColor='#767676' disabled value={oldMember.idNumber} />
+                            <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.idNumber} />
                         </HStack>
                         <HStack maxW='95vw'>
                             <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
-                            <Input borderColor='#767676' disabled value={oldMember.guardNumber} />
+                            <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.guardNumber} />
                         </HStack>
                     </>
                 }
 
                 {
                     (isPresident && !member.roles?.includes('president')) &&
-                    <Stack my={10}>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
+                    <Stack my={5}>
+                        <Button boxShadow='md' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
                     </Stack>
                 }
             </VStack>
@@ -292,7 +301,7 @@ const MemberDetail = () => {
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <Button mb={8} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
+            <Button boxShadow='md' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
 
         </VStack>
 
