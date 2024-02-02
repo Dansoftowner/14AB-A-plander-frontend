@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Checkbox, Circle, FormLabel, HStack, Heading, Icon, Image, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import {
+    AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box,
+    Button, Checkbox, FormLabel, HStack, Heading, Icon, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast
+} from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 import { FaPencilAlt, FaUserAlt } from "react-icons/fa";
@@ -153,7 +156,7 @@ const MemberDetail = () => {
     }
 
     return (
-        <VStack spacing={6} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={10}
+        <VStack spacing={6} mb={7} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={10}
             boxShadow='dark-lg'>
             <Box backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={20} padding={74} borderRadius='50%' />
             <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={20} mt={1} width='fit-content' h='fit-content' padding={25} borderRadius='50%' >
@@ -192,26 +195,7 @@ const MemberDetail = () => {
                                     <FaPencilAlt />
                                 </Button>}
                         </HStack>
-                        <HStack maxW='95vw' my={10}>
-                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                setIsEditing(!isEditing)
-                                setNewPwd("KetajtosSzekreny")
-                                setIsEnabledInput({ email: false, username: false, password: false })
-                                setMember(oldMember)
-                            }}>
-                                {!isEditing && <FaPencilAlt />}
-                                <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
-                            </Button>
-                            {
-                                (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
-                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                    setIsEditing(!isEditing)
-                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
-                                }}>
-                                    <Text mb={0} mx={3}>{t('common:save')}</Text>
-                                </Button>
-                            }
-                        </HStack>
+
                     </VStack>
                 }
 
@@ -230,7 +214,6 @@ const MemberDetail = () => {
                 </HStack>
             </VStack>
             <VStack maxW='90vw'>
-                <Checkbox my={10} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
                 {(isPresident || isOwnProfile) &&
                     <>
                         <HStack maxW='95vw'>
@@ -243,12 +226,35 @@ const MemberDetail = () => {
                         </HStack>
                     </>
                 }
+                <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
 
+                {isOwnProfile && <HStack maxW='95vw' my={5}>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                        setIsEditing(!isEditing)
+                        setNewPwd("KetajtosSzekreny")
+                        setIsEnabledInput({ email: false, username: false, password: false })
+                        setMember(oldMember)
+                    }}>
+                        {!isEditing && <FaPencilAlt />}
+                        <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
+                    </Button>
+                    {
+                        (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                            setIsEditing(!isEditing)
+                            confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                        }}>
+                            <Text mb={0} mx={3}>{t('common:save')}</Text>
+                        </Button>
+                    }
+                </HStack>
+                }
                 {
                     (isPresident && !member.roles?.includes('president')) &&
-                    <Stack my={5}>
+                    <Stack my={3}>
                         <Button boxShadow='md' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
                     </Stack>
+
                 }
             </VStack>
 
