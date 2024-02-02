@@ -70,3 +70,12 @@ export const useRemoveMember = (id: string, pwd: string) =>
       'Accept-Language': i18n.language,
     },
   })
+
+export const usePatchMember  = (id: string, address?: string, phoneNumber?: string, idNumber?: string, guardNumber?: string, name?: string ) => 
+  apiClient.patch('/members/' + id,{},{
+    headers: {
+      'x-plander-auth':
+        localStorage.getItem('token') || sessionStorage.getItem('token'),
+      'Accept-Language': i18n.language,
+    },
+  }).then(res => res.data)

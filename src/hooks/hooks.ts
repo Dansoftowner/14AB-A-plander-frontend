@@ -1,6 +1,6 @@
 import { useAssociations } from './useAssociations'
 import useAuth from './useAuth'
-import { useMembers, useInfiniteMembers, useRemoveMember } from './useMembers'
+import { useMembers, useInfiniteMembers, useRemoveMember, usePatchMember } from './useMembers'
 import { useCredentials } from './useCredentials'
 import { useRegister } from './useRegister'
 import { useResetPassword } from './useResetPassword'
@@ -14,6 +14,7 @@ import {
   AssignmentsQuery,
 } from './useAssignments'
 import { User, useLogin } from './useLogin'
+
 
 export {
   useAssociations,
@@ -31,6 +32,7 @@ export {
   useInfiniteMembers,
   useRemoveMember,
   useLogin,
+  usePatchMember,
 }
 export type { User }
 export type { AssignmentsQuery }
