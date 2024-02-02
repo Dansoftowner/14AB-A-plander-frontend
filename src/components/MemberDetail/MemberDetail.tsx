@@ -166,34 +166,32 @@ const MemberDetail = () => {
             {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
             <VStack maxW='90vw'>
                 <HStack maxW='95vw'>
-                    <FormLabel width={isEditing ? 295 : 350}>{t('email')}: </FormLabel>
+                    <FormLabel width={295}>{t('email')}: </FormLabel>
                     <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
-                    {isEditing &&
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
-                            <FaPencilAlt />
-                        </Button>}
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
+                        <FaPencilAlt />
+                    </Button>
                 </HStack>
                 {
                     isOwnProfile &&
                     <VStack>
                         <HStack maxW='95vw'>
-                            <FormLabel width={isEditing ? 295 : 350}>{t('username')}: </FormLabel>
+                            <FormLabel width={295}>{t('username')}: </FormLabel>
                             <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
-                            {isEditing &&
-                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
-                                    <FaPencilAlt />
-                                </Button>}
+
+                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
+                                <FaPencilAlt />
+                            </Button>
                         </HStack>
                         <HStack maxW='95vw'>
-                            <FormLabel width={isEditing ? 295 : 350}>{t('password')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
-                            {isEditing &&
-                                <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                    if (!isEnabledInput.password) setNewPwd("")
-                                    setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
-                                }}>
-                                    <FaPencilAlt />
-                                </Button>}
+                            <FormLabel w={205}>{t('password')}: </FormLabel>
+                            <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
+                            <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                if (!isEnabledInput.password) setNewPwd("")
+                                setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
+                            }}>
+                                <FaPencilAlt />
+                            </Button>
                         </HStack>
 
                     </VStack>
@@ -201,12 +199,12 @@ const MemberDetail = () => {
 
                 <HStack maxW='95vw'>
                     <FormLabel width={350}>{t('phone')}: </FormLabel>
-                    <Input boxShadow='md' borderColor='#767676' disabled value={member.phoneNumber} />
+                    <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber} />
                 </HStack>
                 {(isPresident || isOwnProfile) &&
                     <HStack maxW='95vw'>
                         <FormLabel width={350}>{t('address')}: </FormLabel>
-                        <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.address} />
+                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.address} />
                     </HStack>
                 }
                 <HStack>
@@ -218,36 +216,37 @@ const MemberDetail = () => {
                     <>
                         <HStack maxW='95vw'>
                             <FormLabel width={350}>{t('idNumber')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.idNumber} />
+                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.idNumber} />
                         </HStack>
                         <HStack maxW='95vw'>
                             <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' disabled value={oldMember.guardNumber} />
+                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.guardNumber} />
                         </HStack>
                     </>
                 }
                 <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
 
-                {isOwnProfile && <HStack maxW='95vw' my={5}>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                        setIsEditing(!isEditing)
-                        setNewPwd("KetajtosSzekreny")
-                        setIsEnabledInput({ email: false, username: false, password: false })
-                        setMember(oldMember)
-                    }}>
-                        {!isEditing && <FaPencilAlt />}
-                        <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
-                    </Button>
-                    {
-                        (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
+                {isOwnProfile &&
+                    <HStack maxW='95vw' my={5}>
                         <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                             setIsEditing(!isEditing)
-                            confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                            setNewPwd("KetajtosSzekreny")
+                            setIsEnabledInput({ email: false, username: false, password: false })
+                            setMember(oldMember)
                         }}>
-                            <Text mb={0} mx={3}>{t('common:save')}</Text>
+                            {!isEditing && <FaPencilAlt />}
+                            <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
                         </Button>
-                    }
-                </HStack>
+                        {
+                            (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
+                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                setIsEditing(!isEditing)
+                                confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                            }}>
+                                <Text mb={0} mx={3}>{t('common:save')}</Text>
+                            </Button>
+                        }
+                    </HStack>
                 }
                 {
                     (isPresident && !member.roles?.includes('president')) &&
