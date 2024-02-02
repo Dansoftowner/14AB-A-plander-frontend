@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
-import { ChangeEvent, Fragment, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode, background } from '@chakra-ui/react'
+import { ChangeEvent, Fragment, useEffect, useMemo, useState } from 'react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -20,9 +20,9 @@ import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
 import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
-import useAuth from '../../hooks/useAuth.ts'
 import { Link } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar.tsx'
+import { set } from 'lodash'
 
 
 
@@ -38,6 +38,11 @@ const LoginPage = () => {
 
     const { t } = useTranslation('login')
     const inputSchema = useMemo(() => loginSchema(t), [t])
+    const [loggedIn, setLoggedIn] = useState(false)
+
+    useEffect(() => {
+        if (localStorage.getItem('token') != null || sessionStorage.getItem('token') != null) setLoggedIn(true)
+    }, [])
 
     type LoginForm = z.infer<typeof inputSchema>
 
@@ -63,6 +68,8 @@ const LoginPage = () => {
     const errorToast = useToast()
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
+
+    if (loggedIn) navigate('/')
 
     return (
         <>
