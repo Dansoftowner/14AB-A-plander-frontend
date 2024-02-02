@@ -3,15 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import {
     AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box,
-    Button, Checkbox, FormLabel, HStack, Heading, Icon, Input, InputGroup, InputRightElement, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast
+    Button, Checkbox, FormLabel, HStack, Heading, Icon, Input, InputGroup, InputRightElement, Menu, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 import { FaPencilAlt, FaUserAlt } from "react-icons/fa";
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
 import { User } from '../../hooks/useLogin'
-import { useAuth, useCredentials, useTransfer } from '../../hooks/hooks'
-
+import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hooks/hooks'
+import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
+import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
+import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
 interface Alert {
     header: string,
     body: string
@@ -36,7 +38,8 @@ const MemberDetail = () => {
 
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
-    const [newPwd, setNewPwd] = useState("KetajtosSzekreny")
+    const [newPwd, setNewPwd] = useState("00000000")
+    const [newPwdRepeat, setNewPwdRepeat] = useState('00000000')
 
     const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
@@ -44,12 +47,17 @@ const MemberDetail = () => {
 
     const isPresident = user?.roles?.includes('president') || false
     const isOwnProfile = user._id == member._id
-    const [isEditing, setIsEditing] = useState(false);
     const [isEnabledInput, setIsEnabledInput] = useState({
         email: false,
         username: false,
         password: false,
     });
+
+    const [phone, setPhone] = useState<PhoneFormat>({
+        src: '/assets/flags/hu.svg',
+        prefix: '+36',
+        length: 7,
+    })
 
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
@@ -72,7 +80,6 @@ const MemberDetail = () => {
 
     const reset = () => {
         onClose()
-        setIsEditing(false)
         setIsEnabledInput({ email: false, username: false, password: false })
     }
 
@@ -94,10 +101,11 @@ const MemberDetail = () => {
     }
 
     const save = () => {
-        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') {
+        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000') {
             useCredentials(member, oldMember, password, newPwd)
                 .then((res) => {
                     if (res.status == 204) {
+                        patch(false)
                         feedbeckToast({
                             title: t('common:success'),
                             description: t('member:reLogin'),
@@ -114,7 +122,8 @@ const MemberDetail = () => {
                             duration: 9000,
                             position: 'top'
                         })
-                        setNewPwd("KetajtosSzekreny")
+                        setNewPwd("00000000")
+                        setNewPwdRepeat('00000000')
                     }
                     reset()
                 })
@@ -154,6 +163,18 @@ const MemberDetail = () => {
 
             })
     }
+    const patch = (toast: boolean) => {
+        if (toast) {
+            usePatchMember(oldMember, member, phone).then(() => {
+                feedbeckToast({
+                    title: t('common:success'),
+                    status: 'success',
+                    duration: 9000,
+                    position: 'top'
+                })
+            })
+        } else usePatchMember(oldMember, member, phone)
+    }
 
     return (
         <VStack spacing={6} mb={7} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={10}
@@ -166,45 +187,81 @@ const MemberDetail = () => {
             {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
             <VStack maxW='90vw'>
                 <HStack maxW='95vw'>
-                    <FormLabel width={295}>{t('email')}: </FormLabel>
-                    <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
+                    <FormLabel width={205}>{t('email')}: </FormLabel>
+                    <Input w={isOwnProfile ? 310 : 360} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
+
+                    {isOwnProfile && <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
                         <FaPencilAlt />
-                    </Button>
+                    </Button>}
                 </HStack>
                 {
                     isOwnProfile &&
                     <VStack>
-                        <HStack maxW='95vw'>
-                            <FormLabel width={295}>{t('username')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
 
-                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
+                        <HStack maxW='95vw'>
+                            <FormLabel width={205}>{t('username')}: </FormLabel>
+                            <Input w={310} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
+
+                            <Button w={13} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
                                 <FaPencilAlt />
                             </Button>
                         </HStack>
-                        <HStack maxW='95vw'>
+
+                        <HStack maxW='95vw' mb={isEnabledInput.password ? 0 : 4}>
                             <FormLabel w={205}>{t('password')}: </FormLabel>
                             <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
                             <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                if (!isEnabledInput.password) setNewPwd("")
+                                if (!isEnabledInput.password) {
+                                    setNewPwd('')
+                                    setNewPwdRepeat('')
+                                }
+                                else {
+                                    setNewPwd('00000000')
+                                    setNewPwdRepeat('00000000')
+                                }
                                 setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
                             }}>
                                 <FaPencilAlt />
                             </Button>
                         </HStack>
 
+                        {isEnabledInput.password &&
+                            <HStack maxW='95vw' mb={4}>
+                                <FormLabel w={205}>{t('register:repeatPwd')}: </FormLabel>
+                                <Input w={310} mr={50} boxShadow='md' borderColor='#767676' type='password' value={newPwdRepeat} onChange={(e) => { setNewPwdRepeat(e.target.value) }} />
+                            </HStack>
+                        }
+
+                        {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>}
                     </VStack>
                 }
 
-                <HStack maxW='95vw'>
-                    <FormLabel width={350}>{t('phone')}: </FormLabel>
-                    <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber} />
+                <HStack>
+                    <FormLabel w={205}>{t('phone')}:</FormLabel>
+                    <HStack>
+                        <InputGroup as={Menu} alignItems='start'>
+                            <Box boxShadow='md'>
+                                <PhoneDropdownList
+                                    isDisabled={!isOwnProfile}
+                                    selectedPhone={phone}
+                                    items={phoneMap}
+                                    selectionChange={(p) => setPhone(p)}
+                                />
+                            </Box>
+                            <Input w={200} maxLength={phone.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber}
+                                onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
+                                    if (phone.prefix == "+36") telHandler(e)
+                                }} />
+                        </InputGroup>
+                    </HStack>
+
                 </HStack>
+
+
                 {(isPresident || isOwnProfile) &&
                     <HStack maxW='95vw'>
                         <FormLabel width={350}>{t('address')}: </FormLabel>
-                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.address} />
+                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.address} onChange={(e) => setMember({ ...member, address: e.target.value })} />
                     </HStack>
                 }
                 <HStack>
@@ -213,35 +270,29 @@ const MemberDetail = () => {
             </VStack>
             <VStack maxW='90vw'>
                 {(isPresident || isOwnProfile) &&
-                    <>
-                        <HStack maxW='95vw'>
-                            <FormLabel width={350}>{t('idNumber')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.idNumber} />
-                        </HStack>
-                        <HStack maxW='95vw'>
-                            <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
-                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={oldMember.guardNumber} />
-                        </HStack>
-                    </>
+                    <HStack maxW='95vw'>
+                        <FormLabel width={350}>{t('idNumber')}: </FormLabel>
+                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.idNumber} onChange={(e) => setMember({ ...member, idNumber: e.target.value })} />
+                    </HStack>
                 }
+
+                <HStack maxW='95vw'>
+                    <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
+                    <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.guardNumber} maxLength={13} onChangeCapture={(e) => guardNumberHandler(e)} onChange={(e) => setMember({ ...member, guardNumber: e.target.value })} />
+                </HStack>
+
                 <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
 
                 {isOwnProfile &&
                     <HStack maxW='95vw' my={5}>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                            setIsEditing(!isEditing)
-                            setNewPwd("KetajtosSzekreny")
-                            setIsEnabledInput({ email: false, username: false, password: false })
-                            setMember(oldMember)
-                        }}>
-                            {!isEditing && <FaPencilAlt />}
-                            <Text mb={0} mx={3}>{isEditing ? t('common:cancel') : t('common:edit')}</Text>
-                        </Button>
-                        {
-                            (isEditing && JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != 'KetajtosSzekreny') &&
-                            <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                setIsEditing(!isEditing)
-                                confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                        {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000' && newPwd == newPwdRepeat) &&
+                            <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000') {
+                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                                } else {
+                                    patch(true)
+                                    setOldMember(member)
+                                }
                             }}>
                                 <Text mb={0} mx={3}>{t('common:save')}</Text>
                             </Button>
@@ -251,9 +302,8 @@ const MemberDetail = () => {
                 {
                     (isPresident && !member.roles?.includes('president')) &&
                     <Stack my={3}>
-                        <Button boxShadow='md' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
+                        <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
                     </Stack>
-
                 }
             </VStack>
 
@@ -283,19 +333,20 @@ const MemberDetail = () => {
                         <AlertDialogFooter>
                             <Button onClick={() => {
                                 onClose()
+                                setMember(oldMember)
+                                setIsEnabledInput({ email: false, username: false, password: false })
+                                setNewPwd("00000000")
                             }}>
                                 {t('common:cancel')}
                             </Button>
                             <Button colorScheme='green' onClick={() => {
                                 if (location.state.id == user._id) {
                                     save()
-                                    setIsEditing(!isEditing)
-                                    setNewPwd("KetajtosSzekreny")
+                                    setNewPwd("00000000")
                                     setIsEnabledInput({ email: false, username: false, password: false })
                                     setMember(oldMember)
                                 }
                                 else {
-                                    console.log(password)
                                     transferRoles()
                                 }
                             }} ml={3}>
@@ -306,7 +357,7 @@ const MemberDetail = () => {
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <Button boxShadow='md' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
+            <Button boxShadow='lg' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
 
         </VStack>
 
