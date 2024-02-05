@@ -41,7 +41,9 @@ const LoginPage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
+        document.body.style.overflowY = 'hidden'
         if (localStorage.getItem('token') != null || sessionStorage.getItem('token') != null) setLoggedIn(true)
+        return () => { document.body.style.overflowY = 'visible' }
     }, [])
 
     type LoginForm = z.infer<typeof inputSchema>
@@ -74,7 +76,7 @@ const LoginPage = () => {
     return (
         <>
             <NavBar bgColorDark='#013b69' bgColorLight='#f5f5f5' />
-            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' height='93.3vh'>
+            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' h={650} minH='93.3vh' overflowY='auto'>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if (User.user && User.password && User.associationId) {
