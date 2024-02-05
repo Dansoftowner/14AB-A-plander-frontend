@@ -3,6 +3,7 @@ import apiClient from '../services/apiClient'
 import { AsQuery } from './useAssociations'
 import { User } from './useLogin'
 import i18n from '../i18n'
+import { PhoneFormat } from '../components/PhoneDropdownList/phones'
 
 interface Response {
   metadata: {
@@ -70,3 +71,41 @@ export const useRemoveMember = (id: string, pwd: string) =>
       'Accept-Language': i18n.language,
     },
   })
+
+export const usePatchMember = (
+  oldMember: User,
+  member: User,
+  phone: PhoneFormat,
+) =>
+  apiClient
+    .patch(
+      '/members/' + oldMember._id,
+      {
+        name: oldMember.name,
+        address:
+          member.address == oldMember.address
+            ? oldMember.address
+            : member.address,
+        idNumber:
+          member.idNumber == oldMember.idNumber
+            ? oldMember.idNumber
+            : member.idNumber,
+        phoneNumber:
+          member.phoneNumber == oldMember.phoneNumber
+            ? oldMember.phoneNumber
+            : member.phoneNumber,
+        guardNumber:
+          member.guardNumber == oldMember.guardNumber
+            ? oldMember.guardNumber
+            : phone.prefix + ' ' + member.guardNumber,
+      },
+      {
+        headers: {
+          'x-plander-auth':
+            localStorage.getItem('token') || sessionStorage.getItem('token'),
+          'Accept-Language': i18n.language,
+        },
+      },
+    )
+    .then((res) => res.data)
+    .catch((err) => err)

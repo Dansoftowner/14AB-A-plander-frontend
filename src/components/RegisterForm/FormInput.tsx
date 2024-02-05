@@ -1,7 +1,7 @@
 import {
     FormControl, FormLabel, Input, FormErrorMessage, InputGroup, HStack, VStack, Menu, InputLeftElement,
 } from '@chakra-ui/react'
-import { FormEvent, useMemo } from 'react'
+import { useMemo } from 'react'
 import {
     FieldErrors,
     FieldValues,
@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { regSchema } from './inputSchema'
 import { FaRegUser } from "react-icons/fa";
 import { useTranslation } from 'react-i18next'
+import { guardNumberHandler, telHandler } from './specInputHandler'
 
 
 interface Props<FormData extends FieldValues> {
@@ -54,32 +55,6 @@ const FormInput = <FormData extends FieldValues>({
 
     const error = errors?.[name]?.message as string | undefined
     const isError = error != undefined
-
-    const lengths: number[] = [2, 7]
-    let prevValue = 0
-    const guardNumberHandler = (e: FormEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement
-        if (
-            lengths.includes(target.value.length) &&
-            prevValue != 2 &&
-            prevValue != 7
-        )
-            target.value += '/'
-        if (target.value.length >= 1) prevValue = target.value.length - 1
-    }
-
-    const spacePos = [2, 6]
-    let prevTelValue = 0
-    const telHandler = (e: FormEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement
-        if (
-            spacePos.includes(target.value.length) &&
-            prevTelValue != 2 &&
-            prevTelValue != 6
-        )
-            target.value += ' '
-        if (target.value.length >= 1) prevTelValue = target.value.length - 1
-    }
 
     if (login) {
         return (
