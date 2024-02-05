@@ -42,5 +42,6 @@
   "kick": "Kick",
   "inviteMember": "Invite member",
   "notRegistered": "The member is not finished the registration process yet.",
-  "searchByName": "Search by name"
+  "searchByName": "Search by name",
+  "invite": "Meghívás"
 }
