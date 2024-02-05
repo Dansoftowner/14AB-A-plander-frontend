@@ -9,8 +9,13 @@ import { FaUserAlt, FaCaretDown, FaPowerOff, FaBell } from "react-icons/fa";
 import { useTranslation } from 'react-i18next'
 
 
-const NavBar = () => {
-    const navBarColor = useColorModeValue('#0078D7', '#004881')
+interface Props {
+    bgColorDark?: string
+    bgColorLight?: string
+}
+
+const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
+    const navBarColor = useColorModeValue(bgColorLight || '#0078D7', bgColorDark || '#004881')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)

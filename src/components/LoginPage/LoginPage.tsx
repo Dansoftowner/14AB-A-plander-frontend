@@ -25,12 +25,14 @@ import NavBar from '../NavBar/NavBar.tsx'
 
 
 const LoginPage = () => {
-    const cardBackground = useColorModeValue('#89D0DF', '#3393DF')
+    const cardBackground = useColorModeValue('blue.200', '#004881')
+    //89D0DF
     const dropDownFont = useColorModeValue('#808080', '#ffffff')
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
-    const textColor = useColorModeValue('#0078D7', '#004881')
+    const textColor = useColorModeValue('gray.200', '#fff')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
+    const bg = useColorModeValue('#f5f5f5', '#013b69')
 
     const { colorMode } = useColorMode()
 
@@ -71,8 +73,8 @@ const LoginPage = () => {
 
     return (
         <>
-            <NavBar />
-            <Center display='flex' justifyContent='center' alignItems='center' h='90vh'>
+            <NavBar bgColorDark='#013b69' bgColorLight='#f5f5f5' />
+            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' height='93.3vh'>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if (User.user && User.password && User.associationId) {
@@ -106,15 +108,16 @@ const LoginPage = () => {
                 }}>
                     <Box
                         borderRadius="xl"
-                        bg={cardBackground}
                         color="white"
+                        backgroundColor={cardBackground}
                         maxW='100vw'
                         h={600}
+                        boxShadow='dark-lg'
 
                     >
 
                         <HStack alignContent='center' justifyContent='center'>
-                            <Image my={10} src={colorMode == 'light' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
+                            <Image my={10} src={colorMode == 'dark' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
                             <Text
                                 mb={0}
                                 color={textColor}
@@ -133,9 +136,15 @@ const LoginPage = () => {
                                             borderRadius={10}
                                             fontSize={20}
                                             h={10}
+                                            borderColor='transparent'
+                                            _hover={{ borderColor: 'transparent' }}
+                                            backgroundColor={colorMode === 'light' ? 'blue.100' : 'blue.400'}
+                                            boxShadow='md'
                                             onChange={(val: any) => {
                                                 setQParam(val.target.value)
                                             }}
+                                            _placeholder={{ color: colorMode === 'light' ? 'gray.300' : 'gray.500' }}
+
                                         />
                                         <InputRightElement
                                             children={<FaChevronDown />} />
@@ -168,12 +177,12 @@ const LoginPage = () => {
                             </Box>
 
                             <Box margin={5}>
-                                <FormInput _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="username" />
+                                <FormInput bColor={colorMode === 'light' ? 'blue.100' : 'blue.400'} _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="username" />
                             </Box>
                             <Box >
-                                <PasswordInput _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="password" i18nTitle="" />
+                                <PasswordInput bColor={colorMode === 'light' ? 'blue.100' : 'blue.400'} _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="password" i18nTitle="" />
                             </Box>
-                            <Checkbox margin={2} colorScheme='' {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('stayInCheckbox')}</Checkbox>
+                            <Checkbox margin={2} colorScheme={colorMode === 'light' ? '' : 'yellow'} {...register("autoLogin")} onChange={(e: ChangeEvent<HTMLInputElement>) => setIsChecked(e.target.checked)}>{t('stayInCheckbox')}</Checkbox>
                             {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
                             <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
