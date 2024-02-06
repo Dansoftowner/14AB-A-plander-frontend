@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useEffect, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode, Heading } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -22,6 +22,8 @@ import { Login, useLogin } from '../../hooks/useLogin.ts'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar.tsx'
+import { ReactTyped } from "react-typed";
+
 
 
 const LoginPage = () => {
@@ -120,14 +122,16 @@ const LoginPage = () => {
 
                         <HStack alignContent='center' justifyContent='center'>
                             <Image my={10} src={colorMode == 'dark' ? '/assets/logos/light-logo.svg' : '/assets/logos/dark-logo.svg'} width={100} />
-                            <Text
+
+                            <Heading
                                 mb={0}
                                 color={textColor}
                                 fontSize="xxx-large"
                                 fontWeight="md"
                                 className='font-face-mo'
                                 fontFamily='Moul'
-                            > Plander</Text>
+                            > <ReactTyped strings={['Plander']} typeSpeed={130}
+                                backSpeed={130} showCursor={false} /></Heading>
                         </HStack>
 
                         <Stack alignItems='center' >
