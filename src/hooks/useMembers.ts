@@ -92,7 +92,7 @@ export const usePatchMember = (
             : member.idNumber,
         phoneNumber:
           member.phoneNumber == oldMember.phoneNumber
-            ? oldMember.phoneNumber
+            ? phone.prefix + ' ' + oldMember.phoneNumber
             : phone.prefix + ' ' + member.phoneNumber,
         guardNumber:
           member.guardNumber == oldMember.guardNumber

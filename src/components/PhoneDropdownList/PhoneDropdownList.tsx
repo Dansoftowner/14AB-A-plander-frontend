@@ -30,8 +30,8 @@ const PhoneDropdownList = ({
         <Menu matchWidth>
             <MenuButton isDisabled={isDisabled} width={150} as={Button} rightIcon={<BsChevronDown />}>
                 <HStack >
-                    <Image boxSize="2rem" src={selectedPhone.src || '/assets/flags/hu.svg'} mr="12px" />
-                    <Text mt={3}>{selectedPhone.prefix || '+36'}</Text>
+                    <Image boxSize="2rem" src={selectedPhone?.src || '/assets/flags/hu.svg'} mr="12px" />
+                    <Text mt={3}>{selectedPhone?.prefix || '+36'}</Text>
                 </HStack>
             </MenuButton>
             <MenuList>

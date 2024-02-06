@@ -14,6 +14,7 @@ import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hook
 import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
+import { set } from 'date-fns'
 interface Alert {
     header: string,
     body: string
@@ -58,6 +59,7 @@ const MemberDetail = () => {
         prefix: '+36',
         length: 7,
     })
+    const [memberPrefix, setMemberPrefix] = useState('')
 
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
@@ -69,12 +71,24 @@ const MemberDetail = () => {
                 'projection': 'full'
             }
         }).then(res => {
-            if (res.status === 200)
+            if (res.status === 200) {
                 setMember(res.data)
-            setOldMember(res.data)
+                setOldMember(res.data)
+                if (res.data) {
+                    let phone = res.data.phoneNumber
+                    let prefix = phone.split(' ')[0]
+                    phone = phone.substring(prefix.length + 1)
+
+                    setPhone(phoneMap.filter(item => item.prefix === prefix)[0])
+                    member.phoneNumber = phone
+                    setMemberPrefix(prefix)
+                    setMember({ ...res.data, phoneNumber: phone })
+                    setOldMember({ ...res.data, phoneNumber: phone })
+                }
+            }
+
         })
     }, [location.state.id])
-
 
     const [dialog, setDialog] = useState({} as Alert)
 
@@ -248,7 +262,7 @@ const MemberDetail = () => {
                                     selectionChange={(p) => setPhone(p)}
                                 />
                             </Box>
-                            <Input w={200} maxLength={phone.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber}
+                            <Input w={200} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber?.trim()}
                                 onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
                                     if (phone.prefix == "+36") telHandler(e)
                                 }} />
@@ -285,7 +299,7 @@ const MemberDetail = () => {
 
                 {isOwnProfile &&
                     <HStack maxW='95vw' my={5}>
-                        {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000' && newPwd == newPwdRepeat) &&
+                        {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000' && newPwd == newPwdRepeat || phone.prefix != memberPrefix) &&
                             <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                 if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000') {
                                     confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
