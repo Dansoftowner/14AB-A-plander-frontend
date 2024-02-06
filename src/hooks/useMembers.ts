@@ -93,11 +93,11 @@ export const usePatchMember = (
         phoneNumber:
           member.phoneNumber == oldMember.phoneNumber
             ? oldMember.phoneNumber
-            : member.phoneNumber,
+            : phone.prefix + ' ' + member.phoneNumber,
         guardNumber:
           member.guardNumber == oldMember.guardNumber
             ? oldMember.guardNumber
-            : phone.prefix + ' ' + member.guardNumber,
+            : member.guardNumber,
       },
       {
         headers: {
