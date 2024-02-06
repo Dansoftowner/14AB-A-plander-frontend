@@ -116,7 +116,7 @@ const LoginPage = () => {
                         color="white"
                         backgroundColor={cardBackground}
                         maxW='100vw'
-                        height={650}
+                        height={610}
                         boxShadow='dark-lg'
                     >
 

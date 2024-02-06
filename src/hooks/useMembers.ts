@@ -107,5 +107,5 @@ export const usePatchMember = (
         },
       },
     )
-    .then((res) => res.data)
+    .then((res) => res)
     .catch((err) => err)

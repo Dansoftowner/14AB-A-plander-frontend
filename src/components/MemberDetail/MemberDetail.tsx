@@ -14,7 +14,6 @@ import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hook
 import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
-import { set } from 'date-fns'
 interface Alert {
     header: string,
     body: string
@@ -179,13 +178,24 @@ const MemberDetail = () => {
     }
     const patch = (toast: boolean) => {
         if (toast) {
-            usePatchMember(oldMember, member, phone).then(() => {
-                feedbeckToast({
-                    title: t('common:success'),
-                    status: 'success',
-                    duration: 9000,
-                    position: 'top'
-                })
+            usePatchMember(oldMember, member, phone).then((res) => {
+                if (res.status === 200) {
+                    feedbeckToast({
+                        title: t('common:success'),
+                        status: 'success',
+                        duration: 9000,
+                        position: 'top'
+                    })
+                }
+                else {
+                    feedbeckToast({
+                        title: t('common:error'),
+                        description: res.response.data.message,
+                        status: 'error',
+                        duration: 9000,
+                        position: 'top'
+                    })
+                }
             })
         } else usePatchMember(oldMember, member, phone)
     }
