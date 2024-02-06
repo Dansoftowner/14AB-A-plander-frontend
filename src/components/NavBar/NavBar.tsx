@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
 import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
@@ -9,8 +9,16 @@ import { FaUserAlt, FaCaretDown, FaPowerOff, FaBell } from "react-icons/fa";
 import { useTranslation } from 'react-i18next'
 
 
-const NavBar = () => {
-    const navBarColor = useColorModeValue('#0078D7', '#004881')
+interface Props {
+    bgColorDark?: string
+    bgColorLight?: string
+}
+
+
+const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
+    const navBarColor = useColorModeValue(bgColorLight || '#0078D7', bgColorDark || '#004881')
+    const buttonBg = useColorModeValue('#fde74c', '#fde74c')
+    const textColor = useColorModeValue('#000000', '#ffffff')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
@@ -24,7 +32,7 @@ const NavBar = () => {
     }, [])
     return (
         <>
-            <HStack padding={3} justifyContent='end' backgroundColor={navBarColor} minW='100%'>
+            <HStack padding={3} justifyContent='end' position='fixed' zIndex={200} backgroundColor={navBarColor} minW='100%'>
                 {user != null &&
                     <Show below='lg'>
                         <Box mr='auto'>
@@ -81,16 +89,22 @@ const NavBar = () => {
             </HStack >
 
             <ScaleFade in={isOpen} unmountOnExit initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
-                <Box width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
-                    <Link to='/' onClick={() => setIsOpen(false)}>
+                <Box mt={49} width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
+                    <NavLink to='/' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
-                    </Link>
-                    <Link to='/members' onClick={() => setIsOpen(false)}>
+                    </NavLink>
+                    <NavLink to='/members' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
-                    </Link>
-                    <Link to='/assignments' onClick={() => setIsOpen(false)}>
+                    </NavLink>
+                    <NavLink to='/assignments' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Beosztások</Text>
-                    </Link>
+                    </NavLink>
                 </Box>
             </ScaleFade>
 

@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputRightElement, Button, InputLeftElement } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputRightElement, Button, InputLeftElement, useColorMode } from '@chakra-ui/react'
 import { t } from 'i18next'
 import { useMemo, useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
@@ -18,11 +18,14 @@ interface Props<FormData extends FieldValues> {
     register: UseFormRegister<FormData>,
     errors: FieldErrors
     login?: boolean,
-    _onChange?: (e: any) => void
+    _onChange?: (e: any) => void,
+    bColor?: string
 }
 
-const PasswordInput = <FormData extends FieldValues>({ login, register, errors, name, required, i18nTitle, i18nPlaceHolder, _onChange }: Props<FormData>) => {
+const PasswordInput = <FormData extends FieldValues>({ login, bColor, register, errors, name, required, i18nTitle, i18nPlaceHolder, _onChange }: Props<FormData>) => {
     const { t } = useTranslation('register')
+    const { colorMode } = useColorMode()
+
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { formState: { } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
@@ -51,6 +54,12 @@ const PasswordInput = <FormData extends FieldValues>({ login, register, errors, 
                         borderRadius={10}
                         fontSize={20}
                         h={10}
+                        boxShadow='md'
+                        _hover={bColor ? { borderColor: bColor } : {}}
+                        borderColor={bColor}
+                        backgroundColor={bColor}
+                        _placeholder={{ color: colorMode === 'light' ? 'gray.300' : 'gray.500' }}
+
                     />
                     <InputRightElement width="4.5rem">
                         <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>

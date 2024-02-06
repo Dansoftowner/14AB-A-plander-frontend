@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
+import { Grid, GridItem, Text, Show, useColorModeValue, HStack, Box } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 const Layout = () => {
@@ -17,6 +17,8 @@ const Layout = () => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
+
+    const activeBg = useColorModeValue('#f5f5f5', 'gray.700')
 
     return (
         <>
@@ -40,27 +42,44 @@ const Layout = () => {
                     </GridItem>
 
 
-                    <GridItem area='nav'>
+                    <GridItem area='nav' mt='7vh' mr={10}>
                         <Show above='lg'>
                             <NavLink to='/' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5}>
+                                        <Text w='100%' m={0} fontSize={30} px={2} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
+
                             <NavLink to='/members' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('members')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
+                                        <Text w='100%' m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }} px={2}>{t('members')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
+
                             <NavLink to='/assignments' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
+                                        <Text w='100%' px={2} m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
                         </Show>
                     </GridItem>
 
-                    <GridItem area='main'>
+                    <GridItem area='main' mt='7vh'>
                         <Outlet />
                     </GridItem>
 

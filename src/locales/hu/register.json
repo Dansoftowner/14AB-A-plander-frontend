@@ -44,5 +44,6 @@
   "kick": "Tag törlése",
   "inviteMember": "Új tag meghívása",
   "notRegistered": "A tag még nem fejezte be a regisztrációt!",
-  "searchByName": "Keresés név alapján"
+  "searchByName": "Keresés név alapján",
+  "invite": "Meghívás"
 }

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { Box, Button, FormControl, FormLabel, HStack, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from '@chakra-ui/react'
+import { Navigate } from 'react-router-dom'
+import { Box, Button, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from '@chakra-ui/react'
 import FormInput from '../RegisterForm/FormInput'
 import { inviteSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -18,7 +18,6 @@ const InviteMember = () => {
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
     const { user } = useAuth()
-    const navigate = useNavigate()
     const inviteToast = useToast()
 
     const [phone, setPhone] = useState<PhoneFormat>({
@@ -36,70 +35,73 @@ const InviteMember = () => {
     if (!user) return <Navigate to='/login' />
     if (!user.roles.includes('president')) return <Navigate to='/members' />
     return (
-        <Box mt={20} maxW='95vw' mx={5}>
-            <form onSubmit={handleSubmit((e) => {
-                const invited = Object.fromEntries(Object.entries(e).filter(([_key, value]) => value != ""))
-                if (e.phoneNumber) invited.phoneNumber = phone.prefix + " " + e.phoneNumber
-                apiClient.post('/members', invited, {
-                    headers: {
-                        'x-plander-auth':
-                            localStorage.getItem('token') || sessionStorage.getItem('token'),
-                    }
-                }).then(res => {
-                    inviteToast({
-                        title: res.status === 202 ? t('inviteSuccess') : t('error'),
-                        status: res.status === 202 ? 'success' : 'error',
-                        duration: 9000,
-                        isClosable: true,
-                        position: 'top'
-                    })
-                })
-                    .catch(err => {
+        <>
+            <VStack mt={20} maxW='95vw' mx='auto' borderRadius={20} width='fit-content' padding={10}
+                boxShadow='dark-lg'>
+                <Heading textAlign='center' fontSize='2xl' fontWeight='bold'>{t('inviteMember')}</Heading>
+                <form onSubmit={handleSubmit((e) => {
+                    const invited = Object.fromEntries(Object.entries(e).filter(([_key, value]) => value != ""))
+                    if (e.phoneNumber) invited.phoneNumber = phone.prefix + " " + e.phoneNumber
+                    apiClient.post('/members', invited, {
+                        headers: {
+                            'x-plander-auth':
+                                localStorage.getItem('token') || sessionStorage.getItem('token'),
+                        }
+                    }).then(res => {
                         inviteToast({
-                            title: t('error'),
-                            status: 'error',
-                            description: err.response.data.message,
+                            title: res.status === 202 ? t('inviteSuccess') : t('error'),
+                            status: res.status === 202 ? 'success' : 'error',
                             duration: 9000,
                             isClosable: true,
                             position: 'top'
                         })
                     })
-            })}>
-                <Stack marginBottom={5} align='center' mx={5}>
-                    <FormInput register={register} name="email" i18nPlaceHolder="emailPHolder" i18nTitle="email" required={true} errors={errors} />
-                    <FormInput register={register} name="name" i18nPlaceHolder="fnPholder" i18nTitle="fullname" required={false} errors={errors} />
-                    <FormInput register={register} name="address" i18nPlaceHolder="adPholder" i18nTitle="address" required={false} errors={errors} />
+                        .catch(err => {
+                            inviteToast({
+                                title: t('error'),
+                                status: 'error',
+                                description: err.response.data.message,
+                                duration: 9000,
+                                isClosable: true,
+                                position: 'top'
+                            })
+                        })
+                })}>
+                    <Stack mt={10} marginBottom={5} align='center' mx={5}>
+                        <FormInput register={register} name="email" i18nPlaceHolder="emailPHolder" i18nTitle="email" required={true} errors={errors} />
+                        <FormInput register={register} name="name" i18nPlaceHolder="fnPholder" i18nTitle="fullname" required={false} errors={errors} />
+                        <FormInput register={register} name="address" i18nPlaceHolder="adPholder" i18nTitle="address" required={false} errors={errors} />
 
-                    <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} />
+                        <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} />
 
-                    <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
+                        <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
-                    <VStack>
-                        <FormControl isRequired={false}>
-                            <FormLabel mr='auto'>{t('phone')}</FormLabel>
-                            <HStack>
-                                <InputGroup as={Menu} alignItems='start'>
-                                    <Box mb={4}>
-                                        <PhoneDropdownList
-                                            selectedPhone={phone}
-                                            items={phoneMap}
-                                            selectionChange={(p) => setPhone(p)}
-                                        />
-                                    </Box>
-                                    <FormInput register={register} telPrefix={phone.prefix} name="phoneNumber" i18nPlaceHolder="phnPholder" required={false} errors={errors} />
-                                </InputGroup>
-                            </HStack>
-                        </FormControl>
-                    </VStack>
+                        <VStack>
+                            <FormControl isRequired={false}>
+                                <FormLabel mr='auto'>{t('phone')}</FormLabel>
+                                <HStack>
+                                    <InputGroup as={Menu} alignItems='start'>
+                                        <Box mb={4}>
+                                            <PhoneDropdownList
+                                                selectedPhone={phone}
+                                                items={phoneMap}
+                                                selectionChange={(p) => setPhone(p)}
+                                            />
+                                        </Box>
+                                        <FormInput register={register} telPrefix={phone.prefix} name="phoneNumber" i18nPlaceHolder="phnPholder" required={false} errors={errors} />
+                                    </InputGroup>
+                                </HStack>
+                            </FormControl>
+                        </VStack>
 
-                </Stack>
+                    </Stack>
 
-                <HStack justifyContent='center' mx={5}>
-                    <Button mr='auto' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}>Vissza</Button>
-                    <Button mr='auto' name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('regButton')}</Button>
-                </HStack>
-            </form>
-        </Box >
+                    <HStack justifyContent='center' mx={5}>
+                        <Button mx='auto' boxShadow='md' name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('invite')}</Button>
+                    </HStack>
+                </form>
+            </VStack >
+        </>
     )
 }
 

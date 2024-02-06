@@ -1,5 +1,5 @@
 import {
-    FormControl, FormLabel, Input, FormErrorMessage, InputGroup, HStack, VStack, Menu, InputLeftElement,
+    FormControl, FormLabel, Input, FormErrorMessage, InputGroup, HStack, VStack, Menu, InputLeftElement, useColorMode,
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import {
@@ -29,7 +29,8 @@ interface Props<FormData extends FieldValues> {
     passwordConfirm?: boolean
     login?: boolean,
     _onChange?: (e: any) => void,
-    value?: string
+    value?: string,
+    bColor?: string
 }
 
 const FormInput = <FormData extends FieldValues>({
@@ -44,9 +45,12 @@ const FormInput = <FormData extends FieldValues>({
     i18nPlaceHolder,
     login,
     _onChange,
-    value
+    value,
+    bColor
 }: Props<FormData>) => {
     const { t } = useTranslation('register')
+    const { colorMode } = useColorMode()
+
     const inputSchema = useMemo(() => regSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const {
@@ -74,6 +78,11 @@ const FormInput = <FormData extends FieldValues>({
                         h={10}
                         autoComplete="off"
                         onChange={_onChange}
+                        boxShadow='md'
+                        borderColor={bColor}
+                        _hover={bColor ? { borderColor: bColor } : {}}
+                        backgroundColor={bColor}
+                        _placeholder={{ color: colorMode === 'light' ? 'gray.300' : 'gray.500' }}
                     />
                 </InputGroup>
                 {isError && <FormErrorMessage> {error} </FormErrorMessage>}

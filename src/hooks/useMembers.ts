@@ -92,12 +92,12 @@ export const usePatchMember = (
             : member.idNumber,
         phoneNumber:
           member.phoneNumber == oldMember.phoneNumber
-            ? oldMember.phoneNumber
-            : member.phoneNumber,
+            ? phone.prefix + ' ' + oldMember.phoneNumber
+            : phone.prefix + ' ' + member.phoneNumber,
         guardNumber:
           member.guardNumber == oldMember.guardNumber
             ? oldMember.guardNumber
-            : phone.prefix + ' ' + member.guardNumber,
+            : member.guardNumber,
       },
       {
         headers: {
@@ -107,5 +107,5 @@ export const usePatchMember = (
         },
       },
     )
-    .then((res) => res.data)
+    .then((res) => res)
     .catch((err) => err)
