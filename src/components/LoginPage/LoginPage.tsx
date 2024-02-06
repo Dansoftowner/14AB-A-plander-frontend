@@ -43,7 +43,7 @@ const LoginPage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
-        document.body.style.overflowY = 'hidden'
+        // document.body.style.overflowY = 'hidden'
         if (localStorage.getItem('token') != null || sessionStorage.getItem('token') != null) setLoggedIn(true)
         return () => { document.body.style.overflowY = 'visible' }
     }, [])
@@ -78,7 +78,8 @@ const LoginPage = () => {
     return (
         <>
             <NavBar bgColorDark='#013b69' bgColorLight='#f5f5f5' />
-            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' h={650} minH='93.3vh' overflowY='auto'>
+            {/*  */}
+            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' minH='100vh' h={800} overflowY='hidden'>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if (User.user && User.password && User.associationId) {
@@ -110,14 +111,13 @@ const LoginPage = () => {
                         })
                     }
                 }}>
-                    <Box
+                    <Box zIndex={210}
                         borderRadius="xl"
                         color="white"
                         backgroundColor={cardBackground}
                         maxW='100vw'
-                        h={600}
+                        height={650}
                         boxShadow='dark-lg'
-
                     >
 
                         <HStack alignContent='center' justifyContent='center'>
