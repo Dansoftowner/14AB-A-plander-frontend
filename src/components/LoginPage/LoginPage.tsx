@@ -78,7 +78,6 @@ const LoginPage = () => {
     return (
         <>
             <NavBar bgColorDark='#013b69' bgColorLight='#f5f5f5' />
-            {/*  */}
             <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' minH='100vh' h={800} overflowY='hidden'>
                 <form onSubmit={(e) => {
                     e.preventDefault();
