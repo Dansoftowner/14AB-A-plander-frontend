@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Grid, GridItem, Text, Show, useColorModeValue } from '@chakra-ui/react'
+import { Grid, GridItem, Text, Show, useColorModeValue, HStack, Box } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 const Layout = () => {
@@ -40,23 +40,40 @@ const Layout = () => {
                     </GridItem>
 
 
-                    <GridItem area='nav' mt='7vh'>
+                    <GridItem area='nav' mt='7vh' mr={10}>
                         <Show above='lg'>
                             <NavLink to='/' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
+                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
+                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
+
                             <NavLink to='/members' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('members')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
+                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('members')}</Text>
+                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
+
                             <NavLink to='/assignments' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
-                            })}>
-                                <Text fontSize={30} padding={3} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
-                            </NavLink>
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
+                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
+                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
                         </Show>
                     </GridItem>
 
