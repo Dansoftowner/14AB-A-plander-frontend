@@ -18,6 +18,8 @@ const Layout = () => {
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
     }, [])
 
+    const activeBg = useColorModeValue('#f5f5f5', 'gray.700')
+
     return (
         <>
             <AuthContext.Provider value={{ user, setUser }}>
@@ -46,9 +48,9 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
-                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
-                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5}>
+                                        <Text w='100%' m={0} fontSize={30} px={2} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
                                     </HStack>
                                 )
                             }} />
@@ -57,9 +59,9 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
-                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('members')}</Text>
-                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
+                                        <Text w='100%' m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }} px={2}>{t('members')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
                                     </HStack>
                                 )
                             }} />
@@ -68,9 +70,9 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? 'gray.500' : ''} padding={5}>
-                                        <Text m={0} fontSize={30} height={20} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
-                                        <Box w={1} mb={7} backgroundColor={isActive ? buttonBg : 'transparent'} h={7} ml='auto' mr={5} borderRadius={10} />
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
+                                        <Text w='100%' px={2} m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
                                     </HStack>
                                 )
                             }} />
