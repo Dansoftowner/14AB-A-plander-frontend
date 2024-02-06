@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
 import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
@@ -14,8 +14,11 @@ interface Props {
     bgColorLight?: string
 }
 
+
 const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
     const navBarColor = useColorModeValue(bgColorLight || '#0078D7', bgColorDark || '#004881')
+    const buttonBg = useColorModeValue('#fde74c', '#fde74c')
+    const textColor = useColorModeValue('#000000', '#ffffff')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
@@ -86,16 +89,22 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
             </HStack >
 
             <ScaleFade in={isOpen} unmountOnExit initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
-                <Box mt='12vh' width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
-                    <Link to='/' onClick={() => setIsOpen(false)}>
+                <Box mt={49} width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
+                    <NavLink to='/' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
-                    </Link>
-                    <Link to='/members' onClick={() => setIsOpen(false)}>
+                    </NavLink>
+                    <NavLink to='/members' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
-                    </Link>
-                    <Link to='/assignments' onClick={() => setIsOpen(false)}>
+                    </NavLink>
+                    <NavLink to='/assignments' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Beosztások</Text>
-                    </Link>
+                    </NavLink>
                 </Box>
             </ScaleFade>
 
