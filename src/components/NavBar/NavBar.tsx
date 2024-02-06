@@ -29,7 +29,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
     }, [])
     return (
         <>
-            <HStack padding={3} justifyContent='end' backgroundColor={navBarColor} minW='100%'>
+            <HStack padding={3} justifyContent='end' position='fixed' zIndex={200} backgroundColor={navBarColor} minW='100%'>
                 {user != null &&
                     <Show below='lg'>
                         <Box mr='auto'>
@@ -86,7 +86,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
             </HStack >
 
             <ScaleFade in={isOpen} unmountOnExit initialScale={0.9} style={{ zIndex: 10, position: 'absolute' }}>
-                <Box width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
+                <Box mt='12vh' width='100vw' backgroundColor={navBarColor} textAlign='center' display={{ base: isOpen ? 'block' : 'none', lg: 'none' }} position='initial'>
                     <Link to='/' onClick={() => setIsOpen(false)}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
                     </Link>
