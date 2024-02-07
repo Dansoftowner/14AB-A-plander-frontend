@@ -1,8 +1,11 @@
 import React from 'react'
+import CalendarComponent from '../Assignments/CalendarComponent'
 
 const Reports = () => {
     return (
-        <div>Reports</div>
+        <>
+            <CalendarComponent />
+        </>
     )
 }
 

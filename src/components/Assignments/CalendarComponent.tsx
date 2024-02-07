@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import './calendar.css'
@@ -13,13 +13,14 @@ import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import { add, endOfDay, startOfDay, startOfMonth } from 'date-fns'
+import { add, addDays, endOfDay, set, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
 import React from 'react'
 import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
+import { useLocation } from 'react-router-dom'
 
 const CalendarComponent = () => {
 
@@ -35,6 +36,7 @@ const CalendarComponent = () => {
 
     const { i18n, t } = useTranslation('assignments')
     const { user } = useAuth()
+    const url = useLocation()
 
     const calendarColor = useColorModeValue('#E2E8F0', '#4a5568')
     const todayColor = useColorModeValue('#daf0ff', '#004881')
@@ -55,6 +57,11 @@ const CalendarComponent = () => {
     const queryClient = useQueryClient()
 
     const [period, setPeriod] = useState({ start: startOfMonth(new Date()).toISOString(), end: add(startOfMonth(new Date()).toISOString(), { months: 1, weeks: 1 }).toISOString(), orderBy: 'start', projection: 'full' } as AssignmentsQuery)
+
+    useEffect(() => {
+        if (url.pathname == '/reports') setPeriod({ ...period, end: endOfDay(new Date()).toISOString() })
+    }, [])
+
     const { data } = useAssignments(period)
 
 
@@ -86,12 +93,25 @@ const CalendarComponent = () => {
 
     const onRangeChange = useCallback((range: any) => {
         if (!range.length) {
-            setPeriod({ ...period, start: range.start.toISOString(), end: range.end.toISOString() })
+            if (url.pathname == '/assignments') setPeriod({ ...period, start: range.start.toISOString(), end: range.end.toISOString() })
+            else setPeriod({ ...period, start: range.start.toISOString(), end: endOfDay(new Date()).toISOString() })
         } else if (range.length == 7) {
-            setPeriod({ ...period, start: range[0].toISOString(), end: add(range[6], { days: 1 }).toISOString() })
+            if (url.pathname == '/reports') {
+                let fetched = false
+                for (let i = 0; i < 7; i++) {
+                    if (range[i] > endOfDay(new Date()) && !fetched) {
+                        setPeriod({ ...period, start: range[0].toISOString(), end: endOfDay(new Date()).toISOString() })
+                        fetched = true
+                    }
+                }
+                if (!fetched) setPeriod({ ...period, start: range[0].toISOString(), end: add(range[6], { days: 1 }).toISOString() })
+            } else setPeriod({ ...period, start: range[0].toISOString(), end: add(range[6], { days: 1 }).toISOString() })
         } else if (range.length == 1) {
-            setPeriod({ ...period, start: startOfDay(range[0]), end: endOfDay(range[0]) })
-        }
+            if (url.pathname == '/reports') {
+                if (range[0] > endOfDay(new Date())) setPeriod({ ...period, start: range[0].toISOString(), end: endOfDay(addDays(new Date(), -1)).toISOString() })
+                else setPeriod({ ...period, start: startOfDay(range[0]).toISOString(), end: endOfDay(range[0]).toISOString() })
+            }
+        } else setPeriod({ ...period, start: startOfDay(range[0]).toISOString(), end: endOfDay(range[0]).toISOString() })
     }, [])
 
     const onSelectEvent = useCallback((calEvent: any) => {
@@ -116,12 +136,14 @@ const CalendarComponent = () => {
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                {t('editAssignment')}
+                                {url.pathname == '/assignments' ? t('editAssignment') : 'kettesletra'}
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
-                                <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
-                                    setTitle={setTitle} setLocation={setLocation} />
+                                {url.pathname == '/assignments' &&
+                                    <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
+                                        setTitle={setTitle} setLocation={setLocation} />
+                                }
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
@@ -135,17 +157,19 @@ const CalendarComponent = () => {
                                 {user.roles?.includes('president') &&
                                     <Button colorScheme='red' onClick={() => {
                                         setShowAlert(false)
-                                        reset()
-                                        useDeleteAssignment(assigmentId).then(() => {
-                                            queryClient.refetchQueries(['assignments'])
-                                            toast({
-                                                title: t('common:success'),
-                                                description: t('removedAssignment'),
-                                                status: 'success',
-                                                position: 'top',
-                                                colorScheme: 'green'
+                                        if (url.pathname == '/assignments') {
+                                            reset()
+                                            useDeleteAssignment(assigmentId).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('removedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
                                             })
-                                        })
+                                        }
                                     }} ml={3}>
                                         {t('common:delete')}
                                     </Button>
@@ -153,17 +177,19 @@ const CalendarComponent = () => {
 
                                 {user.roles?.includes('president') &&
                                     <Button colorScheme='green' onClick={() => {
-                                        if (value instanceof Array) {
-                                            usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
-                                                queryClient.refetchQueries(['assignments'])
-                                                toast({
-                                                    title: t('common:success'),
-                                                    description: t('modifiedAssignment'),
-                                                    status: 'success',
-                                                    position: 'top',
-                                                    colorScheme: 'green'
+                                        if (url.pathname == '/assignments') {
+                                            if (value instanceof Array) {
+                                                usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
+                                                    queryClient.refetchQueries(['assignments'])
+                                                    toast({
+                                                        title: t('common:success'),
+                                                        description: t('modifiedAssignment'),
+                                                        status: 'success',
+                                                        position: 'top',
+                                                        colorScheme: 'green'
+                                                    })
                                                 })
-                                            })
+                                            }
                                         }
                                         setShowAlert(false)
                                     }} ml={3}>
