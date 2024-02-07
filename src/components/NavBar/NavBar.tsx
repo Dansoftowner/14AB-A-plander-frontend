@@ -93,17 +93,22 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                     <NavLink to='/' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('home')}</Text>
                     </NavLink>
                     <NavLink to='/members' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('members')}</Text>
                     </NavLink>
                     <NavLink to='/assignments' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Beosztások</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('assignments')}</Text>
+                    </NavLink>
+                    <NavLink to='/reports' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('reports')}</Text>
                     </NavLink>
                 </Box>
             </ScaleFade>
