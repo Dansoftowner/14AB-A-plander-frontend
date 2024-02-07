@@ -14,11 +14,11 @@ import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hook
 import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
-import { regSchema } from '../RegisterForm/inputSchema'
+import { memberSchema } from '../RegisterForm/inputSchema'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import FormInput from '../RegisterForm/FormInput'
+import { validate } from './utils'
 
 interface Alert {
     header: string,
@@ -44,8 +44,8 @@ const MemberDetail = () => {
 
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
-    const [newPwd, setNewPwd] = useState("00000000")
-    const [newPwdRepeat, setNewPwdRepeat] = useState('00000000')
+    const [newPwd, setNewPwd] = useState("00000000AA")
+    const [newPwdRepeat, setNewPwdRepeat] = useState('00000000AA')
 
     const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
@@ -66,7 +66,7 @@ const MemberDetail = () => {
     })
     const [memberPrefix, setMemberPrefix] = useState('')
 
-    const inputSchema = useMemo(() => regSchema(t), [t])
+    const inputSchema = useMemo(() => memberSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
@@ -125,7 +125,7 @@ const MemberDetail = () => {
     }
 
     const save = () => {
-        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000') {
+        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA') {
             useCredentials(member, oldMember, password, newPwd)
                 .then((res) => {
                     if (res.status == 204) {
@@ -146,8 +146,8 @@ const MemberDetail = () => {
                             duration: 9000,
                             position: 'top'
                         })
-                        setNewPwd("00000000")
-                        setNewPwdRepeat('00000000')
+                        setNewPwd("00000000AA")
+                        setNewPwdRepeat('00000000AA')
                     }
                     reset()
                 })
@@ -226,11 +226,12 @@ const MemberDetail = () => {
                 <VStack maxW='90vw'>
                     <HStack maxW='95vw'>
                         <FormLabel width={205}>{t('email')}: </FormLabel>
-                        <Input w={isOwnProfile ? 310 : 360} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
+                        <Input w={isOwnProfile ? 310 : 360} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} {...register('email', { onChange: (e) => { setMember({ ...member, email: e.target.value }) } })} />
                         {isOwnProfile && <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
                             <FaPencilAlt />
                         </Button>}
                     </HStack>
+                    {errors?.email && <Text color='red.500'>{t('register:zodEmail')}</Text>}
                     {
                         isOwnProfile &&
                         <VStack>
@@ -243,15 +244,15 @@ const MemberDetail = () => {
                             </HStack>
                             <HStack maxW='95vw' mb={isEnabledInput.password ? 0 : 4}>
                                 <FormLabel w={205}>{t('password')}: </FormLabel>
-                                <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
+                                <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} {...register('password', { onChange: (e) => { setNewPwd(e.target.value) } })} />
                                 <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
                                     if (!isEnabledInput.password) {
                                         setNewPwd('')
                                         setNewPwdRepeat('')
                                     }
                                     else {
-                                        setNewPwd('00000000')
-                                        setNewPwdRepeat('00000000')
+                                        setNewPwd('00000000AA')
+                                        setNewPwdRepeat('00000000AA')
                                     }
                                     setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
                                 }}>
@@ -261,10 +262,13 @@ const MemberDetail = () => {
                             {isEnabledInput.password &&
                                 <HStack maxW='95vw' mb={4}>
                                     <FormLabel w={205}>{t('register:repeatPwd')}: </FormLabel>
-                                    <Input w={310} mr={50} boxShadow='md' borderColor='#767676' type='password' value={newPwdRepeat} onChange={(e) => { setNewPwdRepeat(e.target.value) }} />
+                                    <Input w={310} mr={50} boxShadow='md' borderColor='#767676' type='password' value={newPwdRepeat} {...register('repeatedPassword', { onChange: (e) => { setNewPwdRepeat(e.target.value) } })} />
                                 </HStack>
                             }
-                            {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>}
+                            {(isEnabledInput.password && errors?.password) && <Text color='red.500'>{t('register:zodPassword')}</Text>}
+                            {(isEnabledInput.password && errors?.repeatedPassword) && <Text color='red.500'>{t('register:zodRepeatedPwd')}</Text>}
+
+                            {/* {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>} */}
                         </VStack>
                     }
                     <HStack>
@@ -304,25 +308,27 @@ const MemberDetail = () => {
                     }
 
                     <HStack maxW='95vw'>
-                        {/* <FormLabel width={350}>{t('guardNumber')}: </FormLabel> */}
-                        {/* <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} defaultValue={member.guardNumber} maxLength={13} onChangeCapture={(e) => guardNumberHandler(e)} {...register('guardNumber', { onChange: (e) => { setMember({ ...member, guardNumber: e.target.value }) } })} /> */}
-                        <FormInput _onChange={(e) => setMember({ ...member, guardNumber: e.target.value })} register={register} guard value={user.guardNumber} name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
+                        <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
+                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} defaultValue={member.guardNumber} maxLength={13} onChangeCapture={(e) => guardNumberHandler(e)} {...register('guardNumber', { onChange: (e) => { setMember({ ...member, guardNumber: e.target.value }) } })} />
 
                     </HStack>
-                    {errors.guardNumber && <Text color='red'>{t('register:zodGuardNumber')}</Text>}
+                    {errors?.guardNumber && <Text color='red.500'>{t('register:zodGuardNumber')}</Text>}
 
                     <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
 
                     {isOwnProfile &&
                         <HStack maxW='95vw' my={5}>
-                            {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000' && newPwd == newPwdRepeat || phone.prefix != memberPrefix && !errors) &&
+                            {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA' || phone.prefix != memberPrefix) &&
                                 <Button boxShadow='lg' type='submit' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor}
                                     onClick={() => {
-                                        if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000' && !errors) {
-                                            confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
-                                        } else {
-                                            patch(true)
-                                            setOldMember(member)
+                                        console.log(errors)
+                                        if (validate(member.guardNumber, member.email, newPwd)) {
+                                            if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000AA') {
+                                                confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                                            } else {
+                                                patch(true)
+                                                setOldMember(member)
+                                            }
                                         }
                                     }}
                                 >
@@ -368,14 +374,14 @@ const MemberDetail = () => {
                                 onClose()
                                 setMember(oldMember)
                                 setIsEnabledInput({ email: false, username: false, password: false })
-                                setNewPwd("00000000")
+                                setNewPwd("00000000AA")
                             }}>
                                 {t('common:cancel')}
                             </Button>
                             <Button colorScheme='green' onClick={() => {
                                 if (location.state.id == user._id) {
                                     save()
-                                    setNewPwd("00000000")
+                                    setNewPwd("00000000AA")
                                     setIsEnabledInput({ email: false, username: false, password: false })
                                     setMember(oldMember)
                                 }
