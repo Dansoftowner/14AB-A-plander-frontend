@@ -17,9 +17,13 @@ export const regSchema = (t: TFunction<'register', undefined>) => z.object({
 })
 
 export const memberSchema = (t: TFunction<'register', undefined>) => z.object({
-    guardNumber: z.union([z.string().min(1, { message: t('zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('zodGuardNumber') }).optional().nullable(), z.literal("")]),
-    email: z.string().email({ message: t('zodEmail') }),
-    idNumber: z.string().min(3),
+    guardNumber: z.string().min(1, { message: t('zodGuardNumber') }).max(13).refine(str => /\d{2}\/\d{4}\/\d{5}/.test(str), { message: t('zodGuardNumber') }).optional(),
+    email: z.string().email({ message: t('zodEmail') }).optional(),
+    password: z.string().min(8, { message: t('zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('zodPassword') }).optional(),
+    repeatedPassword: z.string().min(1).optional(),
+}).refine(data => data.password == data.repeatedPassword, {
+    message: t('zodRepeatedPwd'),
+    path: ["repeatedPassword"]
 })
 
 export const loginSchema = (t: TFunction<'register', undefined>) => z.object({
