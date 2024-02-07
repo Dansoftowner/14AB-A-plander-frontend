@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import {
@@ -14,6 +14,12 @@ import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hook
 import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
+import { memberSchema } from '../RegisterForm/inputSchema'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { validate } from './utils'
+
 interface Alert {
     header: string,
     body: string
@@ -38,8 +44,8 @@ const MemberDetail = () => {
 
     const [member, setMember] = useState({} as User)
     const [oldMember, setOldMember] = useState({} as User)
-    const [newPwd, setNewPwd] = useState("00000000")
-    const [newPwdRepeat, setNewPwdRepeat] = useState('00000000')
+    const [newPwd, setNewPwd] = useState("00000000AA")
+    const [newPwdRepeat, setNewPwdRepeat] = useState('00000000AA')
 
     const [password, setPassword] = useState('')
     const [show, setShow] = useState(false)
@@ -59,6 +65,11 @@ const MemberDetail = () => {
         length: 7,
     })
     const [memberPrefix, setMemberPrefix] = useState('')
+
+    const inputSchema = useMemo(() => memberSchema(t), [t])
+    type RegForm = z.infer<typeof inputSchema>
+    const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
+
 
     useEffect(() => {
         apiClient.get('/members/' + location.state.id, {
@@ -114,7 +125,7 @@ const MemberDetail = () => {
     }
 
     const save = () => {
-        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000') {
+        if (JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA') {
             useCredentials(member, oldMember, password, newPwd)
                 .then((res) => {
                     if (res.status == 204) {
@@ -135,8 +146,8 @@ const MemberDetail = () => {
                             duration: 9000,
                             position: 'top'
                         })
-                        setNewPwd("00000000")
-                        setNewPwdRepeat('00000000')
+                        setNewPwd("00000000AA")
+                        setNewPwdRepeat('00000000AA')
                     }
                     reset()
                 })
@@ -209,127 +220,131 @@ const MemberDetail = () => {
             </Box>
             <Heading mt={20} maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
             {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
-            <VStack maxW='90vw'>
-                <HStack maxW='95vw'>
-                    <FormLabel width={205}>{t('email')}: </FormLabel>
-                    <Input w={isOwnProfile ? 310 : 360} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} onChange={(e) => { setMember({ ...member, email: e.target.value }) }} />
-
-                    {isOwnProfile && <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
-                        <FaPencilAlt />
-                    </Button>}
-                </HStack>
-                {
-                    isOwnProfile &&
-                    <VStack>
-
-                        <HStack maxW='95vw'>
-                            <FormLabel width={205}>{t('username')}: </FormLabel>
-                            <Input w={310} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
-
-                            <Button w={13} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
-                                <FaPencilAlt />
-                            </Button>
-                        </HStack>
-
-                        <HStack maxW='95vw' mb={isEnabledInput.password ? 0 : 4}>
-                            <FormLabel w={205}>{t('password')}: </FormLabel>
-                            <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} onChange={(e) => { setNewPwd(e.target.value) }} />
-                            <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                if (!isEnabledInput.password) {
-                                    setNewPwd('')
-                                    setNewPwdRepeat('')
-                                }
-                                else {
-                                    setNewPwd('00000000')
-                                    setNewPwdRepeat('00000000')
-                                }
-                                setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
-                            }}>
-                                <FaPencilAlt />
-                            </Button>
-                        </HStack>
-
-                        {isEnabledInput.password &&
-                            <HStack maxW='95vw' mb={4}>
-                                <FormLabel w={205}>{t('register:repeatPwd')}: </FormLabel>
-                                <Input w={310} mr={50} boxShadow='md' borderColor='#767676' type='password' value={newPwdRepeat} onChange={(e) => { setNewPwdRepeat(e.target.value) }} />
+            <form onSubmit={handleSubmit(e => {
+                console.log(e)
+            })}>
+                <VStack maxW='90vw'>
+                    <HStack maxW='95vw'>
+                        <FormLabel width={205}>{t('email')}: </FormLabel>
+                        <Input w={isOwnProfile ? 310 : 360} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.email} value={member.email} {...register('email', { onChange: (e) => { setMember({ ...member, email: e.target.value }) } })} />
+                        {isOwnProfile && <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, email: !isEnabledInput.email })} >
+                            <FaPencilAlt />
+                        </Button>}
+                    </HStack>
+                    {errors?.email && <Text color='red.500'>{t('register:zodEmail')}</Text>}
+                    {
+                        isOwnProfile &&
+                        <VStack>
+                            <HStack maxW='95vw'>
+                                <FormLabel width={205}>{t('username')}: </FormLabel>
+                                <Input w={310} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
+                                <Button w={13} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setIsEnabledInput({ ...isEnabledInput, username: !isEnabledInput.username })}>
+                                    <FaPencilAlt />
+                                </Button>
                             </HStack>
-                        }
+                            <HStack maxW='95vw' mb={isEnabledInput.password ? 0 : 4}>
+                                <FormLabel w={205}>{t('password')}: </FormLabel>
+                                <Input w={310} boxShadow='md' borderColor='#767676' type='password' disabled={!isEnabledInput.password} value={newPwd} {...register('password', { onChange: (e) => { setNewPwd(e.target.value) } })} />
+                                <Button _hover={{ backgroundColor: buttonHover }} w={13} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
+                                    if (!isEnabledInput.password) {
+                                        setNewPwd('')
+                                        setNewPwdRepeat('')
+                                    }
+                                    else {
+                                        setNewPwd('00000000AA')
+                                        setNewPwdRepeat('00000000AA')
+                                    }
+                                    setIsEnabledInput({ ...isEnabledInput, password: !isEnabledInput.password })
+                                }}>
+                                    <FaPencilAlt />
+                                </Button>
+                            </HStack>
+                            {isEnabledInput.password &&
+                                <HStack maxW='95vw' mb={4}>
+                                    <FormLabel w={205}>{t('register:repeatPwd')}: </FormLabel>
+                                    <Input w={310} mr={50} boxShadow='md' borderColor='#767676' type='password' value={newPwdRepeat} {...register('repeatedPassword', { onChange: (e) => { setNewPwdRepeat(e.target.value) } })} />
+                                </HStack>
+                            }
+                            {(isEnabledInput.password && errors?.password) && <Text color='red.500'>{t('register:zodPassword')}</Text>}
+                            {(isEnabledInput.password && errors?.repeatedPassword) && <Text color='red.500'>{t('register:zodRepeatedPwd')}</Text>}
 
-                        {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>}
-                    </VStack>
-                }
-
-                <HStack>
-                    <FormLabel w={205}>{t('phone')}:</FormLabel>
+                            {/* {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>} */}
+                        </VStack>
+                    }
                     <HStack>
-                        <InputGroup as={Menu} alignItems='start'>
-                            <Box boxShadow='md'>
-                                <PhoneDropdownList
-                                    isDisabled={!isOwnProfile}
-                                    selectedPhone={phone}
-                                    items={phoneMap}
-                                    selectionChange={(p) => setPhone(p)}
-                                />
-                            </Box>
-                            <Input w={200} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber?.trim()}
-                                onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
-                                    if (phone.prefix == "+36") telHandler(e)
-                                }} />
-                        </InputGroup>
+                        <FormLabel w={205}>{t('phone')}:</FormLabel>
+                        <HStack>
+                            <InputGroup as={Menu} alignItems='start'>
+                                <Box boxShadow='md'>
+                                    <PhoneDropdownList
+                                        isDisabled={!isOwnProfile}
+                                        selectedPhone={phone}
+                                        items={phoneMap}
+                                        selectionChange={(p) => setPhone(p)}
+                                    />
+                                </Box>
+                                <Input w={200} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber?.trim()}
+                                    onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
+                                        if (phone.prefix == "+36") telHandler(e)
+                                    }} />
+                            </InputGroup>
+                        </HStack>
                     </HStack>
+                    {(isPresident || isOwnProfile) &&
+                        <HStack maxW='95vw'>
+                            <FormLabel width={350}>{t('address')}: </FormLabel>
+                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.address} onChange={(e) => setMember({ ...member, address: e.target.value })} />
+                        </HStack>
+                    }
+                    <HStack>
+                    </HStack>
+                </VStack>
+                <VStack maxW='90vw'>
+                    {(isPresident || isOwnProfile) &&
+                        <HStack maxW='95vw'>
+                            <FormLabel width={350}>{t('idNumber')}: </FormLabel>
+                            <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.idNumber} onChange={(e) => setMember({ ...member, idNumber: e.target.value })} />
+                        </HStack>
+                    }
 
-                </HStack>
-
-
-                {(isPresident || isOwnProfile) &&
                     <HStack maxW='95vw'>
-                        <FormLabel width={350}>{t('address')}: </FormLabel>
-                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.address} onChange={(e) => setMember({ ...member, address: e.target.value })} />
+                        <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
+                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} defaultValue={member.guardNumber} maxLength={13} onChangeCapture={(e) => guardNumberHandler(e)} {...register('guardNumber', { onChange: (e) => { setMember({ ...member, guardNumber: e.target.value }) } })} />
+
                     </HStack>
-                }
-                <HStack>
+                    {errors?.guardNumber && <Text color='red.500'>{t('register:zodGuardNumber')}</Text>}
 
-                </HStack>
-            </VStack>
-            <VStack maxW='90vw'>
-                {(isPresident || isOwnProfile) &&
-                    <HStack maxW='95vw'>
-                        <FormLabel width={350}>{t('idNumber')}: </FormLabel>
-                        <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.idNumber} onChange={(e) => setMember({ ...member, idNumber: e.target.value })} />
-                    </HStack>
-                }
+                    <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
 
-                <HStack maxW='95vw'>
-                    <FormLabel width={350}>{t('guardNumber')}: </FormLabel>
-                    <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.guardNumber} maxLength={13} onChangeCapture={(e) => guardNumberHandler(e)} onChange={(e) => setMember({ ...member, guardNumber: e.target.value })} />
-                </HStack>
-
-                <Checkbox my={5} isChecked={oldMember.isRegistered} disabled>{t('finishedRegistration')}</Checkbox>
-
-                {isOwnProfile &&
-                    <HStack maxW='95vw' my={5}>
-                        {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000' && newPwd == newPwdRepeat || phone.prefix != memberPrefix) &&
-                            <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => {
-                                if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000') {
-                                    confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
-                                } else {
-                                    patch(true)
-                                    setOldMember(member)
-                                }
-                            }}>
-                                <Text mb={0} mx={3}>{t('common:save')}</Text>
-                            </Button>
-                        }
-                    </HStack>
-                }
-                {
-                    (isPresident && !member.roles?.includes('president')) &&
-                    <Stack my={3}>
-                        <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
-                    </Stack>
-                }
-            </VStack>
+                    {isOwnProfile &&
+                        <HStack maxW='95vw' my={5}>
+                            {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA' || phone.prefix != memberPrefix) &&
+                                <Button boxShadow='lg' type='submit' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor}
+                                    onClick={() => {
+                                        console.log(errors)
+                                        if (validate(member.guardNumber, member.email, newPwd)) {
+                                            if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000AA') {
+                                                confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
+                                            } else {
+                                                patch(true)
+                                                setOldMember(member)
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <Text mb={0} mx={3}>{t('common:save')}</Text>
+                                </Button>
+                            }
+                        </HStack>
+                    }
+                    {
+                        (isPresident && !member.roles?.includes('president')) &&
+                        <Stack my={3}>
+                            <Button boxShadow='lg' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => confirmOpen(t('member:promoteBody'), t('member:promoteHeader'),)}>{t('member:toPresident')}</Button>
+                        </Stack>
+                    }
+                </VStack>
+            </form >
 
             {/* pwd confirmation panel */}
             <AlertDialog
@@ -359,14 +374,14 @@ const MemberDetail = () => {
                                 onClose()
                                 setMember(oldMember)
                                 setIsEnabledInput({ email: false, username: false, password: false })
-                                setNewPwd("00000000")
+                                setNewPwd("00000000AA")
                             }}>
                                 {t('common:cancel')}
                             </Button>
                             <Button colorScheme='green' onClick={() => {
                                 if (location.state.id == user._id) {
                                     save()
-                                    setNewPwd("00000000")
+                                    setNewPwd("00000000AA")
                                     setIsEnabledInput({ email: false, username: false, password: false })
                                     setMember(oldMember)
                                 }
@@ -379,11 +394,11 @@ const MemberDetail = () => {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
-            </AlertDialog>
+            </AlertDialog >
 
             <Button boxShadow='lg' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
 
-        </VStack>
+        </VStack >
 
     )
 }
