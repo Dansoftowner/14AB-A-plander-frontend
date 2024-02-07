@@ -13,7 +13,7 @@ import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import { add, addDays, endOfDay, set, startOfDay, startOfMonth } from 'date-fns'
+import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
@@ -21,6 +21,7 @@ import React from 'react'
 import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
+import ReportDetail from '../Reports/ReportDetail'
 
 const CalendarComponent = () => {
 
@@ -115,12 +116,17 @@ const CalendarComponent = () => {
     }, [])
 
     const onSelectEvent = useCallback((calEvent: any) => {
-        setShowAlert(true)
-        setAssigmentId(calEvent._id)
-        setInDuty(calEvent.assignees)
-        setLocation(calEvent.location)
-        setTitle(calEvent.title)
-        setValue([calEvent.start, calEvent.end])
+        if (url.pathname == '/reports') {
+            setShowAlert(true)
+            setAssigmentId(calEvent._id)
+            console.log(assigmentId)
+        } else {
+            setInDuty(calEvent.assignees)
+            setLocation(calEvent.location)
+            setTitle(calEvent.title)
+            setValue([calEvent.start, calEvent.end])
+        }
+        console.log(calEvent)
 
     }, [])
 
@@ -144,6 +150,7 @@ const CalendarComponent = () => {
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
+                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
