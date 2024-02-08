@@ -12,7 +12,7 @@ import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, HStack, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
@@ -32,10 +32,15 @@ const CalendarComponent = () => {
     const eventBg = useColorModeValue('#e4cd05', '#ed7014')
 
     const eventStyleGetter = (event: any) => {
-        var backgroundColor = '#' + event.hexColor;
-        if (event.report && url.pathname == '/reports') backgroundColor = reportBg;
-        if (!event.report && url.pathname == '/reports') backgroundColor = eventBg;
-        var style = {
+        let backgroundColor = '#' + event.hexColor;
+        if (url.pathname == '/reports') {
+            if (event.report) backgroundColor = reportBg;
+            if (!event.report) backgroundColor = eventBg;
+        } else {
+            event.assignees.map((r: any) => r._id).includes(user._id) ? backgroundColor = '#0b6623' : ''
+        }
+
+        const style = {
             backgroundColor: backgroundColor,
             border: '0px',
         }
@@ -68,8 +73,6 @@ const CalendarComponent = () => {
     const textColor = useColorModeValue('#000', '#fff')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
-
-    const hasReport = useColorModeValue('red', 'orange')
 
     const reset = () => {
         onClose()
@@ -248,7 +251,6 @@ const CalendarComponent = () => {
                 '.rbc-toolbar button.rbc-active': { bg: buttonBg, color: buttonColor, '&:hover': { bg: buttonHover } },
                 '.rbc-toolbar button:hover': { bg: buttonHover, color: buttonColor },
                 '.rbc-toolbar button:focus': { bg: buttonBg, color: buttonColor }, '.rbc-toolbar button': { color: textColor },
-                '.rbc-event': { backgroundColor: url.pathname == '/reports' ? hasReport : '' },
             }} m={15} height={600} maxW='95vw'>
                 <Calendar
                     localizer={localizer}

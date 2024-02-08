@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CalendarComponent from './CalendarComponent'
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Heading } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Heading, Box, HStack, Text } from '@chakra-ui/react'
 import { useAuth, User, usePostAssignment } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 
@@ -50,11 +50,16 @@ const Assignments = () => {
     return (
         <div>
             <CalendarComponent />
+            <HStack>
+                <Box borderRadius='50%' backgroundColor='#0b6623' height={4} w={4} m={5} />
+                <Text m={0} fontWeight='bold'>- Szolgálatba osztva.</Text>
+            </HStack>
             {user?.roles?.includes('president') &&
                 <Stack alignItems='center' mt={10}>
                     <Button width={250} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={onOpen}>{t('addAssignment')}</Button>
                 </Stack>
             }
+
 
 
 
