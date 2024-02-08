@@ -22,10 +22,29 @@ import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
 import ReportDetail from '../Reports/ReportDetail'
+import { Report, usePostReport } from '../../hooks/useReports'
+
+
 
 const CalendarComponent = () => {
 
-    //for prop passing
+    const reportBg = useColorModeValue('#3bb143', '#0b6623')
+    const eventBg = useColorModeValue('#e4cd05', '#ed7014')
+
+    const eventStyleGetter = (event: any) => {
+        var backgroundColor = '#' + event.hexColor;
+        if (event.report && url.pathname == '/reports') backgroundColor = reportBg;
+        if (!event.report && url.pathname == '/reports') backgroundColor = eventBg;
+        var style = {
+            backgroundColor: backgroundColor,
+            border: '0px',
+        }
+        return {
+            style: style
+        }
+    }
+
+    //for prop passing 
     const [inDuty, setInDuty] = useState([] as User[])
     const [value, setValue] = useState<string[]>([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()]);
     const [title, setTitle] = useState('')
@@ -34,6 +53,10 @@ const CalendarComponent = () => {
     const cancelRef = React.useRef<HTMLButtonElement>(null)
     const [showAlert, setShowAlert] = useState(false)
     const [assigmentId, setAssigmentId] = useState('')
+
+
+    const [report, setReport] = useState({} as Report)
+    //
 
     const { i18n, t } = useTranslation('assignments')
     const { user } = useAuth()
@@ -45,6 +68,8 @@ const CalendarComponent = () => {
     const textColor = useColorModeValue('#000', '#fff')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
+
+    const hasReport = useColorModeValue('red', 'orange')
 
     const reset = () => {
         onClose()
@@ -64,7 +89,6 @@ const CalendarComponent = () => {
     }, [])
 
     const { data } = useAssignments(period)
-
 
     apiClient.interceptors.response.use(res => {
         if (!res.data.items) return res
@@ -130,6 +154,8 @@ const CalendarComponent = () => {
         }
     }, [])
 
+
+
     return (
         <>
             {showAlert &&
@@ -150,7 +176,7 @@ const CalendarComponent = () => {
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
-                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} assignees={inDuty} />}
+                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
@@ -197,8 +223,13 @@ const CalendarComponent = () => {
                                                 })
                                             }
                                         }
-                                        else{
-                                            
+                                        else {
+                                            if (report.method && report.purpose != '') {
+                                                usePostReport(assigmentId, report).then(() =>
+                                                    queryClient.refetchQueries(['assignments'])
+                                                )
+                                            }
+                                            setReport({} as Report)
                                         }
                                         setShowAlert(false)
                                     }} ml={3}>
@@ -217,6 +248,7 @@ const CalendarComponent = () => {
                 '.rbc-toolbar button.rbc-active': { bg: buttonBg, color: buttonColor, '&:hover': { bg: buttonHover } },
                 '.rbc-toolbar button:hover': { bg: buttonHover, color: buttonColor },
                 '.rbc-toolbar button:focus': { bg: buttonBg, color: buttonColor }, '.rbc-toolbar button': { color: textColor },
+                '.rbc-event': { backgroundColor: url.pathname == '/reports' ? hasReport : '' },
             }} m={15} height={600} maxW='95vw'>
                 <Calendar
                     localizer={localizer}
@@ -230,6 +262,7 @@ const CalendarComponent = () => {
                     culture={i18n.language == 'hu' ? 'hu-HU' : 'en-US'}
                     onSelectEvent={onSelectEvent}
                     showAllEvents={true}
+                    eventPropGetter={eventStyleGetter}
                 />
             </Box>
         </>
