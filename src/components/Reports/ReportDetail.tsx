@@ -33,7 +33,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
     }
     const [value, setValue] = useState(options[0].value)
     const { user } = useAuth()
-    const canEdit = assignees.map(r => r._id).includes(user._id)
+    const canEdit = (user.roles.includes('president') || assignees.map(r => r._id).includes(user._id))
 
     const { data, isFetching } = useReport(id)
     useEffect(() => {
