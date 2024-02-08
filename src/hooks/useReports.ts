@@ -2,22 +2,41 @@ import { useQuery } from '@tanstack/react-query'
 import i18n from '../i18n'
 import apiClient from '../services/apiClient'
 
-interface Report {}
+export interface Report {
+  method: string
+  purpose: string
+  licensePlateNumber?: string
+  startKm?: number
+  endKm?: number
+  externalOrganization?: string
+  externalRepresentative?: string
+  description?: string
+}
 
 export const useReport = (id: string) =>
-  useQuery<Report>({
+  useQuery({
     queryKey: ['report', id],
     queryFn: () =>
       apiClient
-        .get(`/assignments/${id}/report`, {
+        .get<Report>(`/assignments/${id}/report`, {
           headers: {
             'x-plander-auth':
               localStorage.getItem('token') || sessionStorage.getItem('token'),
             'Accept-Language': i18n.language,
           },
         })
-        .then((res) => res.data),
+        .then((res) => res.data)
+        .catch((err) => console.log(err)),
     retry: 1,
+  })
+
+export const usePostReport = (id: string, r: Report) =>
+  apiClient.post(`/assignments/${id}/report`, r, {
+    headers: {
+      'x-plander-auth':
+        localStorage.getItem('token') || sessionStorage.getItem('token'),
+      'Accept-Language': i18n.language,
+    },
   })
 
 export const useDeleteReport = (id: string) =>
