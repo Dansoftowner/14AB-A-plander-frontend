@@ -321,7 +321,6 @@ const MemberDetail = () => {
                             {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA' || phone.prefix != memberPrefix) &&
                                 <Button boxShadow='lg' type='submit' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor}
                                     onClick={() => {
-                                        console.log(errors)
                                         if (validate(member.guardNumber, member.email, newPwd)) {
                                             if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000AA') {
                                                 confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
