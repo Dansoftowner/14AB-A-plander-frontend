@@ -2,14 +2,12 @@ import { Divider, FormControl, FormLabel, HStack, Text, Input, Radio, RadioGroup
 import { User, useAuth } from "../../hooks/hooks"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Report, useReport } from "../../hooks/useReports"
-import { set } from "date-fns"
 
 interface Props {
     id: string
     assignees: User[]
     report: Report,
     setReport: Dispatch<SetStateAction<Report>>
-
 }
 
 
@@ -37,17 +35,17 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
     const { user } = useAuth()
     const canEdit = assignees.map(r => r._id).includes(user._id)
 
-    const { data } = useReport(id)
+    const { data, isFetching } = useReport(id)
     useEffect(() => {
         setReport({} as Report)
-        if (data) {
+        if (data && !isFetching) {
             setReport(data)
             if (data?.externalOrganization || data?.externalRepresentative) {
                 setIndependent('2')
             } else setIndependent('1')
             setValue(data.purpose)
         };
-    }, [id])
+    }, [isFetching, id])
 
     return (
         <>
@@ -113,7 +111,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                     </Select>
                 </FormControl>
 
-                <Textarea value={report.description} onChange={(e) => setReport({ ...report, description: e.target.value })} isReadOnly={!canEdit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
+                <Textarea value={report.description || ''} onChange={(e) => setReport({ ...report, description: e.target.value })} isReadOnly={!canEdit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
             </VStack >
             {/* <Button onClick={() => useReportPDF(id)}>PDF export</Button> */}
         </>
