@@ -119,15 +119,15 @@ const CalendarComponent = () => {
         if (url.pathname == '/reports') {
             setShowAlert(true)
             setAssigmentId(calEvent._id)
-            console.log(assigmentId)
+            setInDuty(calEvent.assignees)
         } else {
+            setAssigmentId(calEvent._id)
+            setShowAlert(true)
             setInDuty(calEvent.assignees)
             setLocation(calEvent.location)
             setTitle(calEvent.title)
             setValue([calEvent.start, calEvent.end])
         }
-        console.log(calEvent)
-
     }, [])
 
     return (
@@ -150,7 +150,7 @@ const CalendarComponent = () => {
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
-                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} />}
+                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} assignees={inDuty} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
@@ -181,8 +181,7 @@ const CalendarComponent = () => {
                                         {t('common:delete')}
                                     </Button>
                                 }
-
-                                {user.roles?.includes('president') &&
+                                {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
                                     <Button colorScheme='green' onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
@@ -198,11 +197,16 @@ const CalendarComponent = () => {
                                                 })
                                             }
                                         }
+                                        else{
+                                            
+                                        }
                                         setShowAlert(false)
                                     }} ml={3}>
                                         {t('common:save')}
                                     </Button>
                                 }
+
+
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialogOverlay>
