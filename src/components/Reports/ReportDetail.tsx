@@ -1,3 +1,4 @@
+
 import { Divider, FormControl, FormLabel, HStack, Text, Input, Radio, RadioGroup, VStack, Textarea, Select } from "@chakra-ui/react"
 import { User, useAuth } from "../../hooks/hooks"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
@@ -8,11 +9,13 @@ interface Props {
     id: string
     assignees: User[]
     report: Report,
-    setReport: Dispatch<SetStateAction<Report>>
+    setReport: Dispatch<SetStateAction<Report>>,
+    setCanEdit: Dispatch<SetStateAction<boolean>>,
+    edit: boolean
 }
 
 
-const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
+const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Props) => {
 
 
 
@@ -36,29 +39,29 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
     const { user } = useAuth()
 
 
-    const canEdit = (type: 'patch' | 'add') => {
-        return (new Date(report.submittedAt) > subDays(new Date(), 3))
-            && (user.roles.includes('president') ||
-                (type == 'add' ? assignees.map(r => r._id).includes(user._id)
-                : user._id == report.author))
+    const canEdit = (type: 'patch' | 'add', report: Report | undefined | void) => {
+        if (report == undefined) {
+            return assignees.map(r => r._id).includes(user._id)
+        }
+        return (new Date(report.submittedAt) > subDays(new Date(), 3)) &&
+            (type == 'add' ? assignees.map(r => r._id).includes(user._id)
+                : user._id == report.author)
     }
+    const { data, isFetching, error } = useReport(id)
 
-    let edit = canEdit('add')
-
-    const { data, isFetching } = useReport(id)
     useEffect(() => {
         setReport({} as Report)
         if (data && !isFetching) {
-            edit = canEdit('patch')
             setReport(data)
             if (data?.externalOrganization || data?.externalRepresentative) {
                 setIndependent('2')
             } else setIndependent('1')
             setValue(data.purpose)
-        };
+            setCanEdit(canEdit('patch', data))
+        } else if (error) {
+            setCanEdit(canEdit('add', data))
+        }
     }, [isFetching, id])
-
-
 
     return (
         <>
@@ -113,7 +116,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
 
                 <FormControl width={400} my={2} isReadOnly={!edit}>
                     <FormLabel w={400}>Szolgálat fajtája:</FormLabel>
-                    <Select id="type" value={value} onChange={handleChange}>
+                    <Select id="type" value={value} isDisabled={!edit} onChange={handleChange}>
                         {options.map((option) => {
                             return (
                                 <option value={option.value} key={option.value}>

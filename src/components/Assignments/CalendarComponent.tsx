@@ -13,16 +13,16 @@ import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import { add, addDays, endOfDay, startOfDay, startOfMonth, subDays } from 'date-fns'
+import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
 import React from 'react'
 import apiClient from '../../services/apiClient'
-import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
+import { User, useAuth, AssignmentsQuery, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
 import ReportDetail from '../Reports/ReportDetail'
-import { Report, usePostReport } from '../../hooks/useReports'
+import { Report, dataOmit, useDeleteReport, usePostReport } from '../../hooks/useReports'
 
 
 
@@ -121,7 +121,7 @@ const CalendarComponent = () => {
     })
 
 
-    useAssignment(assigmentId)
+    // useAssignment(assigmentId)
 
     const onRangeChange = useCallback((range: any) => {
         if (!range.length) {
@@ -146,15 +146,15 @@ const CalendarComponent = () => {
         } else setPeriod({ ...period, start: startOfDay(range[0]).toISOString(), end: endOfDay(range[0]).toISOString() })
     }, [])
 
-    let canEdit
+    const [canEdit, setCanEdit] = useState(true)
+    const [hasReport, setHasReport] = useState(false)
     const onSelectEvent = useCallback((calEvent: any) => {
         if (url.pathname == '/reports') {
             setShowAlert(true)
             setAssigmentId(calEvent._id)
             setInDuty(calEvent.assignees)
+            setHasReport(!(calEvent.report == undefined))
         } else {
-            canEdit = (new Date(calEvent.report?.submittedAt) > subDays(new Date(), 3))
-                && (user.roles.includes('president') || inDuty.map(r => r._id).includes(user._id))
             setAssigmentId(calEvent._id)
             setShowAlert(true)
             setInDuty(calEvent.assignees)
@@ -163,7 +163,6 @@ const CalendarComponent = () => {
             setValue([calEvent.start, calEvent.end])
         }
     }, [])
-
 
     return (
         <>
@@ -185,7 +184,7 @@ const CalendarComponent = () => {
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
-                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
+                                {url.pathname == '/reports' && <ReportDetail edit={canEdit} setCanEdit={setCanEdit} id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
@@ -196,27 +195,40 @@ const CalendarComponent = () => {
                                     {t('common:cancel')}
                                 </Button>
 
-                                {user.roles?.includes('president') &&
+                                {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
                                     <Button colorScheme='red' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet törölni 3 napnál régebbi jelentést' : ''} onClick={() => {
                                         setShowAlert(false)
                                         reset()
-                                        useDeleteAssignment(assigmentId).then(() => {
-                                            queryClient.refetchQueries(['assignments'])
-                                            toast({
-                                                title: t('common:success'),
-                                                description: t('removedAssignment'),
-                                                status: 'success',
-                                                position: 'top',
-                                                colorScheme: 'green'
+                                        if (url.pathname == '/assignments') {
+                                            useDeleteAssignment(assigmentId).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('removedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
                                             })
-                                        })
-                                    }} ml={3}>
+                                        } else if (hasReport) {
+                                            useDeleteReport(assigmentId).then(() => {
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('removedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
+                                            })
+                                        }
+                                    }
+                                    } ml={3}>
                                         {t('common:delete')}
                                     </Button>
                                 }
 
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet módosítani 3 napnál régebbi jelentést' : ''} onClick={() => {
+                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet módosítani 3 napnál régebbi jelentést...' : ''} onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
                                                 usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
@@ -232,6 +244,17 @@ const CalendarComponent = () => {
                                             }
                                         }
                                         else {
+                                            if (hasReport) {
+                                                const data: dataOmit = {
+                                                    method: report.method, purpose: report.purpose, description: report.description,
+                                                    endKm: report.endKm, startKm: report.startKm, externalOrganization: report.externalOrganization,
+                                                    externalRepresentative: report.externalRepresentative, licensePlateNumber: report.licensePlateNumber
+                                                }
+                                                console.log(data)
+                                                // usePatchReport(assigmentId, data).then(() =>
+                                                //     queryClient.refetchQueries(['assignments'])
+                                                // )
+                                            }
                                             if (report.method && report.purpose != '') {
                                                 usePostReport(assigmentId, report).then(() =>
                                                     queryClient.refetchQueries(['assignments'])

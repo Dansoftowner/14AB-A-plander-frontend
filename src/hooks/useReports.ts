@@ -58,3 +58,14 @@ export const useReportPDF = (id: string) =>
       'Accept-Language': i18n.language,
     },
   })
+
+export const usePatchReport = (id: string, r: dataOmit) =>
+  apiClient.patch(`/assignments/${id}/report`, r, {
+    headers: {
+      'x-plander-auth':
+        localStorage.getItem('token') || sessionStorage.getItem('token'),
+      'Accept-Language': i18n.language,
+    },
+  })
+
+export type dataOmit = Omit<Report, '_id' | 'submittedAt' | 'author'>
