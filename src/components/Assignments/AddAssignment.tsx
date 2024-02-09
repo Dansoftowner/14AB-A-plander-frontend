@@ -132,8 +132,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
 
             <Heading mt={5} fontSize='medium'>{t('dateOfAssignment')}</Heading>
             <Box>
-                <DateTimeRangePicker locale='hu-HU' value={value} onChange={setValue} />
-                {/*eslint-disable-line*/}
+                <DateTimeRangePicker locale='hu-HU' value={value as Value} onChange={(value) => setValue(value as Value[])} />
             </Box>
         </>
     )
