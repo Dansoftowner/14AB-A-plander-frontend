@@ -70,7 +70,7 @@ export const RegisterForm = () => {
     if (valid) return (
         <>
             <NavBar />
-            <form className="mx-auto container mt-3" onSubmit={handleSubmit((postUser) => {
+            <form className="mx-auto container" onSubmit={handleSubmit((postUser) => {
                 type dataOmit = Omit<typeof postUser, "repeatedPassword">
                 const post: dataOmit = {
                     address: postUser.address,
@@ -99,7 +99,7 @@ export const RegisterForm = () => {
 
                 <Stack maxW='90vw'>
                     <Heading alignSelf='center' marginBottom={1}>{t('regButton') + ": "}</Heading>
-                    <Heading alignSelf='center' marginBottom={10}>{user.association.name || t('header')}</Heading>
+                    <Heading alignSelf='center' mt={10} marginBottom={10}>{user.association.name || t('header')}</Heading>
                 </Stack>
 
                 <HStack marginBottom={5} alignContent='center'>
