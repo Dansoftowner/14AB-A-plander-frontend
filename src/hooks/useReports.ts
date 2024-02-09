@@ -11,6 +11,7 @@ export interface Report {
   externalOrganization?: string
   externalRepresentative?: string
   description?: string
+  submittedAt: string
 }
 
 export const useReport = (id: string) =>
