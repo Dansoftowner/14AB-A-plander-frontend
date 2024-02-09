@@ -102,7 +102,7 @@ const FormInput = <FormData extends FieldValues>({
                                 {...register(name)}
                                 width={telPrefix ? 240 : 400}
                                 maxLength={
-                                    guard ? 13 : telPrefix == "+36" ? 11 : 20
+                                    guard ? 13 : telPrefix == "+36" ? 11 : 70
                                 }
                                 placeholder={t(i18nPlaceHolder)}
                                 type={passwordConfirm ? 'password' : 'text'}
