@@ -21,11 +21,15 @@ import React from 'react'
 import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 const CalendarComponent = () => {
 
     //for prop passing
     const [inDuty, setInDuty] = useState([] as User[])
-    const [value, setValue] = useState<string[]>([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()]);
+    const [value, setValue] = useState<Value[]>([new Date(), add(new Date(), { hours: 3 })]);
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
     const { onClose } = useDisclosure()
@@ -46,7 +50,7 @@ const CalendarComponent = () => {
     const reset = () => {
         onClose()
         setInDuty([])
-        setValue([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()])
+        setValue([new Date(), add(new Date(), { hours: 3 })])
         setTitle('')
         setLocation('')
     }
@@ -154,7 +158,8 @@ const CalendarComponent = () => {
                                 {user.roles?.includes('president') &&
                                     <Button colorScheme='green' onClick={() => {
                                         if (value instanceof Array) {
-                                            usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
+                                            console.log((value[0] as Date).toISOString());
+                                            usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
                                                 queryClient.refetchQueries(['assignments'])
                                                 toast({
                                                     title: t('common:success'),

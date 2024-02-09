@@ -12,11 +12,15 @@ import './calendar.css'
 import { FaTrash } from "react-icons/fa";
 import { useTranslation } from "react-i18next"
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 interface Props {
     inDuty: User[],
     setInDuty: Dispatch<SetStateAction<User[]>>
-    value: string[],
-    setValue: Dispatch<SetStateAction<string[]>>
+    value: Value[],
+    setValue: Dispatch<SetStateAction<Value[]>>
     title: string,
     setTitle: Dispatch<SetStateAction<string>>
     location: string,
@@ -129,6 +133,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
             <Heading mt={5} fontSize='medium'>{t('dateOfAssignment')}</Heading>
             <Box>
                 <DateTimeRangePicker locale='hu-HU' value={value} onChange={setValue} />
+                {/*eslint-disable-line*/}
             </Box>
         </>
     )
