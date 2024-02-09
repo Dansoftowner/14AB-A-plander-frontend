@@ -387,7 +387,6 @@ const MemberDetail = () => {
                                 }
                                 else {
                                     transferRoles()
-                                    console.log(password)
                                 }
                             }} ml={3}>
                                 {t('common:save')}
