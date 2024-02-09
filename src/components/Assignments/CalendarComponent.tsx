@@ -26,6 +26,10 @@ import { Report, usePostReport } from '../../hooks/useReports'
 
 
 
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 const CalendarComponent = () => {
 
     const reportBg = useColorModeValue('#3bb143', '#0b6623')
@@ -51,7 +55,7 @@ const CalendarComponent = () => {
 
     //for prop passing 
     const [inDuty, setInDuty] = useState([] as User[])
-    const [value, setValue] = useState<string[]>([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()]);
+    const [value, setValue] = useState<Value[]>([new Date(), add(new Date(), { hours: 3 })]);
     const [title, setTitle] = useState('')
     const [location, setLocation] = useState('')
     const { onClose } = useDisclosure()
@@ -77,7 +81,7 @@ const CalendarComponent = () => {
     const reset = () => {
         onClose()
         setInDuty([])
-        setValue([new Date().toISOString(), add(new Date(), { hours: 3 }).toISOString()])
+        setValue([new Date(), add(new Date(), { hours: 3 })])
         setTitle('')
         setLocation('')
     }
@@ -193,28 +197,28 @@ const CalendarComponent = () => {
                                 {user.roles?.includes('president') &&
                                     <Button colorScheme='red' onClick={() => {
                                         setShowAlert(false)
-                                        if (url.pathname == '/assignments') {
-                                            reset()
-                                            useDeleteAssignment(assigmentId).then(() => {
-                                                queryClient.refetchQueries(['assignments'])
-                                                toast({
-                                                    title: t('common:success'),
-                                                    description: t('removedAssignment'),
-                                                    status: 'success',
-                                                    position: 'top',
-                                                    colorScheme: 'green'
-                                                })
+
+                                        reset()
+                                        useDeleteAssignment(assigmentId).then(() => {
+                                            queryClient.refetchQueries(['assignments'])
+                                            toast({
+                                                title: t('common:success'),
+                                                description: t('removedAssignment'),
+                                                status: 'success',
+                                                position: 'top',
+                                                colorScheme: 'green'
                                             })
-                                        }
+                                        })
                                     }} ml={3}>
                                         {t('common:delete')}
                                     </Button>
+                                }
                                 }
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
                                     <Button colorScheme='green' onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
-                                                usePatchAssignment(assigmentId, title, location, value[0], value[1], inDuty.map(x => x._id)).then(() => {
+                                                usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
                                                     queryClient.refetchQueries(['assignments'])
                                                     toast({
                                                         title: t('common:success'),

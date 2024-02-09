@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
 import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
@@ -21,7 +21,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
     const textColor = useColorModeValue('#000000', '#ffffff')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    const [openMenu, setOpenMenu] = useState(false)
+    const [_openMenu, setOpenMenu] = useState(false)
     const { t } = useTranslation()
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))

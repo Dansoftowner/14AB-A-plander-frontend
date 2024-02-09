@@ -71,7 +71,7 @@ const LoginPage = () => {
     const navigate = useNavigate()
     const errorToast = useToast()
 
-    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
+    const [_user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
 
     if (loggedIn) navigate('/')
 
