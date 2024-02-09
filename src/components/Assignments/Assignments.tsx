@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CalendarComponent from './CalendarComponent'
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Heading, Box, HStack, Text } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Box, HStack, Text } from '@chakra-ui/react'
 import { useAuth, User, usePostAssignment } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 

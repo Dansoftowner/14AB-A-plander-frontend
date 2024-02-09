@@ -26,7 +26,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
         { value: 'Postáskísérés', label: 'Postáskísérés' },
     ]
 
-    const handleChange = (e: any) => {
+    const handleChange = () => {
         const x = (document.getElementById('type') as any).value
         setReport({ ...report, purpose: x })
         setValue(x)
