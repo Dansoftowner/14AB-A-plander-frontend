@@ -10,7 +10,7 @@ export const useTransfer = (_id: string, password: string) =>
       headers: {
         'x-plander-auth':
           localStorage.getItem('token') || sessionStorage.getItem('token'),
-        'x-current-pwd': password,
+        'x-current-pass': password,
         'Accept-Language': i18n.language,
       },
     })
