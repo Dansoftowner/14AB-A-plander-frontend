@@ -12,6 +12,7 @@ export interface Report {
   externalRepresentative?: string
   description?: string
   submittedAt: string
+  author?: string
 }
 
 export const useReport = (id: string) =>

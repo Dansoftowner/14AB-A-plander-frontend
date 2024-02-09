@@ -35,16 +35,21 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
     const [value, setValue] = useState(options[0].value)
     const { user } = useAuth()
 
-    let canEdit = false
-    if (report.submittedAt) {
-        canEdit = (new Date(report.submittedAt) > subDays(new Date(), 3))
-            && (user.roles.includes('president') || assignees.map(r => r._id).includes(user._id))
+
+    const canEdit = (type: 'patch' | 'add') => {
+        return (new Date(report.submittedAt) > subDays(new Date(), 3))
+            && (user.roles.includes('president') ||
+                (type == 'add' ? assignees.map(r => r._id).includes(user._id)
+                : user._id == report.author))
     }
+
+    let edit = canEdit('add')
 
     const { data, isFetching } = useReport(id)
     useEffect(() => {
         setReport({} as Report)
         if (data && !isFetching) {
+            edit = canEdit('patch')
             setReport(data)
             if (data?.externalOrganization || data?.externalRepresentative) {
                 setIndependent('2')
@@ -53,10 +58,12 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
         };
     }, [isFetching, id])
 
+
+
     return (
         <>
             <VStack >
-                <FormControl my={5} isRequired isReadOnly={!canEdit}>
+                <FormControl my={5} isRequired isReadOnly={!edit}>
                     <FormLabel>Szolgálat módja:</FormLabel>
                     <RadioGroup onChange={(e) => setReport({ ...report, method: e })} value={report.method}>
                         <Radio mx={2} value="vehicle">Gépkocsi</Radio>
@@ -66,7 +73,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                 </FormControl>
 
                 {report.method == 'vehicle' &&
-                    <FormControl isReadOnly={!canEdit}>
+                    <FormControl isReadOnly={!edit}>
                         <HStack my={2}>
                             <FormLabel width={200} fontSize={15}>Gépkocsi rendszáma:</FormLabel>
                             <Input width={140} value={report.licensePlateNumber} onChange={(e) => setReport({ ...report, licensePlateNumber: e.target.value })}></Input>
@@ -82,7 +89,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                 <Divider my={2} />
 
                 <HStack width={400}>
-                    <FormControl isRequired isReadOnly={!canEdit}>
+                    <FormControl isRequired isReadOnly={!edit}>
                         <FormLabel>Szolgálat típusa:</FormLabel>
                         <RadioGroup onChange={setIndependent} value={independent}>
                             <Radio mx={2} value="1">Önálló</Radio>
@@ -91,7 +98,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                     </FormControl>
                 </HStack>
                 {independent == "2" &&
-                    <FormControl isReadOnly={!canEdit}>
+                    <FormControl isReadOnly={!edit}>
                         <VStack width={400}>
                             <FormLabel width={370} fontSize={15}>Külső szervezet:</FormLabel>
                             <Input width={350} mr={10} value={report.externalOrganization} onChange={(e) => setReport({ ...report, externalOrganization: e.target.value })} />
@@ -104,7 +111,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                 }
                 <Divider my={2} />
 
-                <FormControl width={400} my={2} isReadOnly={!canEdit}>
+                <FormControl width={400} my={2} isReadOnly={!edit}>
                     <FormLabel w={400}>Szolgálat fajtája:</FormLabel>
                     <Select id="type" value={value} onChange={handleChange}>
                         {options.map((option) => {
@@ -117,7 +124,7 @@ const ReportDetail = ({ assignees, report, setReport, id }: Props) => {
                     </Select>
                 </FormControl>
 
-                <Textarea value={report.description || ''} onChange={(e) => setReport({ ...report, description: e.target.value })} isReadOnly={!canEdit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
+                <Textarea value={report.description || ''} onChange={(e) => setReport({ ...report, description: e.target.value })} isReadOnly={!edit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
             </VStack >
             {/* <Button onClick={() => useReportPDF(id)}>PDF export</Button> */}
         </>

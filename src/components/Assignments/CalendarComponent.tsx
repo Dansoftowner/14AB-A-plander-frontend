@@ -13,7 +13,7 @@ import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
-import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
+import { add, addDays, endOfDay, startOfDay, startOfMonth, subDays } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
@@ -146,12 +146,15 @@ const CalendarComponent = () => {
         } else setPeriod({ ...period, start: startOfDay(range[0]).toISOString(), end: endOfDay(range[0]).toISOString() })
     }, [])
 
+    let canEdit
     const onSelectEvent = useCallback((calEvent: any) => {
         if (url.pathname == '/reports') {
             setShowAlert(true)
             setAssigmentId(calEvent._id)
             setInDuty(calEvent.assignees)
         } else {
+            canEdit = (new Date(calEvent.report?.submittedAt) > subDays(new Date(), 3))
+                && (user.roles.includes('president') || inDuty.map(r => r._id).includes(user._id))
             setAssigmentId(calEvent._id)
             setShowAlert(true)
             setInDuty(calEvent.assignees)
@@ -160,7 +163,6 @@ const CalendarComponent = () => {
             setValue([calEvent.start, calEvent.end])
         }
     }, [])
-
 
 
     return (
@@ -195,9 +197,8 @@ const CalendarComponent = () => {
                                 </Button>
 
                                 {user.roles?.includes('president') &&
-                                    <Button colorScheme='red' onClick={() => {
+                                    <Button colorScheme='red' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet törölni 3 napnál régebbi jelentést' : ''} onClick={() => {
                                         setShowAlert(false)
-
                                         reset()
                                         useDeleteAssignment(assigmentId).then(() => {
                                             queryClient.refetchQueries(['assignments'])
@@ -213,8 +214,9 @@ const CalendarComponent = () => {
                                         {t('common:delete')}
                                     </Button>
                                 }
+
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='green' onClick={() => {
+                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet módosítani 3 napnál régebbi jelentést' : ''} onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
                                                 usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
