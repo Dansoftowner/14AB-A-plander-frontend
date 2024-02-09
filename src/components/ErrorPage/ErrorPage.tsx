@@ -1,5 +1,4 @@
-import { Button, HStack, Heading, Stack, Image, Text, useColorMode, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import { Button, HStack, Heading, Stack, Image, useColorMode, useColorModeValue } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 

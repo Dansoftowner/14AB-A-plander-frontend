@@ -76,6 +76,16 @@ const Layout = () => {
                                     </HStack>
                                 )
                             }} />
+                            <NavLink to='/reports' style={({ isActive }) => ({
+                                color: isActive ? buttonBg : textColor,
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
+                                        <Text w='100%' px={2} m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('reports')}</Text>
+                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    </HStack>
+                                )
+                            }} />
                         </Show>
                     </GridItem>
 

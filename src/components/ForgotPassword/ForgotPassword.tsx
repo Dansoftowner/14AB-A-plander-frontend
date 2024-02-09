@@ -3,7 +3,7 @@ import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } f
 import { Fragment, useMemo, useState } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineLocalPolice } from 'react-icons/md'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Association, useAssociations } from '../../hooks/useAssociations'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'

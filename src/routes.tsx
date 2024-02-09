@@ -9,6 +9,7 @@ import InviteMember from './components/MembersList/InviteMember';
 import MemberDetail from './components/MemberDetail/MemberDetail';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import Assignments from './components/Assignments/Assignments';
+import Reports from './components/Reports/Reports';
 
 
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
             {
                 path: '/assignments',
                 element: <Assignments />
+            },
+            {
+                path: '/reports',
+                element: <Reports />
             }
         ]
     },

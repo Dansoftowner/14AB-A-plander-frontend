@@ -1,5 +1,4 @@
 import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputRightElement, Button, InputLeftElement, useColorMode } from '@chakra-ui/react'
-import { t } from 'i18next'
 import { useMemo, useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'

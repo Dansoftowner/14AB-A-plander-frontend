@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import ColorModeSwitch from '../ColorModeSwitch'
 import { LangSelector } from '../LangSelector'
 import { Box, Button, Divider, HStack, Menu, MenuButton, MenuItem, MenuList, ScaleFade, Show, Text, useColorModeValue } from '@chakra-ui/react'
@@ -21,7 +21,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
     const textColor = useColorModeValue('#000000', '#ffffff')
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-    const [openMenu, setOpenMenu] = useState(false)
+    const [_openMenu, setOpenMenu] = useState(false)
     const { t } = useTranslation()
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
@@ -93,17 +93,22 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                     <NavLink to='/' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Főoldal</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('home')}</Text>
                     </NavLink>
                     <NavLink to='/members' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Tagok</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('members')}</Text>
                     </NavLink>
                     <NavLink to='/assignments' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
                     })}>
-                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>Beosztások</Text>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('assignments')}</Text>
+                    </NavLink>
+                    <NavLink to='/reports' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('reports')}</Text>
                     </NavLink>
                 </Box>
             </ScaleFade>

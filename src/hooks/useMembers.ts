@@ -7,9 +7,9 @@ import { PhoneFormat } from '../components/PhoneDropdownList/phones'
 
 interface Response {
   metadata: {
-    offset?: number
-    limit?: number
-    total?: number
+    offset: number
+    limit: number
+    total: number
   }
   items: User[]
 }
