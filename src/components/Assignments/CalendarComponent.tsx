@@ -177,7 +177,7 @@ const CalendarComponent = () => {
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                {url.pathname == '/assignments' ? t('editAssignment') : 'kettesletra'}
+                                {url.pathname == '/assignments' ? t('editAssignment') : t('saveReport')}
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
@@ -197,7 +197,7 @@ const CalendarComponent = () => {
                                 </Button>
 
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='red' isDisabled={!hasReport || !canEdit} title={!canEdit ? 'Nem lehet törölni 3 napnál régebbi jelentést' : ''} onClick={() => {
+                                    <Button colorScheme='red' isDisabled={!hasReport || !canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         setShowAlert(false)
                                         reset()
                                         if (url.pathname == '/assignments') {
@@ -210,7 +210,14 @@ const CalendarComponent = () => {
                                                     position: 'top',
                                                     colorScheme: 'green'
                                                 })
-                                            })
+                                            }).catch((err) =>
+                                                toast({
+                                                    title: t('common:error'),
+                                                    description: err.response.data.message,
+                                                    status: 'error',
+                                                    position: 'top',
+                                                    colorScheme: 'red'
+                                                }))
                                         } else if (hasReport) {
                                             useDeleteReport(assigmentId).then(() => {
                                                 queryClient.refetchQueries(['assignments'])
@@ -221,7 +228,14 @@ const CalendarComponent = () => {
                                                     position: 'top',
                                                     colorScheme: 'green'
                                                 })
-                                            })
+                                            }).catch((err) =>
+                                                toast({
+                                                    title: t('common:error'),
+                                                    description: err.response.data.message,
+                                                    status: 'error',
+                                                    position: 'top',
+                                                    colorScheme: 'red'
+                                                }))
                                         }
                                         setReport({} as Report)
                                     }
@@ -231,7 +245,7 @@ const CalendarComponent = () => {
                                 }
 
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet módosítani 3 napnál régebbi jelentést...' : ''} onClick={() => {
+                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
                                                 usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
@@ -243,7 +257,14 @@ const CalendarComponent = () => {
                                                         position: 'top',
                                                         colorScheme: 'green'
                                                     })
-                                                })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
                                             }
                                         }
                                         else {
@@ -262,7 +283,14 @@ const CalendarComponent = () => {
                                                         position: 'top',
                                                         colorScheme: 'green'
                                                     })
-                                                })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
                                             }
                                             else if (report.method && report.purpose != '') {
                                                 usePostReport(assigmentId, data).then(() => {
@@ -274,7 +302,14 @@ const CalendarComponent = () => {
                                                         position: 'top',
                                                         colorScheme: 'green'
                                                     })
-                                                })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
                                             }
                                             setReport({} as Report)
                                         }
