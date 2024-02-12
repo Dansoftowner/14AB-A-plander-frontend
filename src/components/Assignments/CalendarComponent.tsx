@@ -22,7 +22,7 @@ import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
 import ReportDetail from '../Reports/ReportDetail'
-import { Report, dataOmit, useDeleteReport, usePostReport } from '../../hooks/useReports'
+import { Report, dataOmit, useDeleteReport, usePatchReport, usePostReport } from '../../hooks/useReports'
 
 
 
@@ -84,6 +84,7 @@ const CalendarComponent = () => {
         setValue([new Date(), add(new Date(), { hours: 3 })])
         setTitle('')
         setLocation('')
+        setReport({} as Report)
     }
     const toast = useToast()
 
@@ -212,6 +213,7 @@ const CalendarComponent = () => {
                                             })
                                         } else if (hasReport) {
                                             useDeleteReport(assigmentId).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
                                                 toast({
                                                     title: t('common:success'),
                                                     description: t('removedAssignment'),
@@ -221,6 +223,7 @@ const CalendarComponent = () => {
                                                 })
                                             })
                                         }
+                                        setReport({} as Report)
                                     }
                                     } ml={3}>
                                         {t('common:delete')}
@@ -244,21 +247,34 @@ const CalendarComponent = () => {
                                             }
                                         }
                                         else {
-                                            if (hasReport) {
-                                                const data: dataOmit = {
-                                                    method: report.method, purpose: report.purpose, description: report.description,
-                                                    endKm: report.endKm, startKm: report.startKm, externalOrganization: report.externalOrganization,
-                                                    externalRepresentative: report.externalRepresentative, licensePlateNumber: report.licensePlateNumber
-                                                }
-                                                console.log(data)
-                                                // usePatchReport(assigmentId, data).then(() =>
-                                                //     queryClient.refetchQueries(['assignments'])
-                                                // )
+                                            const data: dataOmit = {
+                                                method: report.method, purpose: report.purpose, description: report.description,
+                                                endKm: report.endKm, startKm: report.startKm, externalOrganization: report.externalOrganization,
+                                                externalRepresentative: report.externalRepresentative, licensePlateNumber: report.licensePlateNumber
                                             }
-                                            if (report.method && report.purpose != '') {
-                                                usePostReport(assigmentId, report).then(() =>
+                                            if (hasReport) {
+                                                usePatchReport(assigmentId, data).then(() => {
                                                     queryClient.refetchQueries(['assignments'])
-                                                )
+                                                    toast({
+                                                        title: t('common:success'),
+                                                        description: t('modifiedReport'),
+                                                        status: 'success',
+                                                        position: 'top',
+                                                        colorScheme: 'green'
+                                                    })
+                                                })
+                                            }
+                                            else if (report.method && report.purpose != '') {
+                                                usePostReport(assigmentId, data).then(() => {
+                                                    queryClient.refetchQueries(['assignments'])
+                                                    toast({
+                                                        title: t('common:success'),
+                                                        description: t('createdReport'),
+                                                        status: 'success',
+                                                        position: 'top',
+                                                        colorScheme: 'green'
+                                                    })
+                                                })
                                             }
                                             setReport({} as Report)
                                         }

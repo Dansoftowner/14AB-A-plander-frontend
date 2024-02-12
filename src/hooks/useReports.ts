@@ -32,7 +32,7 @@ export const useReport = (id: string) =>
     retry: 1,
   })
 
-export const usePostReport = (id: string, r: Report) =>
+export const usePostReport = (id: string, r: dataOmit) =>
   apiClient.post(`/assignments/${id}/report`, r, {
     headers: {
       'x-plander-auth':
