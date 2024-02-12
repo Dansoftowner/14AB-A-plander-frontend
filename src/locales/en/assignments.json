@@ -11,5 +11,7 @@
   "addAssignment": "Add assignment",
   "removedAssignment": "The assignment is successfully removed.",
   "modifiedAssignment": "The assignment is successfully modified.",
-  "addedAssignment": "The assignment is successfully added."
+  "addedAssignment": "The assignment is successfully added.",
+  "modifiedReport": "The report is successfully modified.",
+  "createdReport": "The report is successfully created."
 }

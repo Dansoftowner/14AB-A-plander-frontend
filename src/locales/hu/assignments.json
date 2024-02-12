@@ -11,5 +11,7 @@
   "addAssignment": "Beosztás felvétele",
   "removedAssignment": "A szolgálat törölve lett.",
   "modifiedAssignment": "A szolgálat módosítva lett.",
-  "addedAssignment": "A szolgálat sikeresen rögzítve lett."
+  "addedAssignment": "A szolgálat sikeresen rögzítve lett.",
+  "modifiedReport": "A jelentés módosítva lett.",
+  "createdReport": "A jelentés sikeresen rögzítve lett."
 }
