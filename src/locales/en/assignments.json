@@ -13,5 +13,7 @@
   "modifiedAssignment": "The assignment is successfully modified.",
   "addedAssignment": "The assignment is successfully added.",
   "modifiedReport": "The report is successfully modified.",
-  "createdReport": "The report is successfully created."
+  "createdReport": "The report is successfully created.",
+  "3dayError": "Can not delete or modify reports which are older than 3 days.",
+  "saveReport": "Save report"
 }

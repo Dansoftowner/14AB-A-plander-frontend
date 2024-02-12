@@ -13,5 +13,7 @@
   "modifiedAssignment": "A szolgálat módosítva lett.",
   "addedAssignment": "A szolgálat sikeresen rögzítve lett.",
   "modifiedReport": "A jelentés módosítva lett.",
-  "createdReport": "A jelentés sikeresen rögzítve lett."
+  "createdReport": "A jelentés sikeresen rögzítve lett.",
+  "3dayError": "Nem lehet törölni vagy szerkeszteni 3 napnál régebbi jelentést!",
+  "saveReport": "Jelentés felvétele"
 }
