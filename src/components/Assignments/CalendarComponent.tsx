@@ -197,7 +197,7 @@ const CalendarComponent = () => {
                                 </Button>
 
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='red' isDisabled={!canEdit} title={!canEdit ? 'Nem lehet törölni 3 napnál régebbi jelentést' : ''} onClick={() => {
+                                    <Button colorScheme='red' isDisabled={!hasReport || !canEdit} title={!canEdit ? 'Nem lehet törölni 3 napnál régebbi jelentést' : ''} onClick={() => {
                                         setShowAlert(false)
                                         reset()
                                         if (url.pathname == '/assignments') {

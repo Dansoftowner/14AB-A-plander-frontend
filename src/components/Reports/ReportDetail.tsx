@@ -38,7 +38,6 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
     const [value, setValue] = useState(options[0].value)
     const { user } = useAuth()
 
-
     const canEdit = (type: 'patch' | 'add', report: Report | undefined | void) => {
         if (report == undefined) {
             return assignees.map(r => r._id).includes(user._id)
@@ -47,11 +46,11 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
             (type == 'add' ? assignees.map(r => r._id).includes(user._id)
                 : user._id == report.author)
     }
-    const { data, isFetching, error } = useReport(id)
+    const { data, isFetching, error, status } = useReport(id)
 
     useEffect(() => {
         setReport({} as Report)
-        if (data && !isFetching) {
+        if (data && !isFetching && status == "success") {
             setReport(data)
             if (data?.externalOrganization || data?.externalRepresentative) {
                 setIndependent('2')
