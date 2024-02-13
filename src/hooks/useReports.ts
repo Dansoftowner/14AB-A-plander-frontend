@@ -61,7 +61,6 @@ export const useReportPDF = (id: string) =>
       responseType: 'blob',
     })
     .then((res) => {
-      console.log(res.headers)
       const fileName =
         res.headers['Content-Disposition']?.split(';')[1].split('=')[1] ??
         `report_${id}.pdf`
