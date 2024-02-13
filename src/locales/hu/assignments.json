@@ -29,5 +29,6 @@
   "externalRep": "Külső szervezet képviselője",
   "purpose": "Szolgálat fajtája",
   "missingReport": "Hiányzó jelentés",
-  "doneReport": "Elkészített jelentés"
+  "doneReport": "Elkészített jelentés",
+  "exportPdf": "PDF készítése"
 }

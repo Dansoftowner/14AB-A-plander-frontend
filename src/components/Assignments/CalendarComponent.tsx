@@ -123,9 +123,6 @@ const CalendarComponent = () => {
         locales
     })
 
-
-    // useAssignment(assigmentId)
-
     const onRangeChange = useCallback((range: any) => {
         if (!range.length) {
             if (url.pathname == '/assignments') setPeriod({ ...period, start: range.start.toISOString(), end: range.end.toISOString() })
@@ -192,7 +189,7 @@ const CalendarComponent = () => {
 
                             <AlertDialogFooter>
                                 {(url.pathname == '/reports' && hasReport) &&
-                                    <Button mr='auto' onClick={() => useReportPDF(assigmentId)} >
+                                    <Button mr='auto' onClick={() => useReportPDF(assigmentId)} title={t('exportPdf')}>
                                         <Text color='#ff4d4d' m={0}><FaFilePdf /></Text>
                                     </Button>
                                 }
@@ -204,7 +201,7 @@ const CalendarComponent = () => {
                                 </Button>
 
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='red' isDisabled={!hasReport || !canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
+                                    <Button colorScheme='red' isDisabled={(url.pathname == '/reports' && !hasReport) || !canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         setShowAlert(false)
                                         reset()
                                         if (url.pathname == '/assignments') {

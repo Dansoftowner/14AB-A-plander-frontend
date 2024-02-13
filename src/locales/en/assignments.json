@@ -29,5 +29,6 @@
   "externalRep": "External representative",
   "purpose": "Assignment's purpose",
   "missingReport": "Missing report",
-  "doneReport": "Existing report"
+  "doneReport": "Existing report",
+  "exoportPdf" : "Export a PDF"
 }

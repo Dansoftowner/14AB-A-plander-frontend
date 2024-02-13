@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import i18n from '../i18n'
 import apiClient from '../services/apiClient'
-import fileDownload from 'js-file-download'
 
 export interface Report {
   method: string
@@ -59,12 +58,18 @@ export const useReportPDF = (id: string) =>
           localStorage.getItem('token') || sessionStorage.getItem('token'),
         'Accept-Language': i18n.language,
       },
+      responseType: 'blob',
     })
     .then((res) => {
-      const fileName = res.headers['Content-Disposition']
-        ?.split(';')[1]
-        .split('=')[1]
-      fileDownload(res.data, fileName)
+      console.log(res.headers)
+      const fileName =
+        res.headers['Content-Disposition']?.split(';')[1].split('=')[1] ??
+        `report_${id}.pdf`
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      link.click()
     })
 
 export const usePatchReport = (id: string, r: dataOmit) =>
