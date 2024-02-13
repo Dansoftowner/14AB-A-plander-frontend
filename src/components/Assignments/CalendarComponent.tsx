@@ -12,7 +12,7 @@ import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Text, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
@@ -22,7 +22,9 @@ import apiClient from '../../services/apiClient'
 import { User, useAuth, AssignmentsQuery, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
 import ReportDetail from '../Reports/ReportDetail'
-import { Report, dataOmit, useDeleteReport, usePatchReport, usePostReport } from '../../hooks/useReports'
+import { Report, dataOmit, useDeleteReport, usePatchReport, usePostReport, useReportPDF } from '../../hooks/useReports'
+import { FaFilePdf } from "react-icons/fa";
+
 
 
 
@@ -189,6 +191,11 @@ const CalendarComponent = () => {
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
+                                {(url.pathname == '/reports' && hasReport) &&
+                                    <Button mr='auto' onClick={() => useReportPDF(assigmentId)} >
+                                        <Text color='#ff4d4d' m={0}><FaFilePdf /></Text>
+                                    </Button>
+                                }
                                 <Button ref={cancelRef} onClick={() => {
                                     setShowAlert(false)
                                     reset()

@@ -15,5 +15,19 @@
   "modifiedReport": "A jelentés módosítva lett.",
   "createdReport": "A jelentés sikeresen rögzítve lett.",
   "3dayError": "Nem lehet törölni vagy szerkeszteni 3 napnál régebbi jelentést!",
-  "saveReport": "Jelentés felvétele"
+  "saveReport": "Jelentés felvétele",
+  "reportMethod": "Szolgálat módja",
+  "vehicle": "Gépkocsi",
+  "bicycle": "Kerékpár",
+  "pedestrian": "Gyalogos",
+  "licenseplate": "Gépkocsi rendszáma",
+  "km": "Km óra állása",
+  "assignmentType": "Szolgálat típusa",
+  "independent": "Önálló",
+  "corporate": "Közös",
+  "externalOrg": "Külső szervezet",
+  "externalRep": "Külső szervezet képviselője",
+  "purpose": "Szolgálat fajtája",
+  "missingReport": "Hiányzó jelentés",
+  "doneReport": "Elkészített jelentés"
 }
