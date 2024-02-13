@@ -98,7 +98,7 @@ const MemberDetail = () => {
             }
 
         })
-    }, [location.state.id])
+    }, [location.state.id, member])
 
     const [dialog, setDialog] = useState({} as Alert)
 
@@ -167,13 +167,14 @@ const MemberDetail = () => {
         useTransfer(member._id, password)
             .then(res => {
                 if (res.status === 200) {
+                    setMember(res.data)
                     feedbeckToast({
-                        title: 'a',
-                        description: 'jo',
-                        status: 'error',
+                        title: t('common:success'),
+                        status: 'success',
                         duration: 9000,
                         position: 'top',
                     })
+
                 } else {
                     feedbeckToast({
                         title: t('common:error'),

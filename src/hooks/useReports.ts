@@ -11,6 +11,8 @@ export interface Report {
   externalOrganization?: string
   externalRepresentative?: string
   description?: string
+  submittedAt: string
+  author?: string
 }
 
 export const useReport = (id: string) =>
@@ -30,7 +32,7 @@ export const useReport = (id: string) =>
     retry: 1,
   })
 
-export const usePostReport = (id: string, r: Report) =>
+export const usePostReport = (id: string, r: dataOmit) =>
   apiClient.post(`/assignments/${id}/report`, r, {
     headers: {
       'x-plander-auth':
@@ -49,10 +51,34 @@ export const useDeleteReport = (id: string) =>
   })
 
 export const useReportPDF = (id: string) =>
-  apiClient.get(`/assignments/${id}/report/pdf`, {
+  apiClient
+    .get(`/assignments/${id}/report/pdf`, {
+      headers: {
+        'x-plander-auth':
+          localStorage.getItem('token') || sessionStorage.getItem('token'),
+        'Accept-Language': i18n.language,
+      },
+      responseType: 'blob',
+    })
+    .then((res) => {
+      console.log(res.headers)
+      const fileName =
+        res.headers['Content-Disposition']?.split(';')[1].split('=')[1] ??
+        `report_${id}.pdf`
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      link.click()
+    })
+
+export const usePatchReport = (id: string, r: dataOmit) =>
+  apiClient.patch(`/assignments/${id}/report`, r, {
     headers: {
       'x-plander-auth':
         localStorage.getItem('token') || sessionStorage.getItem('token'),
       'Accept-Language': i18n.language,
     },
   })
+
+export type dataOmit = Omit<Report, '_id' | 'submittedAt' | 'author'>

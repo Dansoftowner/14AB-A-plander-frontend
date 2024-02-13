@@ -12,17 +12,19 @@ import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Text, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
 import AddAssignment from './AddAssignment'
 import React from 'react'
 import apiClient from '../../services/apiClient'
-import { User, useAuth, AssignmentsQuery, useAssignment, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
+import { User, useAuth, AssignmentsQuery, useAssignments, useDeleteAssignment, usePatchAssignment } from '../../hooks/hooks'
 import { useLocation } from 'react-router-dom'
 import ReportDetail from '../Reports/ReportDetail'
-import { Report, usePostReport } from '../../hooks/useReports'
+import { Report, dataOmit, useDeleteReport, usePatchReport, usePostReport, useReportPDF } from '../../hooks/useReports'
+import { FaFilePdf } from "react-icons/fa";
+
 
 
 
@@ -84,6 +86,7 @@ const CalendarComponent = () => {
         setValue([new Date(), add(new Date(), { hours: 3 })])
         setTitle('')
         setLocation('')
+        setReport({} as Report)
     }
     const toast = useToast()
 
@@ -120,9 +123,6 @@ const CalendarComponent = () => {
         locales
     })
 
-
-    useAssignment(assigmentId)
-
     const onRangeChange = useCallback((range: any) => {
         if (!range.length) {
             if (url.pathname == '/assignments') setPeriod({ ...period, start: range.start.toISOString(), end: range.end.toISOString() })
@@ -146,11 +146,14 @@ const CalendarComponent = () => {
         } else setPeriod({ ...period, start: startOfDay(range[0]).toISOString(), end: endOfDay(range[0]).toISOString() })
     }, [])
 
+    const [canEdit, setCanEdit] = useState(true)
+    const [hasReport, setHasReport] = useState(false)
     const onSelectEvent = useCallback((calEvent: any) => {
         if (url.pathname == '/reports') {
             setShowAlert(true)
             setAssigmentId(calEvent._id)
             setInDuty(calEvent.assignees)
+            setHasReport(!(calEvent.report == undefined))
         } else {
             setAssigmentId(calEvent._id)
             setShowAlert(true)
@@ -160,8 +163,6 @@ const CalendarComponent = () => {
             setValue([calEvent.start, calEvent.end])
         }
     }, [])
-
-
 
     return (
         <>
@@ -175,7 +176,7 @@ const CalendarComponent = () => {
                     <AlertDialogOverlay>
                         <AlertDialogContent>
                             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                {url.pathname == '/assignments' ? t('editAssignment') : 'kettesletra'}
+                                {url.pathname == '/assignments' ? t('editAssignment') : t('saveReport')}
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
@@ -183,10 +184,15 @@ const CalendarComponent = () => {
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
-                                {url.pathname == '/reports' && <ReportDetail id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
+                                {url.pathname == '/reports' && <ReportDetail edit={canEdit} setCanEdit={setCanEdit} id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
+                                {(url.pathname == '/reports' && hasReport) &&
+                                    <Button mr='auto' onClick={() => useReportPDF(assigmentId)} title={t('exportPdf')}>
+                                        <Text color='#ff4d4d' m={0}><FaFilePdf /></Text>
+                                    </Button>
+                                }
                                 <Button ref={cancelRef} onClick={() => {
                                     setShowAlert(false)
                                     reset()
@@ -194,27 +200,56 @@ const CalendarComponent = () => {
                                     {t('common:cancel')}
                                 </Button>
 
-                                {user.roles?.includes('president') &&
-                                    <Button colorScheme='red' onClick={() => {
+                                {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
+                                    <Button colorScheme='red' isDisabled={(url.pathname == '/reports' && !hasReport) || !canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         setShowAlert(false)
-
                                         reset()
-                                        useDeleteAssignment(assigmentId).then(() => {
-                                            queryClient.refetchQueries(['assignments'])
-                                            toast({
-                                                title: t('common:success'),
-                                                description: t('removedAssignment'),
-                                                status: 'success',
-                                                position: 'top',
-                                                colorScheme: 'green'
-                                            })
-                                        })
-                                    }} ml={3}>
+                                        if (url.pathname == '/assignments') {
+                                            useDeleteAssignment(assigmentId).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('removedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
+                                            }).catch((err) =>
+                                                toast({
+                                                    title: t('common:error'),
+                                                    description: err.response.data.message,
+                                                    status: 'error',
+                                                    position: 'top',
+                                                    colorScheme: 'red'
+                                                }))
+                                        } else if (hasReport) {
+                                            useDeleteReport(assigmentId).then(() => {
+                                                queryClient.refetchQueries(['assignments'])
+                                                toast({
+                                                    title: t('common:success'),
+                                                    description: t('removedAssignment'),
+                                                    status: 'success',
+                                                    position: 'top',
+                                                    colorScheme: 'green'
+                                                })
+                                            }).catch((err) =>
+                                                toast({
+                                                    title: t('common:error'),
+                                                    description: err.response.data.message,
+                                                    status: 'error',
+                                                    position: 'top',
+                                                    colorScheme: 'red'
+                                                }))
+                                        }
+                                        setReport({} as Report)
+                                    }
+                                    } ml={3}>
                                         {t('common:delete')}
                                     </Button>
                                 }
+
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
-                                    <Button colorScheme='green' onClick={() => {
+                                    <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         if (url.pathname == '/assignments') {
                                             if (value instanceof Array) {
                                                 usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
@@ -226,14 +261,59 @@ const CalendarComponent = () => {
                                                         position: 'top',
                                                         colorScheme: 'green'
                                                     })
-                                                })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
                                             }
                                         }
                                         else {
-                                            if (report.method && report.purpose != '') {
-                                                usePostReport(assigmentId, report).then(() =>
+                                            const data: dataOmit = {
+                                                method: report.method, purpose: report.purpose, description: report.description,
+                                                endKm: report.endKm, startKm: report.startKm, externalOrganization: report.externalOrganization,
+                                                externalRepresentative: report.externalRepresentative, licensePlateNumber: report.licensePlateNumber
+                                            }
+                                            if (hasReport) {
+                                                usePatchReport(assigmentId, data).then(() => {
                                                     queryClient.refetchQueries(['assignments'])
-                                                )
+                                                    toast({
+                                                        title: t('common:success'),
+                                                        description: t('modifiedReport'),
+                                                        status: 'success',
+                                                        position: 'top',
+                                                        colorScheme: 'green'
+                                                    })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
+                                            }
+                                            else if (report.method && report.purpose != '') {
+                                                usePostReport(assigmentId, data).then(() => {
+                                                    queryClient.refetchQueries(['assignments'])
+                                                    toast({
+                                                        title: t('common:success'),
+                                                        description: t('createdReport'),
+                                                        status: 'success',
+                                                        position: 'top',
+                                                        colorScheme: 'green'
+                                                    })
+                                                }).catch((err) =>
+                                                    toast({
+                                                        title: t('common:error'),
+                                                        description: err.response.data.message,
+                                                        status: 'error',
+                                                        position: 'top',
+                                                        colorScheme: 'red'
+                                                    }))
                                             }
                                             setReport({} as Report)
                                         }
