@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import LoginPage from './components/LoginPage/LoginPage'
 import { RegisterForm } from './components/RegisterForm/RegisterForm';
 import Layout from './components/Layout';
@@ -12,60 +12,24 @@ import Assignments from './components/Assignments/Assignments';
 import Reports from './components/Reports/Reports';
 
 
-const router = createBrowserRouter([
-    {
-        path: '/login',
-        element: <LoginPage />
-    },
-    {
-        path: '/forgotten-password',
-        element: <ForgotPassword />,
-        children: [
-            {
-                path: ':id/:restorationToken',
-                element: <ForgotPassword />
-            }
-        ]
-    },
-    {
-        path: '/register/:id/:registrationToken',
-        element: <RegisterForm />,
-
-    },
-    {
-        path: '/',
-        element: <Layout />,
-        children: [
-            {
-                path: '',
-                element: <HomePage />
-            },
-            {
-                path: '/members',
-                element: <MembersList />
-            },
-            {
-                path: '/members/invite',
-                element: <InviteMember />
-            },
-            {
-                path: '/member/:id',
-                element: <MemberDetail />
-            },
-            {
-                path: '/assignments',
-                element: <Assignments />
-            },
-            {
-                path: '/reports',
-                element: <Reports />
-            }
-        ]
-    },
-    {
-        path: '*',
-        element: <ErrorPage status={404} message='404' />
-    }
-
-])
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <Route>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgotten-password" element={<ForgotPassword />}>
+                <Route path=":id/:restorationToken" element={<ForgotPassword />} />
+            </Route>
+            <Route path="/register/:id/:registrationToken" element={<RegisterForm />} />
+            <Route path="/" element={<Layout />}>
+                <Route path="" element={<HomePage />} />
+                <Route path="/members" element={<MembersList />} />
+                <Route path="/members/invite" element={<InviteMember />} />
+                <Route path="/member/:id" element={<MemberDetail />} />
+                <Route path="/assignments" element={<Assignments />} />
+                <Route path="/reports" element={<Reports />} />
+            </Route>
+            <Route path="*" element={<ErrorPage status={404} message='404' />} />
+        </Route>
+    )
+)
 export default router;
