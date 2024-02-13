@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import i18n from '../i18n'
 import apiClient from '../services/apiClient'
+import fileDownload from 'js-file-download'
 
 export interface Report {
   method: string
@@ -51,13 +52,20 @@ export const useDeleteReport = (id: string) =>
   })
 
 export const useReportPDF = (id: string) =>
-  apiClient.get(`/assignments/${id}/report/pdf`, {
-    headers: {
-      'x-plander-auth':
-        localStorage.getItem('token') || sessionStorage.getItem('token'),
-      'Accept-Language': i18n.language,
-    },
-  })
+  apiClient
+    .get(`/assignments/${id}/report/pdf`, {
+      headers: {
+        'x-plander-auth':
+          localStorage.getItem('token') || sessionStorage.getItem('token'),
+        'Accept-Language': i18n.language,
+      },
+    })
+    .then((res) => {
+      const fileName = res.headers['Content-Disposition']
+        ?.split(';')[1]
+        .split('=')[1]
+      fileDownload(res.data, fileName)
+    })
 
 export const usePatchReport = (id: string, r: dataOmit) =>
   apiClient.patch(`/assignments/${id}/report`, r, {
