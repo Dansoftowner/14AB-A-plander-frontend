@@ -30,5 +30,6 @@
   "purpose": "Szolgálat fajtája",
   "missingReport": "Hiányzó jelentés",
   "doneReport": "Elkészített jelentés",
-  "exportPdf": "PDF készítése"
+  "exportPdf": "PDF készítése",
+  "inAssignment": "Szolgálatba osztva."
 }

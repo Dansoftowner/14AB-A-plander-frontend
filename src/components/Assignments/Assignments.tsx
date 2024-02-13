@@ -55,7 +55,7 @@ const Assignments = () => {
             <CalendarComponent />
             <HStack>
                 <Box borderRadius='50%' backgroundColor='#0b6623' height={4} w={4} m={5} />
-                <Text m={0} fontWeight='bold'>- Szolgálatba osztva.</Text>
+                <Text m={0} fontWeight='bold'>{t('inAssignment')}</Text>
             </HStack>
             {user?.roles?.includes('president') &&
                 <Stack alignItems='center' mt={10}>

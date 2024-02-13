@@ -30,5 +30,6 @@
   "purpose": "Assignment's purpose",
   "missingReport": "Missing report",
   "doneReport": "Existing report",
-  "exoportPdf" : "Export a PDF"
+  "exoportPdf" : "Export a PDF",
+  "inAssignment": "Assigned."
 }
