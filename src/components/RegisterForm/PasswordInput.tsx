@@ -45,6 +45,7 @@ const PasswordInput = <FormData extends FieldValues>({ login, bColor, register, 
                         <MdLockOutline />
                     </InputLeftElement>
                     <Input
+                        onPaste={(e) => { e.preventDefault(); return false }}
                         {...register(name, { required })}
                         onChange={_onChange}
                         placeholder={t(i18nPlaceHolder)}
