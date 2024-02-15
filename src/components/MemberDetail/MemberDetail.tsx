@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
 import {
     AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box,
-    Button, Checkbox, FormLabel, HStack, Heading, Icon, Input, InputGroup, InputRightElement, Menu, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast
+    Button, Center, Checkbox, FormLabel, HStack, Heading, Icon, Input, InputGroup, InputRightElement, Menu, Spinner, Stack, Text, VStack, useColorModeValue, useDisclosure, useToast
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
@@ -69,10 +69,11 @@ const MemberDetail = () => {
     const inputSchema = useMemo(() => memberSchema(t), [t])
     type RegForm = z.infer<typeof inputSchema>
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
-
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        apiClient.get('/members/' + location.state.id, {
+        if (!(localStorage.getItem('token') || sessionStorage.getItem('token'))) navigate('/login')
+        apiClient.get('/members/' + location.state?.id, {
             headers: {
                 'x-plander-auth':
                     localStorage.getItem('token') || sessionStorage.getItem('token')
@@ -84,6 +85,7 @@ const MemberDetail = () => {
             if (res.status === 200) {
                 setMember(res.data)
                 setOldMember(res.data)
+                setLoading(false)
                 if (res.data) {
                     let phone = res.data.phoneNumber
                     let prefix = phone.split(' ')[0]
@@ -96,9 +98,12 @@ const MemberDetail = () => {
                     setOldMember({ ...res.data, phoneNumber: phone })
                 }
             }
-
+        }).catch(() => {
+            navigate('/members')
         })
-    }, [location.state.id, member])
+    }, [location.state?.id])
+
+
 
     const [dialog, setDialog] = useState({} as Alert)
 
@@ -212,8 +217,10 @@ const MemberDetail = () => {
         } else usePatchMember(oldMember, member, phone)
     }
 
+
+
     return (
-        <VStack spacing={6} mb={7} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={10}
+        <VStack spacing={6} mb={7} mt={20} mx='auto' borderRadius={20} width='fit-content' padding={4}
             boxShadow='dark-lg'>
             <Box backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={20} padding={74} borderRadius='50%' />
             <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={20} mt={1} width='fit-content' h='fit-content' padding={25} borderRadius='50%' >
@@ -224,6 +231,7 @@ const MemberDetail = () => {
             <form onSubmit={handleSubmit(e => {
                 console.log(e)
             })}>
+                {loading && <Center zIndex={300} position='absolute' left='50%'><Spinner maxH='80vh' maxW='80vw' height={200} width={200} /></Center>}
                 <VStack maxW='90vw'>
                     <HStack maxW='95vw'>
                         <FormLabel width={205}>{t('email')}: </FormLabel>
@@ -235,7 +243,7 @@ const MemberDetail = () => {
                     {errors?.email && <Text color='red.500'>{t('register:zodEmail')}</Text>}
                     {
                         isOwnProfile &&
-                        <VStack>
+                        <VStack maxW='95vw'>
                             <HStack maxW='95vw'>
                                 <FormLabel width={205}>{t('username')}: </FormLabel>
                                 <Input w={310} boxShadow='md' borderColor='#767676' disabled={!isEnabledInput.username} value={member.username} onChange={(e) => { setMember({ ...member, username: e.target.value }) }} />
@@ -269,14 +277,13 @@ const MemberDetail = () => {
                             {(isEnabledInput.password && errors?.password) && <Text color='red.500'>{t('register:zodPassword')}</Text>}
                             {(isEnabledInput.password && errors?.repeatedPassword) && <Text color='red.500'>{t('register:zodRepeatedPwd')}</Text>}
 
-                            {/* {newPwd != newPwdRepeat && <Text ml={50} color='red'>{t('register:zodRepeatedPwd')}</Text>} */}
                         </VStack>
                     }
-                    <HStack>
-                        <FormLabel w={205}>{t('phone')}:</FormLabel>
+                    <Stack maxW='95vw' direction={['column', 'row']}>
+                        <FormLabel w={[210, 210, 200, 200, 210]}>{t('phone')}:</FormLabel>
                         <HStack>
                             <InputGroup as={Menu} alignItems='start'>
-                                <Box boxShadow='md'>
+                                <Box backgroundColor='transparent' border='none' w={[260, 150, 150, 150, 150]} >
                                     <PhoneDropdownList
                                         isDisabled={!isOwnProfile}
                                         selectedPhone={phone}
@@ -284,13 +291,13 @@ const MemberDetail = () => {
                                         selectionChange={(p) => setPhone(p)}
                                     />
                                 </Box>
-                                <Input w={200} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber?.trim()}
+                                <Input w={[270, 200, 208, 208, 200]} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber}
                                     onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
                                         if (phone.prefix == "+36") telHandler(e)
                                     }} />
                             </InputGroup>
                         </HStack>
-                    </HStack>
+                    </Stack>
                     {(isPresident || isOwnProfile) &&
                         <HStack maxW='95vw'>
                             <FormLabel width={350}>{t('address')}: </FormLabel>

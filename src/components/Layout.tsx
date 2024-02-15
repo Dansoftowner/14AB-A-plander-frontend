@@ -89,7 +89,7 @@ const Layout = () => {
                         </Show>
                     </GridItem>
 
-                    <GridItem area='main' mt='7vh'>
+                    <GridItem area='main' mt={16}>
                         <Outlet />
                     </GridItem>
 

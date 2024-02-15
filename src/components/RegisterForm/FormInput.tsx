@@ -101,6 +101,7 @@ const FormInput = <FormData extends FieldValues>({
                             <Input
                                 {...register(name)}
                                 width={telPrefix ? 240 : 400}
+                                maxW={telPrefix ? '46vw' : '90vw'}
                                 maxLength={
                                     guard ? 13 : telPrefix == "+36" ? 11 : 70
                                 }

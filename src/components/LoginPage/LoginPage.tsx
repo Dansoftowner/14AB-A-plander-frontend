@@ -43,7 +43,6 @@ const LoginPage = () => {
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
-        // document.body.style.overflowY = 'hidden'
         if (localStorage.getItem('token') != null || sessionStorage.getItem('token') != null) setLoggedIn(true)
         return () => { document.body.style.overflowY = 'visible' }
     }, [])
@@ -54,8 +53,6 @@ const LoginPage = () => {
 
     const [qParam, setQParam] = useState('')
     const { data: associations, fetchNextPage, isFetchingNextPage, isLoading, hasNextPage, } = useAssociations({ limit: 4, projection: 'lite', q: qParam })
-
-    // const { setAuthToken, setUser, user } = useContext(AuthContext)
 
     const [selectedAssociation, setSelectedAssociation] = useState<Association | null>()
     const [username, setUsername] = useState<string>('')
