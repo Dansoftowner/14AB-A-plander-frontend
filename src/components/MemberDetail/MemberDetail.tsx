@@ -403,7 +403,7 @@ const MemberDetail = () => {
                 </AlertDialogOverlay>
             </AlertDialog >
 
-            <Button boxShadow='lg' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => navigate('/members')}><Text mb={0}>{t('common:back')}</Text></Button>
+            <Button boxShadow='lg' mb={4} _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => history.back()}><Text mb={0}>{t('common:back')}</Text></Button>
 
         </VStack >
 
