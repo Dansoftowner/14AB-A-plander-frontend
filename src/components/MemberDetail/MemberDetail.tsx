@@ -101,7 +101,7 @@ const MemberDetail = () => {
         }).catch(() => {
             navigate('/members')
         })
-    }, [location.state?.id, member])
+    }, [location.state?.id])
 
 
 
@@ -291,7 +291,7 @@ const MemberDetail = () => {
                                         selectionChange={(p) => setPhone(p)}
                                     />
                                 </Box>
-                                <Input w={[270, 200, 208, 208, 200]} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber?.trim()}
+                                <Input w={[270, 200, 208, 208, 200]} maxLength={phone?.prefix == "+36" ? 11 : 20} boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.phoneNumber}
                                     onChange={(e) => setMember({ ...member, phoneNumber: e.target.value })} onChangeCapture={(e) => {
                                         if (phone.prefix == "+36") telHandler(e)
                                     }} />
