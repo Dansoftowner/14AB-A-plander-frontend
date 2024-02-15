@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-export const socket = io('ws://dev-plander-org.koyeb.app', {
+export const socket = io('wss://dev-plander-org.koyeb.app', {
   auth: {
     token: localStorage.getItem('token') || sessionStorage.getItem('token'),
   },
