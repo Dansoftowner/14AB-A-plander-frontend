@@ -14,6 +14,8 @@
 - Date-fns
 - React-big-calendar
 - React-datetime-picker
+- Socket.io-client
+- React-typed
 
 ## Fejlesztési
 - Vite
