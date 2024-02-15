@@ -15,7 +15,6 @@ const ChatBox = () => {
 
     useEffect(() => {
         socket.on('recieve-message', (data) => {
-            console.log(data)
             setMessages([...messages, data])
         })
     }, [messages])
