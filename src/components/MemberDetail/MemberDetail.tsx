@@ -283,7 +283,7 @@ const MemberDetail = () => {
                         <FormLabel w={[210, 210, 200, 200, 210]}>{t('phone')}:</FormLabel>
                         <HStack>
                             <InputGroup as={Menu} alignItems='start'>
-                                <Box backgroundColor='transparent' border='none' w={[260, 150, 150, 150, 210]} >
+                                <Box backgroundColor='transparent' border='none' w={[260, 150, 150, 150, 150]} >
                                     <PhoneDropdownList
                                         isDisabled={!isOwnProfile}
                                         selectedPhone={phone}
