@@ -4,6 +4,7 @@ export const socket = io('ws://dev-plander-org.koyeb.app', {
   auth: {
     token: localStorage.getItem('token') || sessionStorage.getItem('token'),
   },
+  secure: true,
 })
 
 export interface ChatMessage {
