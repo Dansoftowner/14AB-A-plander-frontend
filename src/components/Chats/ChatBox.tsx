@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { socket, ChatMessage } from '../../services/socket'
+import { ChatMessage } from '../../services/socket'
 import { Box, Button, Divider, Heading, Input, InputGroup, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
+import { Socket, io } from 'socket.io-client'
 
 const ChatBox = () => {
 
@@ -12,6 +13,16 @@ const ChatBox = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
+    let socket: Socket
+    if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
+        socket = io('wss://dev-plander-org.koyeb.app', {
+            auth: {
+                token: localStorage.getItem('token') || sessionStorage.getItem('token'),
+            },
+            secure: true,
+            autoConnect: true,
+        })
+    }
 
     useEffect(() => {
         socket.on('recieve-message', (data) => {
