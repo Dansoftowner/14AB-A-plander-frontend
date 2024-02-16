@@ -69,7 +69,7 @@ const ChatBox = () => {
                 ))}
             </Box>
             <InputGroup mt={3}>
-                <Input onKeyDown={handleKeyPress} type='text' mr={2} value={messageText} onChange={(e) => setMessageText(e.target.value)} placeholder='Írja be az üzenetet...' />
+                <Input onKeyDown={handleKeyPress} type='text' mr={2} value={messageText} max={1024} onChange={(e) => setMessageText(e.target.value)} placeholder='Írja be az üzenetet...' />
                 <Button color={buttonColor} backgroundColor={buttonBg} _hover={{ backgroundColor: buttonHover }} onClick={sendMessage}>Küldés</Button>
             </InputGroup>
         </Box>
