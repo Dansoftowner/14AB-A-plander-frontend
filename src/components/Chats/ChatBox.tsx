@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { ChatMessage } from '../../services/socket'
+import { ChatMessage, socket } from '../../services/socket'
 import { Box, Button, Divider, Heading, Input, InputGroup, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
-import { Socket, io } from 'socket.io-client'
+import { subMonths, subWeeks, subYears } from 'date-fns'
 
 const ChatBox = () => {
 
@@ -12,17 +12,6 @@ const ChatBox = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
-
-    let socket: Socket
-    if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
-        socket = io('wss://dev-plander-org.koyeb.app', {
-            auth: {
-                token: localStorage.getItem('token') || sessionStorage.getItem('token'),
-            },
-            secure: true,
-            autoConnect: true,
-        })
-    }
 
     useEffect(() => {
         socket.on('recieve-message', (data) => {
@@ -37,9 +26,13 @@ const ChatBox = () => {
 
     const sendMessage = () => {
         if (messageText?.trim() != "") {
-            socket.emit('send-message', messageText);
-            setMessages([...messages, { sender: JSON.parse(localStorage.getItem('user')!) || JSON.parse(sessionStorage.getItem('user')!), content: messageText }]);;
-            setMessageText('');
+            socket.emit('send-message', messageText)
+            setMessages([...messages, {
+                sender: JSON.parse(localStorage.getItem('user')!) || JSON.parse(sessionStorage.getItem('user')!),
+                content: messageText,
+                timestamp: subWeeks(new Date(), 3).toISOString()
+            }])
+            setMessageText('')
         }
     };
 
