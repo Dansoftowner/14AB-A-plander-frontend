@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ChatMessage } from '../../services/socket'
 import { Box, Button, Divider, Heading, Input, InputGroup, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
@@ -38,10 +38,15 @@ const ChatBox = () => {
         socket?.on('recieve-message', (data) => {
             setMessages([...messages, data])
         })
+        scrollToBottom()
     }, [messages])
 
     const handleKeyPress = (e: any) => {
-        if (e.key === 'Enter')
+        if (e.key === 'Enter' && e.shiftKey) {
+            console.log(e.target.value)
+            e.target.value += '\n'
+        }
+        if (e.key === 'Enter' && !e.shiftKey)
             sendMessage()
     }
 
@@ -57,19 +62,25 @@ const ChatBox = () => {
         }
     };
 
+    const endRef = useRef<HTMLDivElement>(null)
+    const scrollToBottom = () => {
+        endRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+
 
 
     return (
-        <Box mt={7} boxShadow='dark-lg' padding={4} borderRadius={20} mx={2} h={455}>
+        <Box mt={7} boxShadow='dark-lg' maxW='90vw' padding={4} borderRadius={20} mx={2} h={455}>
             <Heading>Üzenetek</Heading>
             <Divider />
             <Box height={300} overflowY='auto' maxH={400}>
                 {messages.map((message, index) => (
                     <Message key={index} message={message} />
                 ))}
+                <div ref={endRef} />
             </Box>
             <InputGroup mt={3}>
-                <Input onKeyDown={handleKeyPress} type='text' mr={2} value={messageText} max={1024} onChange={(e) => setMessageText(e.target.value)} placeholder='Írja be az üzenetet...' />
+                <Input lineHeight={1} onKeyDown={handleKeyPress} mr={2} value={messageText} maxLength={1024} maxW='75vw' onChange={(e) => setMessageText(e.target.value)} placeholder='Írja be az üzenetet...' />
                 <Button color={buttonColor} backgroundColor={buttonBg} _hover={{ backgroundColor: buttonHover }} onClick={sendMessage}>Küldés</Button>
             </InputGroup>
         </Box>

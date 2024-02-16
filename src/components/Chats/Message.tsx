@@ -41,8 +41,8 @@ const Message = ({ message }: Props) => {
             <HStack>
                 <Box w={1} backgroundColor={isMe ? buttonBg : 'transparent'} h={10} borderRadius={10} />
                 <HStack>
-                    <Text m={0} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}><b>{message.sender?.name}:</b></Text>
-                    <Text m={0}>{message.content}</Text>
+                    <Text m={0} minW={100} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}><b>{message.sender?.name}:</b></Text>
+                    <Text m={0} maxW='55vw'>{message.content}</Text>
                 </HStack>
                 <Box ml='auto' mr={2} textAlign='end'>
                     <Text my={0} fontStyle='italic'>{handleDate()}</Text>
