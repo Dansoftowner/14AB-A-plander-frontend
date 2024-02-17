@@ -16,6 +16,7 @@
 - React-datetime-picker
 - Socket.io-client
 - React-typed
+- React Infinite Scroll
 
 ## Fejlesztési
 - Vite
