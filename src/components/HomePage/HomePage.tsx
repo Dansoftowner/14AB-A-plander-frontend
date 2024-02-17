@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import ChatBox from '../Chats/ChatBox'
+import { Socket, io } from 'socket.io-client'
 const HomePage = () => {
 
     const [valid, setValid] = useState(true)
@@ -21,12 +22,32 @@ const HomePage = () => {
     }, [])
 
 
+    const [socket, setSocket] = useState<Socket>()
+    const { token } = useAuth()
+    useEffect(() => {
+        console.log('1')
+        if (token) {
+            console.log('2')
+            setSocket(io('wss://dev-plander-org.koyeb.app', {
+                auth: {
+                    token: token
+                },
+                secure: true,
+                autoConnect: false,
+            }))
+        }
+        // return () => {
+        //     socket?.disconnect()
+        // }
+    }, [token])
+
+
 
 
     if (!valid) return <Navigate to='/login' />
     return (
         <>
-            <ChatBox />
+            <ChatBox socket={socket!} />
         </>
     )
 }
