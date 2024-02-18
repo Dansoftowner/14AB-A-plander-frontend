@@ -18,5 +18,8 @@
   "404": "Page not found!",
   "assignments": "Assignments",
   "delete": "Delete",
-  "reports": "Reports"
+  "reports": "Reports",
+  "messages": "Messages",
+  "send": "Send",
+  "msgPholder": "Type your message here..."
 }

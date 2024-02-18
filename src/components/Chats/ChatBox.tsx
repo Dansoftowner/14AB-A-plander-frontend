@@ -5,6 +5,7 @@ import Message from './Message'
 import { Socket } from 'socket.io-client'
 import { useChats } from '../../hooks/useChats'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
     socket: Socket
@@ -29,6 +30,7 @@ const ChatBox = ({ socket }: Props) => {
 
     const [messages, setMessages] = React.useState<ChatMessage[]>([])
     const [messageText, setMessageText] = React.useState("")
+    const { t } = useTranslation()
 
 
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
@@ -67,7 +69,7 @@ const ChatBox = ({ socket }: Props) => {
 
     return (
         <Box mt={7} boxShadow='dark-lg' maxW='90vw' padding={4} borderRadius={20} mx={2} h={475}>
-            <Heading>Üzenetek</Heading>
+            <Heading>{t('messages')}</Heading>
             <Divider />
 
             <InfiniteScroll
@@ -93,8 +95,8 @@ const ChatBox = ({ socket }: Props) => {
                 </Box>
             </InfiniteScroll >
             <InputGroup mt={3}>
-                <Input lineHeight={1} onKeyDown={handleKeyPress} mr={2} value={messageText} maxLength={1024} maxW='75vw' onChange={(e) => setMessageText(e.target.value)} placeholder='Írja be az üzenetet...' />
-                <Button color={buttonColor} backgroundColor={buttonBg} _hover={{ backgroundColor: buttonHover }} onClick={sendMessage}>Küldés</Button>
+                <Input lineHeight={1} onKeyDown={handleKeyPress} mr={2} value={messageText} maxLength={1024} maxW='75vw' onChange={(e) => setMessageText(e.target.value)} placeholder={t('msgPholder')} />
+                <Button color={buttonColor} backgroundColor={buttonBg} _hover={{ backgroundColor: buttonHover }} onClick={sendMessage}>{t('send')}</Button>
             </InputGroup>
         </Box >
     )

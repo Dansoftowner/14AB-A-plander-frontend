@@ -18,5 +18,8 @@
   "404": "A keresett oldal nem található!",
   "assignments": "Beosztások",
   "delete": "Törlés",
-  "reports": "Jelentések"
+  "reports": "Jelentések",
+  "messages": "Üzenetek",
+  "send": "Küldés",
+  "msgPholder": "Írja be az üzenetet..."
 }
