@@ -26,9 +26,7 @@ const HomePage = () => {
     const [socket, setSocket] = useState<Socket>()
     const { token } = useAuth()
     useEffect(() => {
-        console.log('1')
         if (token) {
-            console.log('2')
             setSocket(io('wss://dev-plander-org.koyeb.app', {
                 auth: {
                     token: token
@@ -36,6 +34,8 @@ const HomePage = () => {
                 secure: true,
                 autoConnect: false,
             }))
+        } else {
+            setSocket(undefined)
         }
         socket?.connect()
     }, [token])
