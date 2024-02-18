@@ -45,9 +45,6 @@ const ChatBox = ({ socket }: Props) => {
     }, [messages])
 
     const handleKeyPress = (e: any) => {
-        if (e.key === 'Enter' && e.shiftKey) {
-            e.target.value += '\n'
-        }
         if (e.key === 'Enter' && !e.shiftKey)
             sendMessage()
     }
