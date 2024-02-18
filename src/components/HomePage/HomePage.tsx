@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import ChatBox from '../Chats/ChatBox'
 import { Socket, io } from 'socket.io-client'
+import { Spinner } from '@chakra-ui/react'
 const HomePage = () => {
 
     const [valid, setValid] = useState(true)
@@ -36,9 +37,7 @@ const HomePage = () => {
                 autoConnect: false,
             }))
         }
-        // return () => {
-        //     socket?.disconnect()
-        // }
+        socket?.connect()
     }, [token])
 
 
@@ -47,7 +46,10 @@ const HomePage = () => {
     if (!valid) return <Navigate to='/login' />
     return (
         <>
-            <ChatBox socket={socket!} />
+            {
+                socket == null ? <Spinner /> : <ChatBox socket={socket!} />
+            }
+
         </>
     )
 }
