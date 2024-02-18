@@ -12,6 +12,8 @@ const Layout = () => {
     const { t } = useTranslation('')
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
+    const [token, setToken] = useState(sessionStorage.getItem('token')! || localStorage.getItem('token')!)
+
 
     useEffect(() => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
@@ -22,7 +24,7 @@ const Layout = () => {
 
     return (
         <>
-            <AuthContext.Provider value={{ user, setUser }}>
+            <AuthContext.Provider value={{ user, setUser, token, setToken }}>
 
                 <Grid templateAreas={{
                     base: `

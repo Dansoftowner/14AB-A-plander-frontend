@@ -8,7 +8,6 @@ import { MdMenu, MdClose } from "react-icons/md"
 import { FaUserAlt, FaCaretDown, FaPowerOff, FaBell } from "react-icons/fa";
 import { useTranslation } from 'react-i18next'
 
-
 interface Props {
     bgColorDark?: string
     bgColorLight?: string
@@ -45,6 +44,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                 <LangSelector />
                 {(localStorage.getItem('token') || sessionStorage.getItem('token')) &&
                     <Menu>
+                        <Text my={0} mx={1}>{user.name}</Text>
                         <MenuButton onClick={() => setOpenMenu(true)} backgroundColor='transparent'>
                             <HStack>
                                 <FaUserAlt />
