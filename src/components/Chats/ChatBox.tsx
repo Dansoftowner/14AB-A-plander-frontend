@@ -21,7 +21,6 @@ const ChatBox = ({ socket }: Props) => {
     const chats = data?.pages.reduce((acc, page) => {
         return [...acc, ...page.items]
     }, [])
-    console.log(chats)
 
     useEffect(() => {
         scrollToBottom()
@@ -58,7 +57,6 @@ const ChatBox = ({ socket }: Props) => {
                 timestamp: new Date().toISOString()
             }])
             setMessageText('')
-            console.log(messages)
         }
     };
 
@@ -83,8 +81,8 @@ const ChatBox = ({ socket }: Props) => {
             >
                 <Box>
                     {
-                        chats?.map((chat: any) => (
-                            <Message key={chat.id} message={chat} />
+                        chats?.map((chat: any, index: any) => (
+                            <Message key={index} message={chat} />
                         )).reverse()
 
                     }

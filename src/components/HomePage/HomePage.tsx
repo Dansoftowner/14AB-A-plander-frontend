@@ -15,7 +15,6 @@ const HomePage = () => {
         }
         else {
             setUser(JSON.parse(sessionStorage.getItem('user')!))
-            console.log(sessionStorage.getItem('token'))
             setToken(sessionStorage.getItem('token')!)
         }
         if (localStorage.getItem('user') == null && sessionStorage.getItem('user') == null) setValid(false)

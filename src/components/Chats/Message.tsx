@@ -2,6 +2,7 @@ import { Box, HStack, Text, useColorModeValue } from '@chakra-ui/react'
 import { useAuth } from '../../hooks/hooks'
 import { ChatMessage } from '../../services/socket'
 import { useNavigate } from 'react-router-dom'
+import i18n from '../../i18n'
 
 interface Props {
     message: ChatMessage
@@ -22,6 +23,7 @@ const Message = ({ message }: Props) => {
     }
 
     const handleDate = () => {
+        const locale = i18n.language == 'hu' ? `hu-HU` : `en-US`
         const date = new Date(message?.timestamp)
         const thisYear = date.getFullYear() == new Date().getFullYear()
         const todayDisplay = date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
@@ -30,9 +32,9 @@ const Message = ({ message }: Props) => {
             return (date.getHours() < 10 ? '0' : '') + todayDisplay
         if (date.getMonth() == new Date().getMonth() && thisYear) {
             console.log('date');
-            return `${date.toLocaleDateString('hu-HU', { weekday: 'short', month: 'short', day: 'numeric' })}`
+            return `${date.toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric' })}`
         }
-        return date.toLocaleDateString('hu-HU', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })
+        return date.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })
 
     }
 
