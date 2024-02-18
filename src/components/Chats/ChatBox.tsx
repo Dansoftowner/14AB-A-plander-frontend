@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ChatMessage } from '../../services/socket'
 import { Box, Button, Divider, Heading, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
 import { Socket } from 'socket.io-client'
 import { useChats } from '../../hooks/useChats'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { use } from 'i18next'
 
 interface Props {
     socket: Socket
