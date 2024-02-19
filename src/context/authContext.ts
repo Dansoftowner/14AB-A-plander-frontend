@@ -6,6 +6,8 @@ interface AuthContextType {
   setUser: React.Dispatch<SetStateAction<User>>
   token: string
   setToken: React.Dispatch<SetStateAction<string>>
+  preferences: any
+  setPreferences: React.Dispatch<SetStateAction<any>>
 }
 export const AuthContext = React.createContext<AuthContextType>(
   {} as AuthContextType,
