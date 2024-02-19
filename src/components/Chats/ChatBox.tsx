@@ -6,6 +6,7 @@ import { Socket } from 'socket.io-client'
 import { useChats } from '../../hooks/useChats'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useTranslation } from 'react-i18next'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
     socket: Socket
@@ -18,6 +19,7 @@ const ChatBox = ({ socket }: Props) => {
     }, [socket])
 
     const { data, fetchNextPage, hasNextPage } = useChats(10)
+    const queryClient = useQueryClient()
 
     const chats = data?.pages.reduce((acc, page) => {
         return [...acc, ...page.items]
@@ -25,6 +27,7 @@ const ChatBox = ({ socket }: Props) => {
 
     useEffect(() => {
         scrollToBottom()
+        queryClient.refetchQueries(['chats'])
     }, [])
 
 
