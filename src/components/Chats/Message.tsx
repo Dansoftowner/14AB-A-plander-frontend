@@ -31,7 +31,6 @@ const Message = ({ message }: Props) => {
         if (date.getDate() == new Date().getDate() && thisYear)
             return (date.getHours() < 10 ? '0' : '') + todayDisplay
         if (date.getMonth() == new Date().getMonth() && thisYear) {
-            console.log('date');
             return `${date.toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric' })}`
         }
         return date.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })
