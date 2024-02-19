@@ -4,7 +4,7 @@ import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Grid, GridItem, Text, Show, useColorModeValue, HStack, Box } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { usePreferences } from '../hooks/usePreferences'
+import { usePreferences } from '../hooks/hooks'
 
 const Layout = () => {
 

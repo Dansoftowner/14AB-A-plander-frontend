@@ -20,6 +20,8 @@ import {
 } from './useAssignments'
 import { User, useLogin } from './useLogin'
 import { useDeleteReport, useReport, useReportPDF } from './useReports'
+import { usePatchPreferences, usePreferences } from './usePreferences'
+import { useChats } from './useChats'
 
 export {
   useAssociations,
@@ -41,6 +43,9 @@ export {
   useReport,
   useReportPDF,
   useDeleteReport,
+  usePatchPreferences,
+  usePreferences,
+  useChats,
 }
 export type { User }
 export type { AssignmentsQuery }

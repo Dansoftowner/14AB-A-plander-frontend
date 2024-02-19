@@ -1,7 +1,6 @@
 import { Button, Image } from '@chakra-ui/react'
 import { useTranslation } from "react-i18next"
-import useAuth from '../hooks/useAuth'
-import { usePatchPreferences } from '../hooks/usePreferences'
+import { usePatchPreferences, useAuth } from '../hooks/hooks'
 import { useEffect } from 'react'
 
 export const LangSelector = () => {

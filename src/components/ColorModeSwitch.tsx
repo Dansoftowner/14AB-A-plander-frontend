@@ -1,7 +1,7 @@
 import { HStack, useColorMode, Button } from '@chakra-ui/react'
 import { BsFillSunFill } from "react-icons/bs";
 import { BsMoonStarsFill } from "react-icons/bs";
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../hooks/hooks';
 import { useEffect } from 'react';
 
 
