@@ -4,6 +4,7 @@ import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Grid, GridItem, Text, Show, useColorModeValue, HStack, Box } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
+import { usePreferences } from '../hooks/hooks'
 
 const Layout = () => {
 
@@ -13,18 +14,21 @@ const Layout = () => {
 
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')!) || JSON.parse(localStorage.getItem('user')!))
     const [token, setToken] = useState(sessionStorage.getItem('token')! || localStorage.getItem('token')!)
-
+    const [preferences, setPreferences] = useState()
 
     useEffect(() => {
         if (localStorage.getItem('user')) setUser(JSON.parse(localStorage.getItem('user')!))
         else setUser(JSON.parse(sessionStorage.getItem('user')!))
+        usePreferences().then(res => setPreferences(res))
     }, [])
 
     const activeBg = useColorModeValue('#f5f5f5', 'gray.700')
 
+    console.log(preferences)
+
     return (
         <>
-            <AuthContext.Provider value={{ user, setUser, token, setToken }}>
+            <AuthContext.Provider value={{ user, setUser, token, setToken, preferences, setPreferences }}>
 
                 <Grid templateAreas={{
                     base: `

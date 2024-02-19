@@ -3,9 +3,10 @@ import { ChatMessage } from '../../services/socket'
 import { Box, Button, Divider, Heading, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
 import { Socket } from 'socket.io-client'
-import { useChats } from '../../hooks/useChats'
+import { useChats } from '../../hooks/hooks'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useTranslation } from 'react-i18next'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
     socket: Socket
@@ -18,6 +19,7 @@ const ChatBox = ({ socket }: Props) => {
     }, [socket])
 
     const { data, fetchNextPage, hasNextPage } = useChats(10)
+    const queryClient = useQueryClient()
 
     const chats = data?.pages.reduce((acc, page) => {
         return [...acc, ...page.items]
@@ -25,6 +27,7 @@ const ChatBox = ({ socket }: Props) => {
 
     useEffect(() => {
         scrollToBottom()
+        queryClient.refetchQueries(['chats'])
     }, [])
 
 
@@ -68,7 +71,7 @@ const ChatBox = ({ socket }: Props) => {
     }
 
     return (
-        <Box mt={7} boxShadow='dark-lg' maxW='90vw' padding={4} borderRadius={20} mx={2} h={475}>
+        <Box mt={7} boxShadow='dark-lg' maxW='95vw' padding={4} borderRadius={20} mx={2} h={475}>
             <Heading>{t('messages')}</Heading>
             <Divider />
 
