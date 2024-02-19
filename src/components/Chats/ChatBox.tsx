@@ -71,7 +71,7 @@ const ChatBox = ({ socket }: Props) => {
     }
 
     return (
-        <Box mt={7} boxShadow='dark-lg' maxW='90vw' padding={4} borderRadius={20} mx={2} h={475}>
+        <Box mt={7} boxShadow='dark-lg' maxW='95vw' padding={4} borderRadius={20} mx={2} h={475}>
             <Heading>{t('messages')}</Heading>
             <Divider />
 
