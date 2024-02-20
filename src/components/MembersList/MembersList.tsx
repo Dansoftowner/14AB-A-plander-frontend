@@ -44,6 +44,10 @@ const MembersList = () => {
             setQ(search)
     }
 
+    const handlePage = (n: number) => {
+        setPage(n)
+    }
+
     if (!valid) return <Navigate to='/login' />
 
     return (
@@ -76,28 +80,29 @@ const MembersList = () => {
             }
 
 
-            <HStack mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
+            <HStack transition='1s all' mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
                 {(data && page > 1) &&
-                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page - 1)}>
+                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => handlePage(page - 1)}>
                         <Icon as={MdNavigateBefore} fontSize={30} />
                     </Button>
-                }                {
-                    data?.items?.map((member: any, index: any) => {
-                        return <MemberCard _id={member._id} key={index}
+                }
+                {
+                    data?.items?.map((member: any, index: any) =>
+                    (
+                        <MemberCard _id={member._id} key={index}
                             email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
-                    })
+                    ))
                 }
                 {
                     (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page + 1)}>
+                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => handlePage(1 + page)}>
                         <Icon as={MdNavigateNext} fontSize={30} />
                     </Button>
                 }
-
-
             </HStack >
 
-            {user?.roles.includes('president') &&
+            {
+                user?.roles.includes('president') &&
                 <Button mt={10} boxShadow='md' textAlign='center' onClick={() => navigate('/members/invite')}>
                     <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
                         <FaPlus />
@@ -113,7 +118,7 @@ const MembersList = () => {
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
                 </HStack>
             } */}
-        </VStack>
+        </VStack >
     )
 }
 
