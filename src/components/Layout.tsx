@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { AuthContext } from '../context/authContext'
 import NavBar from './NavBar/NavBar'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Grid, GridItem, Text, Show, useColorModeValue, HStack, Box } from '@chakra-ui/react'
+import { Grid, GridItem, Text, Show, useColorModeValue, HStack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { usePreferences } from '../hooks/hooks'
+import '../App.css'
 
 const Layout = () => {
 
@@ -22,7 +23,8 @@ const Layout = () => {
         usePreferences().then(res => setPreferences(res))
     }, [])
 
-    const activeBg = useColorModeValue('#f5f5f5', 'gray.700')
+    const activeBg = useColorModeValue('#f0f0f0', 'gray.700')
+    const bodyBg = useColorModeValue('#ffffff', 'gray.800')
 
     return (
         <>
@@ -46,15 +48,14 @@ const Layout = () => {
                     </GridItem>
 
 
-                    <GridItem area='nav' mt='7vh' mr={10}>
+                    <GridItem area='nav' mt='6vh' minH='94vh' mr={10} backgroundColor={activeBg}>
                         <Show above='lg'>
                             <NavLink to='/' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5}>
-                                        <Text w='100%' m={0} fontSize={30} px={2} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('home')}</Text>
-                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
+                                        <Text w='100%' ml={3} my={0} fontSize={30} px={2} >{t('home')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -63,9 +64,8 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
-                                        <Text w='100%' m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }} px={2}>{t('members')}</Text>
-                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
+                                        <Text w='100%' ml={3} my={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }} px={2}>{t('members')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -74,9 +74,8 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
-                                        <Text w='100%' px={2} m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
-                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5} >
+                                        <Text w='100%' px={2} ml={3} my={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('assignments')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -84,9 +83,8 @@ const Layout = () => {
                                 color: isActive ? buttonBg : textColor,
                             })} children={({ isActive }) => {
                                 return (
-                                    <HStack backgroundColor={isActive ? activeBg : ''} marginY={10} mx={5} >
-                                        <Text w='100%' px={2} m={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('reports')}</Text>
-                                        <Box w={1} backgroundColor={isActive ? buttonBg : 'transparent'} h={12} ml='auto' borderRadius={10} />
+                                    <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5} >
+                                        <Text w='100%' px={2} ml={3} my={0} fontSize={30} _hover={{ fontSize: 32, transition: ' 0.1s ease-in-out' }}>{t('reports')}</Text>
                                     </HStack>
                                 )
                             }} />
