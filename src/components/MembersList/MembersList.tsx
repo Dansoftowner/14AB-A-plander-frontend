@@ -8,8 +8,8 @@ import useAuth from "../../hooks/useAuth"
 import { useTranslation } from "react-i18next"
 
 import { FaPlus } from "react-icons/fa";
-import { MdNavigateNext, MdNavigateBefore, MdLastPage, MdFirstPage } from "react-icons/md";
 import { IoCloseCircleOutline, IoSearch } from "react-icons/io5";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md"
 
 
 const MembersList = () => {
@@ -81,20 +81,32 @@ const MembersList = () => {
                     </Button>
                 </HStack>
             }
-            {
-                data?.items.map((member, index) => {
-                    return <MemberCard _id={member._id} key={index}
-                        email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
-                })
-            }
-            {
+
+            <HStack mx='auto' alignItems='center' justifyContent='center'>
+                {(data && page > 1) &&
+                    <Button _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} fontSize={30} w={20} backgroundColor='transparent' color='white' onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
+                }                {
+                    data?.items.map((member, index) => {
+                        return <MemberCard _id={member._id} key={index}
+                            email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
+                    })
+                }
+                {
+                    (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
+                    <Button _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' w={20} fontSize={30} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
+                }
+
+
+            </HStack >
+
+            {/* {
                 data && <HStack justifyContent='space-around' mx={10}>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}> <MdFirstPage /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
                 </HStack>
-            }
+            } */}
         </>
     )
 }

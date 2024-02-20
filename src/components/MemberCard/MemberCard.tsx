@@ -1,4 +1,4 @@
-import { Box, HStack, Stack, VStack, Text, Button, Show, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue } from '@chakra-ui/react'
+import { Box, HStack, VStack, Text, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue, Icon } from '@chakra-ui/react'
 import { FaUserAlt, FaTrash } from "react-icons/fa";
 import { MdOutlineWarning } from "react-icons/md";
 import useAuth from '../../hooks/useAuth';
@@ -50,77 +50,96 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
         })
     }
 
+    const bodyColor = useColorModeValue('#ffffff', '#1A202C')
+    const iconColor = useColorModeValue('#000', '#fff')
+    const borderColor = useColorModeValue('#000', '#fff')
+
     return (
-        <HStack direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
-            <Show above='lg'>
-                <Stack width={55} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
-                    <Text fontSize={40}><FaUserAlt /></Text>
-                </Stack>
-            </Show>
-            <VStack textAlign='start' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
+        <VStack mt={55} w={350} h={400} boxShadow={
+            isRegistered ? 'dark-lg' : 'rgba(255, 165, 0, 0.1) 0px 0px 0px 1px, rgba(255, 165, 0, 0.2) 0px 5px 10px, rgba(255, 165, 0, 0.4) 0px 15px 40px'
+        }
+            border={!isRegistered ? 'orange 1px solid' : ''} borderRadius={10} padding={4}>
+
+            <Box mt={5} backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={64} padding={65} borderRadius='50%' />
+            <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={64} mt={6} width='fit-content' h='fit-content' padding={25} borderRadius='50%' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
+                <Icon as={FaUserAlt} color={iconColor} fontSize={72} />
+            </Box>
+
+            <VStack title={!isRegistered ? t('notRegistered') : ''} mt={32} alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                 <HStack>
-                    <Text width={isRegistered ? 400 : 370} maxW={isRegistered ? '70vw' : '64vw'} margin={1}><b>{t('fullname')}:</b> {name}</Text>
-                    {isRegistered == false && <Box color='orange' title={t('notRegistered')}><MdOutlineWarning /></Box>}
+                    <Text width={100} textAlign='start' margin={1}><b>{t('fullname')}:</b></Text>
+                    <Text maxW='70vw' textAlign='start' w={200} margin={1}>{name}</Text>
                 </HStack>
-                <Text width={400} maxW='70vw' margin={1}><b>{t('email')}:</b> {email}</Text>
-                <Text width={400} maxW='70vw' margin={1}><b>{t('phone')}:</b> {phone}</Text>
-            </VStack>
-            {user?.roles.includes('president') &&
-                <Box ml='auto'>
-                    <Box>
-                        <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
-                            <Text margin={0} color='red'><FaTrash /></Text>
-                        </Button>
+                <HStack>
+                    <Text textAlign='start' width={100} maxW='70vw' margin={1}><b>{t('email')}:</b> </Text>
+                    <Text textAlign='start' maxW='70vw' w={200} margin={1}>{email}</Text>
+                </HStack>
+                <HStack>
+                    <Text textAlign='start' width={100} maxW='70vw' margin={1}><b>{t('phone')}:</b></Text>
+                    <Text maxW='70vw' textAlign='start' w={200} margin={1}>{phone}</Text>
+                </HStack>
+                {user?.roles.includes('president') &&
+                    <Box mt={5}>
+                        <HStack>
+                            <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
+                                <Text margin={0} color='red'><FaTrash /></Text>
+                            </Button>
 
-                        <AlertDialog
-                            isOpen={isOpen}
-                            onClose={onClose}
-                            leastDestructiveRef={cancelRef}
-                            isCentered={true}
-                        >
-                            <AlertDialogOverlay>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                        {t('removeUser')}
-                                    </AlertDialogHeader>
 
-                                    <AlertDialogBody>
-                                        {t('pwdToDelete')}
-                                        <InputGroup my={2}>
-                                            <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
-                                            <InputRightElement width="4.5rem">
-                                                <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
-                                                    {isVisible()}
-                                                </Button>
-                                            </InputRightElement>
-                                        </InputGroup>
-                                        {confirmError && <Text color='red'>{confirmError}</Text>}
-                                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
-                                    </AlertDialogBody>
+                            {/* removing member alert */}
 
-                                    <AlertDialogFooter>
-                                        <Button onClick={() => {
-                                            setConfirmError('')
-                                            onClose()
-                                        }}>
-                                            {t('common:cancel')}
-                                        </Button>
-                                        <Button colorScheme='red' onClick={() => {
-                                            if (password) {
-                                                removeMember(_id)
-                                            }
-                                        }} ml={3}>
-                                            {t('kick')}
-                                        </Button>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialogOverlay>
-                        </AlertDialog>
+                            <AlertDialog
+                                isOpen={isOpen}
+                                onClose={onClose}
+                                leastDestructiveRef={cancelRef}
+                                isCentered={true}
+                            >
+                                <AlertDialogOverlay>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                            {t('removeUser')}
+                                        </AlertDialogHeader>
+
+                                        <AlertDialogBody>
+                                            {t('pwdToDelete')}
+                                            <InputGroup my={2}>
+                                                <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
+                                                <InputRightElement width="4.5rem">
+                                                    <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
+                                                        {isVisible()}
+                                                    </Button>
+                                                </InputRightElement>
+                                            </InputGroup>
+                                            {confirmError && <Text color='red'>{confirmError}</Text>}
+                                            <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
+                                        </AlertDialogBody>
+
+                                        <AlertDialogFooter>
+                                            <Button onClick={() => {
+                                                setConfirmError('')
+                                                onClose()
+                                            }}>
+                                                {t('common:cancel')}
+                                            </Button>
+                                            <Button colorScheme='red' onClick={() => {
+                                                if (password) {
+                                                    removeMember(_id)
+                                                }
+                                            }} ml={3}>
+                                                {t('kick')}
+                                            </Button>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialogOverlay>
+                            </AlertDialog>
+                        </HStack>
                     </Box>
-                </Box>
-            }
+                }
+            </VStack>
 
-        </HStack >
+
+
+        </VStack >
     )
 }
 
