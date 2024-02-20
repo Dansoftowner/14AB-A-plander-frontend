@@ -1,15 +1,14 @@
-import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack } from "@chakra-ui/react"
+import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack, VStack, Icon } from "@chakra-ui/react"
 import { useState, useEffect, KeyboardEvent } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers } from "../../hooks/useMembers"
-import { useQueryClient } from "@tanstack/react-query"
 import useAuth from "../../hooks/useAuth"
 import { useTranslation } from "react-i18next"
 
 import { FaPlus } from "react-icons/fa";
-import { MdNavigateNext, MdNavigateBefore, MdLastPage, MdFirstPage } from "react-icons/md";
 import { IoCloseCircleOutline, IoSearch } from "react-icons/io5";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md"
 
 
 const MembersList = () => {
@@ -18,19 +17,23 @@ const MembersList = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
+    const [limit, setLimit] = useState(window.innerWidth > 1850 ? 4 : window.innerWidth > 1550 ? 3 : window.innerWidth > 1100 ? 2 : 1)
+
     const [valid, setValid] = useState(true)
     useEffect(() => {
-        queryClient.removeQueries(['members'])
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
-    }, [])
+        const resizeHandler = () => {
+            setLimit(window.innerWidth > 1850 ? 4 : window.innerWidth > 1550 ? 3 : window.innerWidth > 1100 ? 2 : 1)
+        }
+
+        window.addEventListener("resize", resizeHandler)
+    }, [limit])
 
     const [page, setPage] = useState(1)
-    const limit = 4
     const [search, setSearch] = useState("")
     const [q, setQ] = useState("")
-    const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit), q: q })
+    const { data, isLoading } = useMembers(q ? { limit: limit, q: q } : { limit: limit, offset: ((page - 1) * limit) })
 
-    const queryClient = useQueryClient()
     const { t } = useTranslation('register')
 
     const { user } = useAuth()
@@ -44,13 +47,13 @@ const MembersList = () => {
     if (!valid) return <Navigate to='/login' />
 
     return (
-        <>
+        <VStack>
             {
                 isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
             }
             {
                 data &&
-                <HStack justifyContent='center' direction='column' maxW='95vw' borderRadius={4} mx={2} marginY={10}>
+                <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw'>
                     <InputGroup>
                         <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
                         {search &&
@@ -69,33 +72,48 @@ const MembersList = () => {
                         </Stack>
                     </Button>
                 </HStack>
+
             }
-            {
-                user?.roles.includes('president') &&
-                <HStack justifyContent='center' direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
-                    <Button textAlign='center' onClick={() => navigate('/members/invite')}>
-                        <HStack h={40} verticalAlign='middle' alignItems='center' justifyContent='center'>
-                            <FaPlus />
-                            <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
-                        </HStack>
+
+
+            <HStack mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
+                {(data && page > 1) &&
+                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page - 1)}>
+                        <Icon as={MdNavigateBefore} fontSize={30} />
                     </Button>
-                </HStack>
+                }                {
+                    data?.items?.map((member: any, index: any) => {
+                        return <MemberCard _id={member._id} key={index}
+                            email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
+                    })
+                }
+                {
+                    (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
+                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page + 1)}>
+                        <Icon as={MdNavigateNext} fontSize={30} />
+                    </Button>
+                }
+
+
+            </HStack >
+
+            {user?.roles.includes('president') &&
+                <Button mt={10} boxShadow='md' textAlign='center' onClick={() => navigate('/members/invite')}>
+                    <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
+                        <FaPlus />
+                        <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
+                    </HStack>
+                </Button>
             }
-            {
-                data?.items.map((member, index) => {
-                    return <MemberCard _id={member._id} key={index}
-                        email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
-                })
-            }
-            {
+            {/* {
                 data && <HStack justifyContent='space-around' mx={10}>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}> <MdFirstPage /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
                 </HStack>
-            }
-        </>
+            } */}
+        </VStack>
     )
 }
 
