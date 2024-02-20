@@ -59,6 +59,15 @@ const Layout = () => {
                                     </HStack>
                                 )
                             }} />
+                            <NavLink to='/chats' style={({ isActive }) => ({
+                                color: isActive ? buttonBg : textColor,
+                            })} children={({ isActive }) => {
+                                return (
+                                    <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
+                                        <Text w='100%' ml={3} my={0} fontSize={30} px={2} >{t('messages')}</Text>
+                                    </HStack>
+                                )
+                            }} />
 
                             <NavLink to='/members' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,

@@ -10,6 +10,7 @@ import MemberDetail from './components/MemberDetail/MemberDetail';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import Assignments from './components/Assignments/Assignments';
 import Reports from './components/Reports/Reports';
+import Chat from './components/Chats/Chat';
 
 
 const router = createBrowserRouter(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
             <Route path="/register/:id/:registrationToken" element={<RegisterForm />} />
             <Route path="/" element={<Layout />}>
                 <Route path="" element={<HomePage />} />
+                <Route path="/chats" element={<Chat />} />
                 <Route path="/members" element={<MembersList />} />
                 <Route path="/members/invite" element={<InviteMember />} />
                 <Route path="/member/:id" element={<MemberDetail />} />
