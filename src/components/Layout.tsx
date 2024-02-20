@@ -48,7 +48,7 @@ const Layout = () => {
                     </GridItem>
 
 
-                    <GridItem area='nav' mt='6vh' minH='94vh' mr={10} backgroundColor={activeBg}>
+                    <GridItem area='nav' mt='6vh' minH='94vh' mr={3} backgroundColor={activeBg}>
                         <Show above='lg'>
                             <NavLink to='/' style={({ isActive }) => ({
                                 color: isActive ? buttonBg : textColor,
