@@ -20,7 +20,6 @@ export const LangSelector = () => {
 
     useEffect(() => {
         selectedLanguage = (preferences?.language || i18n.language)
-        console.log(selectedLanguage)
         i18n.changeLanguage(selectedLanguage)
         usePatchPreferences(preferences)
     }, [preferences])

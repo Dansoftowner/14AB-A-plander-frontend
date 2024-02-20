@@ -24,8 +24,6 @@ const Layout = () => {
 
     const activeBg = useColorModeValue('#f5f5f5', 'gray.700')
 
-    console.log(preferences)
-
     return (
         <>
             <AuthContext.Provider value={{ user, setUser, token, setToken, preferences, setPreferences }}>
