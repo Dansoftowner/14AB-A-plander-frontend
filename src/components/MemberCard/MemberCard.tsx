@@ -1,5 +1,5 @@
 import { Box, HStack, VStack, Text, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue, Icon } from '@chakra-ui/react'
-import { FaUserAlt, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import useAuth from '../../hooks/useAuth';
 import { useRef, useState } from 'react';
 import { useRemoveMember } from '../../hooks/useMembers';

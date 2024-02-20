@@ -3,7 +3,6 @@ import { useState, useEffect, KeyboardEvent } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
 import { useMembers } from "../../hooks/useMembers"
-import { useQueryClient } from "@tanstack/react-query"
 import useAuth from "../../hooks/useAuth"
 import { useTranslation } from "react-i18next"
 
@@ -35,7 +34,6 @@ const MembersList = () => {
     const [q, setQ] = useState("")
     const { data, isLoading } = useMembers(q ? { limit: limit, q: q } : { limit: limit, offset: ((page - 1) * limit) })
 
-    const queryClient = useQueryClient()
     const { t } = useTranslation('register')
 
     const { user } = useAuth()
