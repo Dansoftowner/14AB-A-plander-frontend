@@ -7,8 +7,9 @@ import {
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
-import { FaPencilAlt, FaUserAlt } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 import { IoMdEyeOff, IoMdEye } from 'react-icons/io'
+import { GrUserPolice } from "react-icons/gr";
 import { User } from '../../hooks/useLogin'
 import { useAuth, useCredentials, usePatchMember, useTransfer } from '../../hooks/hooks'
 import { guardNumberHandler, telHandler } from '../RegisterForm/specInputHandler'
@@ -224,7 +225,7 @@ const MemberDetail = () => {
             boxShadow='dark-lg'>
             <Box backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={20} padding={74} borderRadius='50%' />
             <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={20} mt={1} width='fit-content' h='fit-content' padding={25} borderRadius='50%' >
-                <Icon as={FaUserAlt} color={iconColor} fontSize={90} />
+                <Icon as={GrUserPolice} color={iconColor} fontSize={90} />
             </Box>
             <Heading mt={20} maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
             {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
