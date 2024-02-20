@@ -1,4 +1,4 @@
-import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack } from "@chakra-ui/react"
+import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack, VStack, Icon } from "@chakra-ui/react"
 import { useState, useEffect, KeyboardEvent } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
@@ -18,17 +18,22 @@ const MembersList = () => {
     const buttonColor = useColorModeValue('#ffffff', '#004881')
     const buttonHover = useColorModeValue('#0078b0', '#fde7af')
 
+    const [limit, setLimit] = useState(window.innerWidth > 1850 ? 4 : window.innerWidth > 1550 ? 3 : window.innerWidth > 1100 ? 2 : 1)
+
     const [valid, setValid] = useState(true)
     useEffect(() => {
-        queryClient.removeQueries(['members'])
         if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
-    }, [])
+        const resizeHandler = () => {
+            setLimit(window.innerWidth > 1850 ? 4 : window.innerWidth > 1550 ? 3 : window.innerWidth > 1100 ? 2 : 1)
+        }
+
+        window.addEventListener("resize", resizeHandler)
+    }, [limit])
 
     const [page, setPage] = useState(1)
-    const limit = 4
     const [search, setSearch] = useState("")
     const [q, setQ] = useState("")
-    const { data, isLoading } = useMembers({ limit: limit, projection: 'full', offset: ((page - 1) * limit), q: q })
+    const { data, isLoading } = useMembers(q ? { limit: limit, q: q } : { limit: limit, offset: ((page - 1) * limit) })
 
     const queryClient = useQueryClient()
     const { t } = useTranslation('register')
@@ -50,50 +55,55 @@ const MembersList = () => {
             }
             {
                 data &&
-                <HStack justifyContent='center' direction='column' maxW='95vw' borderRadius={4} mx={2} marginY={10}>
-                    <InputGroup>
-                        <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
-                        {search &&
-                            <InputRightElement>
-                                <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
-                                    <Stack height={30} width={30} justifyContent='center'>
-                                        <Image as={IoCloseCircleOutline} />
-                                    </Stack>
-                                </Button>
-                            </InputRightElement>
-                        }
-                    </InputGroup>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
-                        <Stack height={30} justifyContent='center'>
-                            <Image as={IoSearch} />
-                        </Stack>
-                    </Button>
-                </HStack>
-            }
-            {
-                user?.roles.includes('president') &&
-                <HStack justifyContent='center' direction='column' maxW='95vw' border='1px solid' borderRadius={4} padding={4} margin={2}>
-                    <Button textAlign='center' onClick={() => navigate('/members/invite')}>
-                        <HStack h={40} verticalAlign='middle' alignItems='center' justifyContent='center'>
-                            <FaPlus />
-                            <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
-                        </HStack>
-                    </Button>
-                </HStack>
+                <VStack mx='auto' maxW='90vw' boxShadow='dark-lg' borderRadius={10} py={2} marginY={10}>
+                    <HStack justifyContent='center' borderRadius={10} w={600} maxW='80vw'>
+                        <InputGroup>
+                            <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
+                            {search &&
+                                <InputRightElement>
+                                    <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
+                                        <Stack height={30} width={30} justifyContent='center'>
+                                            <Image as={IoCloseCircleOutline} />
+                                        </Stack>
+                                    </Button>
+                                </InputRightElement>
+                            }
+                        </InputGroup>
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
+                            <Stack height={30} justifyContent='center'>
+                                <Image as={IoSearch} />
+                            </Stack>
+                        </Button>
+                    </HStack>
+                    {user?.roles.includes('president') &&
+                        <Button my={4} textAlign='center' onClick={() => navigate('/members/invite')}>
+                            <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
+                                <FaPlus />
+                                <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
+                            </HStack>
+                        </Button>
+                    }
+                </VStack>
+
             }
 
-            <HStack mx='auto' alignItems='center' justifyContent='center'>
+
+            <HStack mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
                 {(data && page > 1) &&
-                    <Button _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} fontSize={30} w={20} backgroundColor='transparent' color='white' onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
+                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page - 1)}>
+                        <Icon as={MdNavigateBefore} fontSize={30} />
+                    </Button>
                 }                {
-                    data?.items.map((member, index) => {
+                    data?.items?.map((member: any, index: any) => {
                         return <MemberCard _id={member._id} key={index}
                             email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
                     })
                 }
                 {
                     (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                    <Button _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' w={20} fontSize={30} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
+                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => setPage(page + 1)}>
+                        <Icon as={MdNavigateNext} fontSize={30} />
+                    </Button>
                 }
 
 

@@ -23,13 +23,14 @@ export const useMembers = (q: AsQuery) =>
           params: {
             offset: q.offset,
             limit: q.limit,
-            projection: q.projection,
+            projection: 'full',
             orderBy: q.orderBy,
             q: q.q,
           },
           headers: {
             'x-plander-auth':
               localStorage.getItem('token') || sessionStorage.getItem('token'),
+            'Accept-Language': i18n.language,
           },
         })
         .then((res) => res.data),
