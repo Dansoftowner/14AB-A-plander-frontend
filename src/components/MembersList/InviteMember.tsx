@@ -97,7 +97,7 @@ const InviteMember = () => {
                     </Stack>
 
                     <HStack justifyContent='center' mx={5}>
-                        <Button mx='auto' boxShadow='md' name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('invite')}</Button>
+                        <Button mx='auto' boxShadow='md' name="submitbtn" type="submit" _hover={{ backgroundColor: buttonHover }} color={buttonColor} backgroundColor={buttonBg}>{t('member:inviteMember')}</Button>
                     </HStack>
                 </form>
             </VStack >
