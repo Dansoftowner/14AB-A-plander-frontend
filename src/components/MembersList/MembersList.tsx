@@ -32,7 +32,7 @@ const MembersList = () => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
     const [q, setQ] = useState("")
-    const { data, isLoading } = useMembers(q ? { limit: limit, q: q } : { limit: limit, offset: ((page - 1) * limit) })
+    const { data, isLoading } = useMembers(q ? { limit: limit, q: q, offset: ((page - 1) * limit) } : { limit: limit, offset: ((page - 1) * limit) })
 
     const { t } = useTranslation('register')
 
@@ -57,7 +57,7 @@ const MembersList = () => {
             }
             {
                 data &&
-                <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw'>
+                <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw' >
                     <InputGroup>
                         <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
                         {search &&
@@ -82,7 +82,7 @@ const MembersList = () => {
 
             <HStack transition='1s all' mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
                 {(data && page > 1) &&
-                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => handlePage(page - 1)}>
+                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
                         <Icon as={MdNavigateBefore} fontSize={30} />
                     </Button>
                 }
@@ -91,11 +91,12 @@ const MembersList = () => {
                     (
                         <MemberCard _id={member._id} key={index}
                             email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
+
                     ))
                 }
                 {
                     (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' color='white' onClick={() => handlePage(1 + page)}>
+                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
                         <Icon as={MdNavigateNext} fontSize={30} />
                     </Button>
                 }
