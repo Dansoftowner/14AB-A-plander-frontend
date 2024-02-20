@@ -104,21 +104,13 @@ const MembersList = () => {
 
             {
                 user?.roles.includes('president') &&
-                <Button mt={10} boxShadow='md' textAlign='center' onClick={() => navigate('/members/invite')}>
+                <Button mt={10} boxShadow='md' textAlign='center' backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={() => navigate('/members/invite')}>
                     <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
                         <FaPlus />
                         <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
                     </HStack>
                 </Button>
             }
-            {/* {
-                data && <HStack justifyContent='space-around' mx={10}>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}> <MdFirstPage /> </Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(page - 1)}> <MdNavigateBefore /> </Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(page + 1)}> <MdNavigateNext /> </Button>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
-                </HStack>
-            } */}
         </VStack >
     )
 }

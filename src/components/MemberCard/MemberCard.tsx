@@ -59,6 +59,11 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
         })
     }
 
+    const handleKeyPress = (e: any) => {
+        if (e.key === 'Enter' && password)
+            removeMember(_id)
+    }
+
     const bodyColor = useColorModeValue('#ffffff', '#1A202C')
     const iconColor = useColorModeValue('#000', '#fff')
     const borderColor = useColorModeValue('#000', '#fff')
@@ -75,7 +80,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                 <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={1} mt={6} width='fit-content' h='fit-content' padding={25} borderRadius='50%' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                     <Icon as={GrUserPolice} color={iconColor} fontSize={72} />
                 </Box>
-                <VStack height={200} mt={32}  alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
+                <VStack height={200} mt={32} alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                     <HStack>
                         <Text width={100} textAlign='start' margin={1}><b>{t('fullname')}:</b></Text>
                         <Text maxW='70vw' textAlign='start' w={200} margin={1}>{name}</Text>
@@ -90,7 +95,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                     </HStack>
                 </VStack>
                 {user?.roles.includes('president') &&
-                    <Box mt={5}>
+                    <Box>
                         <Divider />
                         <HStack>
                             <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
@@ -107,11 +112,11 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                                     <AlertDialogContent>
                                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                                             {t('removeUser')}
-                                        </AlertDialogHeader>
+                                        </AlertDialogHeader>e
                                         <AlertDialogBody>
                                             {t('pwdToDelete')}
                                             <InputGroup my={2}>
-                                                <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
+                                                <Input onKeyDown={handleKeyPress} type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
                                                 <InputRightElement width="4.5rem">
                                                     <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
                                                         {isVisible()}

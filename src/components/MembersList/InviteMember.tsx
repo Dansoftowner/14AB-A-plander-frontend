@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import apiClient from '../../services/apiClient'
 import PhoneDropdownList from '../PhoneDropdownList/PhoneDropdownList'
 import { PhoneFormat, phoneMap } from '../PhoneDropdownList/phones'
+import { useQueryClient } from '@tanstack/react-query'
 
 const InviteMember = () => {
     const buttonBg = useColorModeValue('#0078d7', '#fde74c')
@@ -19,6 +20,7 @@ const InviteMember = () => {
 
     const { user } = useAuth()
     const inviteToast = useToast()
+    const queryClient = useQueryClient()
 
     const [phone, setPhone] = useState<PhoneFormat>({
         src: '/assets/flags/hu.svg',
@@ -55,6 +57,7 @@ const InviteMember = () => {
                             isClosable: true,
                             position: 'top'
                         })
+                        queryClient.refetchQueries(['members'])
                     })
                         .catch(err => {
                             inviteToast({
