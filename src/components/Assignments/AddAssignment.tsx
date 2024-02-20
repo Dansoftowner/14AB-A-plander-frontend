@@ -79,7 +79,7 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                         <AutoCompleteList loadingState={<Spinner />}>
                             {members?.pages.map((page, index) =>
                                 <Fragment key={index} >
-                                    {page.items.map(member => (
+                                    {page.items.filter(r => r.name).map(member => (
                                         <AutoCompleteItem
                                             key={member._id}
                                             value={member}
