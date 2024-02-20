@@ -3,5 +3,7 @@
   "promoteHeader": "Promote",
   "promoteBody": "Enter your password to confirm the promotion!",
   "reLogin": "Please login again with your new credentials!",
-  "noChange": "Nothing changed."
+  "noChange": "Nothing changed.",
+  "memberRemoved": "The member is successfully removed.",
+  "inviteMember": "Invite"
 }

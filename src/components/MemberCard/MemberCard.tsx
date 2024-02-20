@@ -1,4 +1,4 @@
-import { Box, HStack, VStack, Text, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue, Icon } from '@chakra-ui/react'
+import { Box, HStack, VStack, Text, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue, Icon, useToast } from '@chakra-ui/react'
 import { FaTrash } from "react-icons/fa";
 import useAuth from '../../hooks/useAuth';
 import { useRef, useState } from 'react';
@@ -25,6 +25,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     const cancelRef = useRef<HTMLButtonElement>(null)
     const queryClient = useQueryClient()
     const navigate = useNavigate()
+    const toast = useToast()
 
     const [password, setPassword] = useState('')
     const [confirmError, setConfirmError] = useState('')
@@ -38,6 +39,14 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                 queryClient.refetchQueries()
                 onClose()
                 setConfirmError('')
+                toast({
+                    title: t('common:success'),
+                    description: t('member:memberRemoved'),
+                    status: 'success',
+                    duration: 9000,
+                    position: 'top',
+                    isClosable: true
+                })
             }
         }).catch(err => {
             setConfirmError(err.response.data.message)
@@ -78,64 +87,64 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                     <Text textAlign='start' width={100} maxW='70vw' margin={1}><b>{t('phone')}:</b></Text>
                     <Text maxW='70vw' textAlign='start' w={200} margin={1}>{phone}</Text>
                 </HStack>
-                {user?.roles.includes('president') &&
-                    <Box mt={5}>
-                        <HStack>
-                            <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
-                                <Text margin={0} color='red'><FaTrash /></Text>
-                            </Button>
-
-
-                            {/* removing member alert */}
-
-                            <AlertDialog
-                                isOpen={isOpen}
-                                onClose={onClose}
-                                leastDestructiveRef={cancelRef}
-                                isCentered={true}
-                            >
-                                <AlertDialogOverlay>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                                            {t('removeUser')}
-                                        </AlertDialogHeader>
-
-                                        <AlertDialogBody>
-                                            {t('pwdToDelete')}
-                                            <InputGroup my={2}>
-                                                <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
-                                                <InputRightElement width="4.5rem">
-                                                    <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
-                                                        {isVisible()}
-                                                    </Button>
-                                                </InputRightElement>
-                                            </InputGroup>
-                                            {confirmError && <Text color='red'>{confirmError}</Text>}
-                                            <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
-                                        </AlertDialogBody>
-
-                                        <AlertDialogFooter>
-                                            <Button onClick={() => {
-                                                setConfirmError('')
-                                                onClose()
-                                            }}>
-                                                {t('common:cancel')}
-                                            </Button>
-                                            <Button colorScheme='red' onClick={() => {
-                                                if (password) {
-                                                    removeMember(_id)
-                                                }
-                                            }} ml={3}>
-                                                {t('kick')}
-                                            </Button>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialogOverlay>
-                            </AlertDialog>
-                        </HStack>
-                    </Box>
-                }
             </VStack>
+            {user?.roles.includes('president') &&
+                <Box mt={5}>
+                    <HStack>
+                        <Button onClick={onOpen} fontSize={20} backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', fontSize: 24, transition: '.1s ease-out' }}>
+                            <Text margin={0} color='red'><FaTrash /></Text>
+                        </Button>
+
+
+                        {/* removing member alert */}
+
+                        <AlertDialog
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            leastDestructiveRef={cancelRef}
+                            isCentered={true}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                        {t('removeUser')}
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                        {t('pwdToDelete')}
+                                        <InputGroup my={2}>
+                                            <Input type={show ? 'text' : 'password'} onChangeCapture={(e) => setPassword((e.target as HTMLInputElement).value)} />
+                                            <InputRightElement width="4.5rem">
+                                                <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
+                                                    {isVisible()}
+                                                </Button>
+                                            </InputRightElement>
+                                        </InputGroup>
+                                        {confirmError && <Text color='red'>{confirmError}</Text>}
+                                        <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('login:forgotMyPassword')}</Text></Link>
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                        <Button onClick={() => {
+                                            setConfirmError('')
+                                            onClose()
+                                        }}>
+                                            {t('common:cancel')}
+                                        </Button>
+                                        <Button colorScheme='red' onClick={() => {
+                                            if (password) {
+                                                removeMember(_id)
+                                            }
+                                        }} ml={3}>
+                                            {t('kick')}
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </HStack>
+                </Box>
+            }
 
 
 
