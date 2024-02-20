@@ -49,41 +49,31 @@ const MembersList = () => {
     if (!valid) return <Navigate to='/login' />
 
     return (
-        <>
+        <VStack>
             {
                 isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
             }
             {
                 data &&
-                <VStack mx='auto' maxW='90vw' boxShadow='dark-lg' borderRadius={10} py={2} marginY={10}>
-                    <HStack justifyContent='center' borderRadius={10} w={600} maxW='80vw'>
-                        <InputGroup>
-                            <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
-                            {search &&
-                                <InputRightElement>
-                                    <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
-                                        <Stack height={30} width={30} justifyContent='center'>
-                                            <Image as={IoCloseCircleOutline} />
-                                        </Stack>
-                                    </Button>
-                                </InputRightElement>
-                            }
-                        </InputGroup>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
-                            <Stack height={30} justifyContent='center'>
-                                <Image as={IoSearch} />
-                            </Stack>
-                        </Button>
-                    </HStack>
-                    {user?.roles.includes('president') &&
-                        <Button my={4} textAlign='center' onClick={() => navigate('/members/invite')}>
-                            <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
-                                <FaPlus />
-                                <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
-                            </HStack>
-                        </Button>
-                    }
-                </VStack>
+                <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw'>
+                    <InputGroup>
+                        <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
+                        {search &&
+                            <InputRightElement>
+                                <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
+                                    <Stack height={30} width={30} justifyContent='center'>
+                                        <Image as={IoCloseCircleOutline} />
+                                    </Stack>
+                                </Button>
+                            </InputRightElement>
+                        }
+                    </InputGroup>
+                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
+                        <Stack height={30} justifyContent='center'>
+                            <Image as={IoSearch} />
+                        </Stack>
+                    </Button>
+                </HStack>
 
             }
 
@@ -109,6 +99,14 @@ const MembersList = () => {
 
             </HStack >
 
+            {user?.roles.includes('president') &&
+                <Button mt={10} boxShadow='md' textAlign='center' onClick={() => navigate('/members/invite')}>
+                    <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
+                        <FaPlus />
+                        <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
+                    </HStack>
+                </Button>
+            }
             {/* {
                 data && <HStack justifyContent='space-around' mx={10}>
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === 1} onClick={() => setPage(1)}> <MdFirstPage /> </Button>
@@ -117,7 +115,7 @@ const MembersList = () => {
                     <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} isDisabled={page === Math.ceil(data!.metadata!.total / data!.metadata.limit)} onClick={() => setPage(Math.ceil(data!.metadata.total / data!.metadata.limit))}> <MdLastPage /> </Button>
                 </HStack>
             } */}
-        </>
+        </VStack>
     )
 }
 

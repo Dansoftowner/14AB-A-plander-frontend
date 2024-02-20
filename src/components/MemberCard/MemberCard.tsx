@@ -1,6 +1,5 @@
 import { Box, HStack, VStack, Text, Button, AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, useDisclosure, Input, InputGroup, InputRightElement, useColorModeValue, Icon } from '@chakra-ui/react'
 import { FaUserAlt, FaTrash } from "react-icons/fa";
-import { MdOutlineWarning } from "react-icons/md";
 import useAuth from '../../hooks/useAuth';
 import { useRef, useState } from 'react';
 import { useRemoveMember } from '../../hooks/useMembers';
@@ -8,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { GrUserPolice } from "react-icons/gr";
 
 interface Props {
     name: string;
@@ -55,17 +55,17 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     const borderColor = useColorModeValue('#000', '#fff')
 
     return (
-        <VStack mt={55} w={350} h={400} mx='auto' boxShadow={
+        <VStack title={!isRegistered ? t('notRegistered') : ''} mt={85} w={350} h={400} mx='auto' boxShadow={
             isRegistered ? 'dark-lg' : 'rgba(255, 165, 0, 0.1) 0px 0px 0px 1px, rgba(255, 165, 0, 0.2) 0px 5px 10px, rgba(255, 165, 0, 0.4) 0px 15px 40px'
         }
             border={!isRegistered ? 'orange 1px solid' : ''} borderRadius={10} padding={4}>
 
-            <Box mt={5} backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={64} padding={65} borderRadius='50%' />
-            <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={64} mt={6} width='fit-content' h='fit-content' padding={25} borderRadius='50%' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
-                <Icon as={FaUserAlt} color={iconColor} fontSize={72} />
+            <Box mt={5} backgroundColor={borderColor} border='1px solid' borderColor={borderColor} position='absolute' top={40} padding={65} borderRadius='50%' />
+            <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={40} mt={6} width='fit-content' h='fit-content' padding={25} borderRadius='50%' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
+                <Icon as={GrUserPolice} color={iconColor} fontSize={72} />
             </Box>
 
-            <VStack title={!isRegistered ? t('notRegistered') : ''} mt={32} alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
+            <VStack mt={32} alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
                 <HStack>
                     <Text width={100} textAlign='start' margin={1}><b>{t('fullname')}:</b></Text>
                     <Text maxW='70vw' textAlign='start' w={200} margin={1}>{name}</Text>
