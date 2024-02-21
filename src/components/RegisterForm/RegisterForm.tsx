@@ -99,7 +99,7 @@ export const RegisterForm = () => {
 
                 <Stack maxW='90vw'>
                     <Heading alignSelf='center' marginBottom={1}>{t('regButton') + ": "}</Heading>
-                    <Heading alignSelf='center' mt={10} marginBottom={10}>{user.association.name || t('header')}</Heading>
+                    <Heading textAlign='center' alignSelf='center' mt={10} marginBottom={10}>{user.association.name || t('header')}</Heading>
                 </Stack>
 
                 <HStack marginBottom={5} alignContent='center'>

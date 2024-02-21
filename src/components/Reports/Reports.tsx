@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import CalendarComponent from '../Assignments/CalendarComponent'
 import { Navigate } from 'react-router-dom'
-import { Box, HStack, useColorModeValue, Text } from '@chakra-ui/react'
+import { Box, HStack, useColorModeValue, Text, ScaleFade } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 
 const Reports = () => {
@@ -19,7 +19,7 @@ const Reports = () => {
 
 
     return (
-        <>
+        <ScaleFade in>
             <CalendarComponent />
             <HStack>
                 <Box borderRadius='50%' backgroundColor={eventBg} height={4} w={4} ml={5} />
@@ -27,7 +27,7 @@ const Reports = () => {
                 <Box borderRadius='50%' backgroundColor={reportBg} height={4} w={4} ml={5} />
                 <Text m={0} fontWeight='bold'>{t('doneReport')}</Text>
             </HStack>
-        </>
+        </ScaleFade>
     )
 }
 

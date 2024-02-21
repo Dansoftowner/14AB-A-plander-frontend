@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CalendarComponent from './CalendarComponent'
-import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Box, HStack, Text } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Button, useDisclosure, useColorModeValue, Stack, useToast, Box, HStack, Text, ScaleFade } from '@chakra-ui/react'
 import { useAuth, User, usePostAssignment } from '../../hooks/hooks'
 import AddAssignment from './AddAssignment'
 
@@ -51,7 +51,7 @@ const Assignments = () => {
     if (!valid) return <Navigate to='/login' />
 
     return (
-        <div>
+        <ScaleFade in>
             <CalendarComponent />
             <HStack>
                 <Box borderRadius='50%' backgroundColor='#0b6623' height={4} w={4} m={5} />
@@ -114,7 +114,7 @@ const Assignments = () => {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
-        </div >
+        </ScaleFade >
     )
 }
 

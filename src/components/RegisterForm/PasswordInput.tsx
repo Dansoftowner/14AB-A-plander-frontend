@@ -74,7 +74,7 @@ const PasswordInput = <FormData extends FieldValues>({ login, bColor, register, 
 
     return (
         <div className="mb-3">
-            <FormControl isRequired={required} isInvalid={isError}>
+            <FormControl maxW='90vw' isRequired={required} isInvalid={isError}>
                 {i18nTitle && <FormLabel>{t(i18nTitle)}</FormLabel>}
                 <InputGroup>
                     <Input {...register(name)} width={400} type={show ? 'text' : 'password'}

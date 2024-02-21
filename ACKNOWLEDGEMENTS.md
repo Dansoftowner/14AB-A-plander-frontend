@@ -17,6 +17,7 @@
 - Socket.io-client
 - React-typed
 - React Infinite Scroll
+- React Spring
 
 ## Fejlesztési
 - Vite

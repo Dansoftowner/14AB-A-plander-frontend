@@ -5,7 +5,7 @@
   "back": "Vissza",
   "president": "Egyesületelnök",
   "cancel": "Mégse",
-  "home": "Főoldal",
+  "home": "Kezdőlap",
   "members": "Tagok",
   "myProfile": "Profilom",
   "notifications": "Értesítések",
@@ -21,5 +21,7 @@
   "reports": "Jelentések",
   "messages": "Üzenetek",
   "send": "Küldés",
-  "msgPholder": "Írja be az üzenetet..."
+  "msgPholder": "Írja be az üzenetet...",
+  "welcome": "Üdv",
+  "back,": "újra,"
 }

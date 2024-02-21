@@ -62,7 +62,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                                     <Text mt={4}>{t('myProfile')}</Text>
                                 </HStack>
                             </MenuItem>
-                            <MenuItem onClick={() => console.log("nincs")}>
+                            <MenuItem isDisabled>
                                 <HStack>
                                     <FaBell />
                                     <Text mt={4}>{t('notifications')}</Text>
@@ -94,6 +94,11 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                         color: isActive ? buttonBg : textColor,
                     })}>
                         <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('home')}</Text>
+                    </NavLink>
+                    <NavLink to='/chats' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
+                        color: isActive ? buttonBg : textColor,
+                    })}>
+                        <Text fontSize={20} padding={3} height={20} _hover={{ fontSize: 22, transition: ' 0.2s ease-in-out' }}>{t('messages')}</Text>
                     </NavLink>
                     <NavLink to='/members' onClick={() => setIsOpen(false)} style={({ isActive }) => ({
                         color: isActive ? buttonBg : textColor,
