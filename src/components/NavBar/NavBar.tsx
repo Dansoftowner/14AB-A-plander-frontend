@@ -62,7 +62,7 @@ const NavBar = ({ bgColorDark, bgColorLight }: Props) => {
                                     <Text mt={4}>{t('myProfile')}</Text>
                                 </HStack>
                             </MenuItem>
-                            <MenuItem onClick={() => console.log("nincs")}>
+                            <MenuItem isDisabled>
                                 <HStack>
                                     <FaBell />
                                     <Text mt={4}>{t('notifications')}</Text>
