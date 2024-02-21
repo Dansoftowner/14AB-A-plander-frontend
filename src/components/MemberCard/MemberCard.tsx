@@ -72,7 +72,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
     return (
         <Slide direction='left' in animate style={{ position: 'inherit' }}>
 
-            <VStack title={!isRegistered ? t('notRegistered') : ''} mt={85} w={350} h={400} mx='auto' boxShadow={
+            <VStack title={!isRegistered ? t('notRegistered') : ''} mt={85} w={350} maxW='78vw' mx='auto' h={400} boxShadow={
                 isRegistered ? 'dark-lg' : 'rgba(255, 165, 0, 0.1) 0px 0px 0px 1px, rgba(255, 165, 0, 0.2) 0px 5px 10px, rgba(255, 165, 0, 0.4) 0px 15px 40px'
             }
                 border={!isRegistered ? 'orange 1px solid' : ''} borderRadius={10} padding={4}>
@@ -81,15 +81,15 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                     <Icon as={GrUserPolice} color={iconColor} fontSize={72} />
                 </Box>
                 <VStack height={200} mt={32} alignContent='center' textAlign='center' onClick={detailNavigator} _hover={{ cursor: 'pointer' }}>
-                    <HStack>
+                    <HStack maxW='70vw'>
                         <Text width={100} textAlign='start' margin={1}><b>{t('fullname')}:</b></Text>
                         <Text maxW='70vw' textAlign='start' w={200} margin={1}>{name}</Text>
                     </HStack>
-                    <HStack>
+                    <HStack maxW='70vw'>
                         <Text textAlign='start' width={100} maxW='70vw' margin={1}><b>{t('email')}:</b> </Text>
                         <Text textAlign='start' maxW='70vw' w={200} margin={1}>{email}</Text>
                     </HStack>
-                    <HStack>
+                    <HStack maxW='70vw'>
                         <Text textAlign='start' width={100} maxW='70vw' margin={1}><b>{t('phone')}:</b></Text>
                         <Text maxW='70vw' textAlign='start' w={200} margin={1}>{phone}</Text>
                     </HStack>

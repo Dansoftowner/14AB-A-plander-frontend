@@ -40,8 +40,10 @@ const MembersList = () => {
     const navigate = useNavigate()
 
     const handleKeyPress = (e: KeyboardEvent) => {
-        if (e.key === 'Enter')
+        if (e.key === 'Enter') {
             setQ(search)
+            setPage(1);
+        }
     }
 
     const handlePage = (n: number) => {
@@ -71,16 +73,16 @@ const MembersList = () => {
                                 </InputRightElement>
                             }
                         </InputGroup>
-                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => { setPage(1); setQ(search) }}>
                             <Stack height={30} justifyContent='center'>
                                 <Image as={IoSearch} />
                             </Stack>
                         </Button>
                     </HStack>
                 }
-                <HStack transition='1s all' mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
+                <HStack transition='1s all' mx={1} alignItems='center' maxW='80vw' justifyContent='center'>
                     {(data && page > 1) &&
-                        <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
+                        <Button zIndex={50} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
                             <Icon as={MdNavigateBefore} fontSize={30} />
                         </Button>
                     }
@@ -93,7 +95,7 @@ const MembersList = () => {
                     }
                     {
                         (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                        <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
+                        <Button zIndex={50} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
                             <Icon as={MdNavigateNext} fontSize={30} />
                         </Button>
                     }
