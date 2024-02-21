@@ -41,7 +41,7 @@ const Layout = () => {
                     templateColumns={{
                         base: `1fr`,
                         lg: `300px`
-                    }}>
+                    }} maxH='80vh'>
 
                     <GridItem area='header'>
                         <NavBar />
