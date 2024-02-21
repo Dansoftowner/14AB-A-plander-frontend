@@ -5,11 +5,13 @@ import { useAuth } from '../../hooks/hooks';
 import { Box, HStack, Heading, useColorModeValue } from '@chakra-ui/react';
 import { ReactTyped } from 'react-typed';
 import apiClient from '../../services/apiClient';
+import { useTranslation } from 'react-i18next';
 const HomePage = () => {
     const { user } = useAuth()
+    const { t } = useTranslation()
     const fontColor = useColorModeValue('#000000', '#ffffff')
 
-    const name = user.name;
+    const name = user?.name;
     const [association, setAssociation] = useState()
 
     useEffect(() => {
@@ -17,7 +19,7 @@ const HomePage = () => {
             .then(res => setAssociation(res.data.name));
     }, [])
 
-    const items = ["Üdv", "Újra,", name.split(" ")[0], name.split(" ")[1], name.split(" ")[2]];;
+    const items = [t('welcome'), t('back,'), name?.split(" ")[0], name?.split(" ")[1], name?.split(" ")[2]];;
     const config = { mass: 5, tension: 2000, friction: 200 };
     const [toggle, set] = useState(true);
     const trail = useTrail(items.length, {

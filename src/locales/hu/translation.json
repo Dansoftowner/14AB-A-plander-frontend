@@ -21,5 +21,7 @@
   "reports": "Jelentések",
   "messages": "Üzenetek",
   "send": "Küldés",
-  "msgPholder": "Írja be az üzenetet..."
+  "msgPholder": "Írja be az üzenetet...",
+  "welcome": "Üdv",
+  "back,": "újra,"
 }
