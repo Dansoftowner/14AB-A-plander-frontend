@@ -16,6 +16,10 @@
   will-change: transform, opacity;
   overflow: hidden;
 }
+.name {
+  font-size: 4em;
+  font-style: italic;
+}
 
 .trails-text > div {
   overflow: hidden;
