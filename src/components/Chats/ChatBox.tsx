@@ -18,7 +18,7 @@ const ChatBox = ({ socket }: Props) => {
         socket?.connect()
     }, [socket])
 
-    const { data, fetchNextPage, hasNextPage } = useChats(10)
+    const { data, fetchNextPage, hasNextPage } = useChats(15)
     const queryClient = useQueryClient()
 
     const chats = data?.pages.reduce((acc, page) => {
@@ -71,7 +71,7 @@ const ChatBox = ({ socket }: Props) => {
     }
 
     return (
-        <Box mt={7} boxShadow='dark-lg' maxW={{ base: '90vw', lg: '65vw' }} padding={4} borderRadius={20} mx={2} h={475}>
+        <Box mt={7} boxShadow='dark-lg' maxW='90vw' padding={4} maxH='80vh' borderRadius={20} mx={2} h={700}>
             <Heading>{t('messages')}</Heading>
             <Divider />
 
@@ -81,8 +81,8 @@ const ChatBox = ({ socket }: Props) => {
                 hasMore={hasNextPage || false}
                 loader={<Spinner />}
                 inverse={true}
-                height={300}
-                style={{ display: "flex", flexDirection: "column-reverse" }}
+                height={520}
+                style={{ maxHeight: '80vh', display: "flex", flexDirection: "column-reverse" }}
             >
                 <Box>
                     {
