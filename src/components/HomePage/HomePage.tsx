@@ -44,7 +44,7 @@ const HomePage = () => {
                         {trail.map(({ x, height, ...rest }, index) => (
                             <a.div
                                 key={items[index]}
-                                className="trails-text"
+                                className={ index > 1 ? "trails-text name" : "trails-text"}
                                 style={{
                                     ...rest,
                                     transform: x.to(x => `translate3d(0,${x}px,0)`)

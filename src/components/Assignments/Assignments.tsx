@@ -53,12 +53,12 @@ const Assignments = () => {
     return (
         <ScaleFade in>
             <CalendarComponent />
-            <HStack>
+            <HStack maxW='99vw'>
                 <Box borderRadius='50%' backgroundColor='#0b6623' height={4} w={4} m={5} />
                 <Text m={0} fontWeight='bold'>{t('inAssignment')}</Text>
             </HStack>
             {user?.roles?.includes('president') &&
-                <Stack alignItems='center' mt={10}>
+                <Stack alignItems='center' mt={10} mb={5}>
                     <Button width={250} backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={onOpen}>{t('addAssignment')}</Button>
                 </Stack>
             }

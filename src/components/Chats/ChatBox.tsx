@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { ChatMessage } from '../../services/socket'
-import { Box, Button, Divider, Heading, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
 import { Socket } from 'socket.io-client'
 import { useChats } from '../../hooks/hooks'
@@ -71,10 +71,7 @@ const ChatBox = ({ socket }: Props) => {
     }
 
     return (
-        <Box mt={7} mb={2} boxShadow='dark-lg' h={800} maxW='99vw' padding={4} maxH='88vh' borderRadius={20} ml={2} mr={{ base: 0, lg: 2 }}>
-            <Heading>{t('messages')}</Heading>
-            <Divider />
-
+        <Box mt={7} mb={2} boxShadow='dark-lg' h={800} maxW='99vw' padding={4} maxH='80vh' borderRadius={20} ml={2} mr={{ base: 0, lg: 2 }}>
             <InfiniteScroll
                 dataLength={data ? chats.length : 0}
                 next={() => fetchNextPage()}
@@ -82,7 +79,7 @@ const ChatBox = ({ socket }: Props) => {
                 loader={<Spinner />}
                 inverse={true}
                 height={620}
-                style={{ maxHeight: '68vh', display: "flex", flexDirection: "column-reverse" }}
+                style={{ maxHeight: '67vh', display: "flex", flexDirection: "column-reverse" }}
             >
                 <Box>
                     {
