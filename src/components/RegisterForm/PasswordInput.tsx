@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputRightElement, Button, InputLeftElement, useColorMode } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, FormErrorMessage, InputGroup, InputRightElement, Button, InputLeftElement, useColorMode, background } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 import { FieldErrors, FieldValues, Path, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -61,8 +61,8 @@ const PasswordInput = <FormData extends FieldValues>({ login, bColor, register, 
                         _placeholder={{ color: colorMode === 'light' ? 'gray.300' : 'gray.500' }}
 
                     />
-                    <InputRightElement width="4.5rem">
-                        <Button backgroundColor='transparent' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
+                    <InputRightElement >
+                        <Button _active={{ bgColor: 'transparent' }} _hover={{ bg: 'transparent' }} backgroundColor='transparent' color='white' h='1.75rem' size='sm' onClick={() => setShow(!show)}>
                             {isVisible()}
                         </Button>
                     </InputRightElement>
