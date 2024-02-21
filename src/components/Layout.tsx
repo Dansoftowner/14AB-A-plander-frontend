@@ -55,7 +55,7 @@ const Layout = () => {
                             })} children={({ isActive }) => {
                                 return (
                                     <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
-                                        <Text w='100%' ml={3} my={0} fontSize={30} px={2} >{t('home')}</Text>
+                                        <Text fontWeight={500} w='100%' ml={3} my={0} fontSize={30} px={2} >{t('home')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -64,7 +64,7 @@ const Layout = () => {
                             })} children={({ isActive }) => {
                                 return (
                                     <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
-                                        <Text w='100%' ml={3} my={0} fontSize={30} px={2} >{t('messages')}</Text>
+                                        <Text fontWeight={500} w='100%' ml={3} my={0} fontSize={30} px={2} >{t('messages')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -74,7 +74,7 @@ const Layout = () => {
                             })} children={({ isActive }) => {
                                 return (
                                     <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5}>
-                                        <Text w='100%' ml={3} my={0} fontSize={30} px={2}>{t('members')}</Text>
+                                        <Text fontWeight={500} w='100%' ml={3} my={0} fontSize={30} px={2}>{t('members')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -84,7 +84,7 @@ const Layout = () => {
                             })} children={({ isActive }) => {
                                 return (
                                     <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5} >
-                                        <Text w='100%' px={2} ml={3} my={0} fontSize={30} >{t('assignments')}</Text>
+                                        <Text fontWeight={500} w='100%' px={2} ml={3} my={0} fontSize={30} >{t('assignments')}</Text>
                                     </HStack>
                                 )
                             }} />
@@ -93,7 +93,7 @@ const Layout = () => {
                             })} children={({ isActive }) => {
                                 return (
                                     <HStack borderStartRadius={25} backgroundColor={isActive ? bodyBg : activeBg} py={2} marginY={10} ml={5} >
-                                        <Text w='100%' px={2} ml={3} my={0} fontSize={30} >{t('reports')}</Text>
+                                        <Text fontWeight={500} w='100%' px={2} ml={3} my={0} fontSize={30} >{t('reports')}</Text>
                                     </HStack>
                                 )
                             }} />
