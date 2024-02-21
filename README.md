@@ -1,10 +1,32 @@
 # Plander frontend
 
-This project is made on vite template using React. You can find files here related to plander app's frontend.
+A plander alkalmazás frontend-je. Az összes frontend-del kapcsolatos anyag itt található meg.
 
-# Notes
-*Here you can add some notes for the developing.*
+A [Plander dokumentáció itt érhető el.](https://github.com/Dansoftowner/14AB-A-plander-docs)
 
-# Todo-s
-*Here you can add todo-s like this:*
-- [x] completed example
+## 🔨 Build
+
+### NPM csomagok telepítése
+```
+npm install
+```
+
+### Fejleszői szerver indítása
+```
+npm run dev
+```
+
+### Fejlesztői szerver indítása, lokális hálózaton
+```
+npm run dev -- --host
+``` 
+
+### "Hagyományos" build futtatása
+```
+npm run build
+```
+
+
+### 🏋️ Függőségek
+
+A használt "third-party" szoftverek az [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) állományban vannak listázva.
