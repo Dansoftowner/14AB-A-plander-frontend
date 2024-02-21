@@ -6,6 +6,7 @@ import { Box, HStack, Heading, useColorModeValue } from '@chakra-ui/react';
 import { ReactTyped } from 'react-typed';
 import apiClient from '../../services/apiClient';
 import { useTranslation } from 'react-i18next';
+import { Navigate } from 'react-router-dom';
 const HomePage = () => {
     const { user } = useAuth()
     const { t } = useTranslation()
@@ -13,8 +14,10 @@ const HomePage = () => {
 
     const name = user?.name;
     const [association, setAssociation] = useState()
+    const [valid, setValid] = useState(true)
 
     useEffect(() => {
+        if (localStorage.getItem('token') == null && sessionStorage.getItem('token') == null) setValid(false)
         apiClient.get('/associations/mine', { headers: { 'x-plander-auth': localStorage.getItem('token') || sessionStorage.getItem('token') } })
             .then(res => setAssociation(res.data.name));
     }, [])
@@ -30,6 +33,8 @@ const HomePage = () => {
         from: { opacity: 0, x: 20, height: 0 }
     });
 
+
+    if (!valid) return <Navigate to='/login' />
 
     return (
         <>
