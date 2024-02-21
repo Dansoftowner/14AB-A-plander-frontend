@@ -228,7 +228,7 @@ const MemberDetail = () => {
                 <Box boxShadow='dark-lg' backgroundColor={bodyColor} alignItems='center' justifyContent='center' border='1px solid white' position='absolute' top={20} mt={1} width='fit-content' h='fit-content' padding={25} borderRadius='50%' >
                     <Icon as={GrUserPolice} color={iconColor} fontSize={90} />
                 </Box>
-                <Heading mt={20} maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
+                <Heading textAlign='center' mt={20} maxW='95vw'>{member.name || 'Ismeretlen'}{t('userData')}</Heading>
                 {member.roles?.includes('president') && <Heading maxW='95vw' as='h3' fontSize={30}>{t('common:president')}</Heading>}
                 <form onSubmit={handleSubmit(e => {
                     console.log(e)
