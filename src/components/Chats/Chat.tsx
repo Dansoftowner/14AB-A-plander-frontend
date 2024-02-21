@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import ChatBox from '../Chats/ChatBox'
 import { Socket, io } from 'socket.io-client'
-import { Spinner } from '@chakra-ui/react'
+import { ScaleFade, Spinner } from '@chakra-ui/react'
 const Chat = () => {
 
     const [valid, setValid] = useState(true)
@@ -44,12 +44,12 @@ const Chat = () => {
 
     if (!valid) return <Navigate to='/login' />
     return (
-        <>
+        <ScaleFade in>
             {
                 socket == null ? <Spinner /> : <ChatBox socket={socket!} />
             }
 
-        </>
+        </ScaleFade>
     )
 }
 

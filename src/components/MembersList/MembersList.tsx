@@ -1,4 +1,4 @@
-import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack, VStack, Icon } from "@chakra-ui/react"
+import { Button, Spinner, useColorModeValue, HStack, Box, Text, InputGroup, Input, InputRightElement, Image, Stack, VStack, Icon, ScaleFade } from "@chakra-ui/react"
 import { useState, useEffect, KeyboardEvent } from "react"
 import { Navigate, useNavigate } from "react-router-dom"
 import MemberCard from "../MemberCard/MemberCard"
@@ -51,67 +51,64 @@ const MembersList = () => {
     if (!valid) return <Navigate to='/login' />
 
     return (
-        <VStack>
-            {
-                isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
-            }
-            {
-                data &&
-                <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw' >
-                    <InputGroup>
-                        <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
-                        {search &&
-                            <InputRightElement>
-                                <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
-                                    <Stack height={30} width={30} justifyContent='center'>
-                                        <Image as={IoCloseCircleOutline} />
-                                    </Stack>
-                                </Button>
-                            </InputRightElement>
-                        }
-                    </InputGroup>
-                    <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
-                        <Stack height={30} justifyContent='center'>
-                            <Image as={IoSearch} />
-                        </Stack>
-                    </Button>
-                </HStack>
-
-            }
-
-
-            <HStack transition='1s all' mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
-                {(data && page > 1) &&
-                    <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
-                        <Icon as={MdNavigateBefore} fontSize={30} />
-                    </Button>
+        <ScaleFade in>
+            <VStack>
+                {
+                    isLoading && <Box textAlign='center' my='30vh'><Spinner size='xl' justifySelf='center' alignSelf='center' /></Box>
                 }
                 {
-                    data?.items?.map((member: any, index: any) =>
-                    (
-                        <MemberCard _id={member._id} key={index}
-                            email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
-
-                    ))
-                }
-                {
-                    (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                    <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
-                        <Icon as={MdNavigateNext} fontSize={30} />
-                    </Button>
-                }
-            </HStack >
-
-            {
-                user?.roles.includes('president') &&
-                <Button mt={10} boxShadow='md' textAlign='center' backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={() => navigate('/members/invite')}>
-                    <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
-                        <FaPlus />
-                        <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
+                    data &&
+                    <HStack my={6} justifyContent='center' borderRadius={10} w={600} maxW='80vw' >
+                        <InputGroup>
+                            <Input onKeyDown={handleKeyPress} value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchByName')} />
+                            {search &&
+                                <InputRightElement>
+                                    <Button backgroundColor='transparent' _hover={{ backgroundColor: 'transparent', color: 'red' }} onClick={() => { setQ(""); setSearch("") }}>
+                                        <Stack height={30} width={30} justifyContent='center'>
+                                            <Image as={IoCloseCircleOutline} />
+                                        </Stack>
+                                    </Button>
+                                </InputRightElement>
+                            }
+                        </InputGroup>
+                        <Button _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor} onClick={() => setQ(search)}>
+                            <Stack height={30} justifyContent='center'>
+                                <Image as={IoSearch} />
+                            </Stack>
+                        </Button>
                     </HStack>
-                </Button>
-            }
-        </VStack >
+                }
+                <HStack transition='1s all' mx='auto' alignItems='center' maxW='95vw' justifyContent='center'>
+                    {(data && page > 1) &&
+                        <Button ml={3} _hover={{ fontSize: 45, transition: '0.2s ease' }} px={0} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
+                            <Icon as={MdNavigateBefore} fontSize={30} />
+                        </Button>
+                    }
+                    {
+                        data?.items?.map((member: any, index: any) =>
+                        (
+                            <MemberCard _id={member._id} key={index}
+                                email={member.email} name={member.name} phone={member.phoneNumber} isRegistered={member.isRegistered} />
+                        ))
+                    }
+                    {
+                        (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
+                        <Button px={0} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
+                            <Icon as={MdNavigateNext} fontSize={30} />
+                        </Button>
+                    }
+                </HStack >
+                {
+                    user?.roles.includes('president') &&
+                    <Button mt={10} boxShadow='md' textAlign='center' backgroundColor={buttonBg} color={buttonColor} _hover={{ backgroundColor: buttonHover }} onClick={() => navigate('/members/invite')}>
+                        <HStack p={4} verticalAlign='middle' alignItems='center' justifyContent='center'>
+                            <FaPlus />
+                            <Text h={1} verticalAlign='middle'>{t('inviteMember')}</Text>
+                        </HStack>
+                    </Button>
+                }
+            </ VStack>
+        </ScaleFade>
     )
 }
 
