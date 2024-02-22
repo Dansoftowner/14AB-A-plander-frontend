@@ -1,8 +1,9 @@
-import { Box, HStack, Text, useColorModeValue } from '@chakra-ui/react'
+import { HStack, Icon, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import { useAuth } from '../../hooks/hooks'
 import { ChatMessage } from '../../services/socket'
 import { useNavigate } from 'react-router-dom'
 import i18n from '../../i18n'
+import { GrUserPolice } from "react-icons/gr";
 
 interface Props {
     message: ChatMessage
@@ -38,18 +39,18 @@ const Message = ({ message }: Props) => {
     }
 
     return (
-        <Box my={1} backgroundColor={isMe ? activeBg : 'transparent'}>
-            <HStack>
-                <Box w={1} backgroundColor={isMe ? buttonBg : 'transparent'} h={10} borderRadius={10} />
-                <HStack>
-                    <Text m={0} minW={100} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}><b>{message.sender?.name}:</b></Text>
-                    <Text m={0} maxW={{ base: '15vw', sm: '20vw', md: '32vw', lg: '45vw' }}>{message.content}</Text>
-                </HStack>
-                <Box ml='auto' mr={2} textAlign='end'>
-                    <Text my={0} fontStyle='italic'>{handleDate()}</Text>
-                </Box>
+        <VStack mt={2}>
+            <HStack mr={!isMe ? 'auto' : 2} ml={!isMe ? '' : 'auto'}>
+                {!isMe && <Icon m={0} p={0} as={GrUserPolice} />}
+                <Text textAlign={isMe ? 'end' : 'start'} color={isMe ? buttonBg : ''} m={0} minW={100} onClick={detailNavigator} _hover={{ cursor: 'pointer' }}><b>{message.sender?.name}</b></Text>
+                {isMe && <Icon m={0} p={0} as={GrUserPolice} color={buttonBg} />}
             </HStack>
-        </Box>
+            <HStack mr={!isMe ? 'auto' : 4} ml={!isMe ? 4 : 'auto'} >
+                <Text bg={activeBg} padding={1.5} borderRadius={10} textAlign='start' m={0} maxW={{ base: '70vw', lg: '75vw' }}>{message.content}</Text>
+            </HStack>
+            <Text mr={!isMe ? 'auto' : 4} ml={!isMe ? 4 : 'auto'} textAlign={isMe ? 'end' : 'start'} my={0} fontStyle='italic'>{handleDate()}</Text>
+
+        </VStack >
     )
 }
 

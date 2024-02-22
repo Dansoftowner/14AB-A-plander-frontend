@@ -82,7 +82,7 @@ const MembersList = () => {
                 }
                 <HStack transition='1s all' mx={1} alignItems='center' maxW='80vw' justifyContent='center'>
                     {(data && page > 1) &&
-                        <Button zIndex={50} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
+                        <Button zIndex={2} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(page - 1)}>
                             <Icon as={MdNavigateBefore} fontSize={30} />
                         </Button>
                     }
@@ -95,7 +95,7 @@ const MembersList = () => {
                     }
                     {
                         (data && !(page === Math.ceil(data!.metadata!.total / data!.metadata.limit))) &&
-                        <Button zIndex={50} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
+                        <Button zIndex={2} _hover={{ fontSize: 45, transition: '0.2s ease' }} _focus={{ backgroundColor: 'transparent' }} backgroundColor='transparent' onClick={() => handlePage(1 + page)}>
                             <Icon as={MdNavigateNext} fontSize={30} />
                         </Button>
                     }

@@ -334,6 +334,7 @@ const CalendarComponent = () => {
                 '.rbc-toolbar button.rbc-active': { bg: buttonBg, color: buttonColor, '&:hover': { bg: buttonHover } },
                 '.rbc-toolbar button:hover': { bg: buttonHover, color: buttonColor },
                 '.rbc-toolbar button:focus': { bg: buttonBg, color: buttonColor }, '.rbc-toolbar button': { color: textColor },
+                '.rbc-toolbar-label': { minW: { base: '70vw', md: '72vw', lg: '1vw' } }
             }} m={15} height={600} maxW='95vw'>
                 <Calendar
                     localizer={localizer}
