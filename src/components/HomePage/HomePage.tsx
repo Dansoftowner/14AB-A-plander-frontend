@@ -43,7 +43,7 @@ const HomePage = () => {
                     <Box>
                         {trail.map(({ x, height, ...rest }, index) => (
                             <a.div
-                                key={items[index]}
+                                key={index}
                                 className={ index > 1 ? "trails-text name" : "trails-text"}
                                 style={{
                                     ...rest,
