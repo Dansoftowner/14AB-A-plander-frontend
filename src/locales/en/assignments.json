@@ -31,5 +31,6 @@
   "missingReport": "Missing report",
   "doneReport": "Existing report",
   "exoportPdf" : "Export a PDF",
-  "inAssignment": "Assigned."
+  "inAssignment": "Assigned.",
+  "assignmentInPast": "Can not record assignment in the past."
 }
