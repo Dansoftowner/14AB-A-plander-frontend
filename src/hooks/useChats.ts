@@ -19,8 +19,9 @@ export const useChats = (limit: number) =>
           },
         })
         .then((res) => res.data),
-    staleTime: 1000 * 60,
-    keepPreviousData: true,
+    staleTime: 0,
+    keepPreviousData: false,
+    refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.items.length > 0 ? allPages.length + 1 : undefined
     },

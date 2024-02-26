@@ -38,7 +38,7 @@ const InviteMember = () => {
     if (!user) return <Navigate to='/login' />
     if (!user.roles.includes('president')) return <Navigate to='/members' />
     return (
-        <VStack mt={10} minH={750} maxH='100vh' maxW='95vw' mx='auto' borderRadius={20} width='fit-content' padding={4}
+        <VStack mt={10} minH={680} maxH='100vh' maxW='95vw' mx='auto' borderRadius={20} width='fit-content' padding={4}
             boxShadow='dark-lg'>
             <Heading textAlign='center' fontSize='2xl' fontWeight='bold'>{t('inviteMember')}</Heading>
             <form onSubmit={handleSubmit((e) => {
@@ -76,7 +76,7 @@ const InviteMember = () => {
                     <FormInput register={register} name="name" i18nPlaceHolder="fnPholder" i18nTitle="fullname" required={false} errors={errors} />
                     <FormInput register={register} name="address" i18nPlaceHolder="adPholder" i18nTitle="address" required={false} errors={errors} />
 
-                    <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} />
+                    {/* <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} /> */}
 
                     <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 

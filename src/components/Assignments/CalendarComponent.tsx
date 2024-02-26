@@ -251,7 +251,7 @@ const CalendarComponent = () => {
                                 {(user.roles?.includes('president') || (url.pathname == '/reports' && inDuty.map(x => x._id).includes(user._id))) &&
                                     <Button colorScheme='green' isDisabled={!canEdit} title={!canEdit ? t('3dayError') : ''} onClick={() => {
                                         if (url.pathname == '/assignments') {
-                                            if (value instanceof Array) {
+                                            if (value instanceof Array && value[0]! > new Date()) {
                                                 usePatchAssignment(assigmentId, title, location, (value[0] as Date).toISOString(), (value[1] as Date).toISOString(), inDuty.map(x => x._id)).then(() => {
                                                     queryClient.refetchQueries(['assignments'])
                                                     toast({
@@ -269,6 +269,14 @@ const CalendarComponent = () => {
                                                         position: 'top',
                                                         colorScheme: 'red'
                                                     }))
+                                            } else {
+                                                toast({
+                                                    title: t('common:error'),
+                                                    description: t('assignmentInPast'),
+                                                    status: 'error',
+                                                    position: 'top',
+                                                    colorScheme: 'red'
+                                                })
                                             }
                                         }
                                         else {

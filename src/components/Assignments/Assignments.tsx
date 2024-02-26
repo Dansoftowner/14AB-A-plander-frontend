@@ -105,7 +105,14 @@ const Assignments = () => {
                                             position: 'top',
                                             colorScheme: 'green'
                                         })
-                                    })
+                                    }).catch((err) =>
+                                        toast({
+                                            title: t('common:error'),
+                                            description: err.response.data.message,
+                                            status: 'error',
+                                            position: 'top',
+                                            colorScheme: 'red'
+                                        }))
                                 }
                             }} ml={3}>
                                 {t('common:save')}

@@ -309,7 +309,7 @@ const MemberDetail = () => {
                         </HStack>
                     </VStack>
                     <VStack maxW='90vw'>
-                        {(isPresident || isOwnProfile) &&
+                        {isOwnProfile &&
                             <HStack maxW='95vw'>
                                 <FormLabel width={350}>{t('idNumber')}: </FormLabel>
                                 <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.idNumber} onChange={(e) => setMember({ ...member, idNumber: e.target.value })} />
