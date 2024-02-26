@@ -24,9 +24,16 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
     const independentHandler = (e: any) => {
         setIndependent(e)
         if (e === '1') {
-            setReport((old) => ({ ...old, externalOrganization: undefined, externalRepresentative: undefined }))
+            setReport((old) => ({ ...old, externalOrganization: null, externalRepresentative: null }))
         }
 
+    }
+
+    const methodHandler = (e: any) => {
+        console.log(e)
+        if (e !== 'vehicle') {
+            setReport((old) => ({ ...old, licensePlateNumber: null, startKm: null, endKm: null, method: e }))
+        } else setReport((old) => ({ ...old, method: e }))
     }
 
     const options = [
@@ -76,7 +83,7 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
             <VStack >
                 <FormControl my={5} isRequired isReadOnly={!edit} maxW='90vw'>
                     <FormLabel>{t('reportMethod')}:</FormLabel>
-                    <RadioGroup onChange={(e) => setReport({ ...report, method: e })} value={report.method}>
+                    <RadioGroup onChange={methodHandler} value={report.method}>
                         <Radio mx={2} value="vehicle">{t('vehicle')}</Radio>
                         <Radio mx={2} value="bicycle">{t('bicycle')}</Radio>
                         <Radio mx={2} value="pedestrian">{t('pedestrian')}</Radio>
@@ -87,13 +94,13 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
                     <FormControl isReadOnly={!edit} maxW='90vw'>
                         <HStack my={2}>
                             <FormLabel width={200} fontSize={15}>{t('licenseplate')}:</FormLabel>
-                            <Input width={140} value={report.licensePlateNumber} onChange={(e) => setReport({ ...report, licensePlateNumber: e.target.value })}></Input>
+                            <Input width={140} value={report.licensePlateNumber as string} onChange={(e) => setReport({ ...report, licensePlateNumber: e.target.value })}></Input>
                         </HStack>
                         <HStack >
                             <FormLabel width={118} fontSize={15}>{t('km')}:</FormLabel>
-                            <Input type="number" width={100} value={report.startKm} onChange={(e) => setReport({ ...report, startKm: parseInt(e.target.value) || undefined })}></Input>
+                            <Input type="number" width={100} value={report.startKm as number} onChange={(e) => setReport({ ...report, startKm: parseInt(e.target.value) || undefined })}></Input>
                             <Text my={0}>-</Text>
-                            <Input type="number" width={100} value={report.endKm} onChange={(e) => setReport({ ...report, endKm: parseInt(e.target.value) || undefined })}></Input>
+                            <Input type="number" width={100} value={report.endKm as number} onChange={(e) => setReport({ ...report, endKm: parseInt(e.target.value) || undefined })}></Input>
                         </HStack>
                     </FormControl>
                 }
@@ -116,7 +123,7 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
                         </VStack>
                         <VStack width={400}>
                             <FormLabel width={370} fontSize={15}>{t('externalRep')}:</FormLabel>
-                            <Input width={350} mr={10} value={report.externalRepresentative} onChange={(e) => setReport({ ...report, externalRepresentative: e.target.value })} />
+                            <Input width={350} mr={10} value={report.externalRepresentative as string} onChange={(e) => setReport({ ...report, externalRepresentative: e.target.value })} />
                         </VStack>
                     </FormControl>
                 }
@@ -135,7 +142,7 @@ const ReportDetail = ({ assignees, report, setReport, id, setCanEdit, edit }: Pr
                     </Select>
                 </FormControl>
 
-                <Textarea maxW='90vw' value={report.description || ''} onChange={(e) => setReport({ ...report, description: e.target.value })} isReadOnly={!edit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
+                <Textarea maxW='90vw' value={report.description || ''} onChange={(e) => setReport({ ...report, description: e.target.value || null })} isReadOnly={!edit} placeholder="Ha történt rendkívüli esemény, annak rövid leírása" width={400} height={100} maxLength={1240} />
             </VStack >
         </>
     )
