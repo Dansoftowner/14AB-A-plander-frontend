@@ -23,5 +23,6 @@
   "send": "Küldés",
   "msgPholder": "Írja be az üzenetet...",
   "welcome": "Üdv",
-  "back,": "újra,"
+  "back,": "újra,",
+  "noChats": "Nem történt még beszélgetés ebben az egyesületben!"
 }
