@@ -25,8 +25,9 @@ const Chat = () => {
     const [socket, setSocket] = useState<Socket>()
     const { token } = useAuth()
     useEffect(() => {
+        const url = import.meta.env.VITE_BACKEND_SOCKET_URL
         if (token) {
-            setSocket(io('wss://dev-plander-org.koyeb.app', {
+            setSocket(io(url!, {
                 auth: {
                     token: token
                 },
