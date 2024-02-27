@@ -179,7 +179,7 @@ const LoginPage = () => {
                             </Box>
 
                             <Box margin={5}>
-                                <FormInput bColor={colorMode === 'light' ? 'blue.100' : 'blue.400'} _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="username" />
+                                <FormInput bColor={colorMode === 'light' ? 'blue.100' : 'blue.400'} _onChange={(e) => setUsername(e.target.value)} login register={register} name="username" errors={errors} required={false} i18nPlaceHolder="login:username" />
                             </Box>
                             <Box >
                                 <PasswordInput bColor={colorMode === 'light' ? 'blue.100' : 'blue.400'} _onChange={(e) => setPassword(e.target.value)} login register={register} name="password" errors={errors} required={false} i18nPlaceHolder="password" i18nTitle="" />
