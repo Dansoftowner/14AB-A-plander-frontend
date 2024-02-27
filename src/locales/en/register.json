@@ -43,5 +43,9 @@
   "inviteMember": "Invite member",
   "notRegistered": "The member is not finished the registration process yet.",
   "searchByName": "Search by name",
-  "invite": "Meghívás"
+  "invite": "Meghívás",
+  "inviteEmail": "Please provide the invited member's email address",
+  "inviteName": "Prospective member's full name",
+  "inviteAddress": "Prospective member's address",
+  "inviteTel": "Prospective member's phone number"
 }

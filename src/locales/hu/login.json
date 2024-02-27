@@ -8,7 +8,7 @@
   "loginError": "Sikertelen bejelentkezés.",
   "forgotMyPassword": "Elfelejtett jelszó?",
   "lostPassword": "Elfelejtette jelszavát? Semmi baj!",
-  "explainReset": "Válassza ki egyesületét és adja meg azt e-mail címet amivel be lett Ön regisztrálva. Ezt követően rendszerünk egy automata levelet küld egy link-kel, melyet megnyitva beállíthatja új jelszavát.",
+  "explainReset": "Válassza ki egyesületét és adja meg azt email címet amivel be lett Ön regisztrálva. Ezt követően rendszerünk egy automata levelet küld egy linkkel, melyet megnyitva beállíthatja új jelszavát.",
   "newPassword": "Új jelszó kérése",
   "backToLogin": "Vissza a bejelentkezéshez",
   "enterNewPassword": "Állítsa be új jelszavát!",
