@@ -155,7 +155,7 @@ const LoginPage = () => {
                                         </InputLeftElement>
                                         {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
                                     </InputGroup>
-                                    <AutoCompleteList loadingState={<Spinner />}>
+                                    <AutoCompleteList data-testid="cy-associations" loadingState={<Spinner />}>
                                         {associations?.pages.map((page, index) =>
                                             <Fragment key={index} >
                                                 {page.items.map(association => (
