@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { TFunction } from 'i18next'
 
 export const regSchema = (t: TFunction<'register', undefined>) => z.object({
-    username: z.string().min(5, { message: t('zodUsername') }).max(20),
+    username: z.string().min(5, { message: t('zodUsername') }).max(20).regex(/^[a-zA-Z0-9\.]+$/g, { message: t('zodInvalidName') }),
     password: z.string().min(8, { message: t('zodPasswordLength') }).refine((str) => /[A-Z]/.test(str), { message: t('zodPassword') }).refine(str => /[0-9]/.test(str), { message: t('zodPassword') }),
     repeatedPassword: z.string(),
     name: z.string().min(5, { message: t('zodFullname') }).max(40).refine(str => /^[^\d]+\s+[^\d]+(\s[^\d]+)*$/g.test(str), { message: t('zodInvalidName') })
