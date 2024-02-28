@@ -1,7 +1,7 @@
 {
   "langSelectorAlt": "Kiválasztott nyelv módosítása",
   "association": "Egyesület",
-  "emailAddress": "E-mail cím",
+  "emailAddress": "Email cím",
   "back": "Vissza",
   "president": "Egyesületelnök",
   "cancel": "Mégse",
@@ -23,5 +23,6 @@
   "send": "Küldés",
   "msgPholder": "Írja be az üzenetet...",
   "welcome": "Üdv",
-  "back,": "újra,"
+  "back,": "újra,",
+  "noChats": "Nem történt még beszélgetés ebben az egyesületben!"
 }
