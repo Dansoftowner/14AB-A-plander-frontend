@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { ChatMessage } from '../../services/socket'
-import { Box, Button, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
+import { Box, Button, Heading, Input, InputGroup, Spinner, useColorModeValue } from '@chakra-ui/react'
 import Message from './Message'
 import { Socket } from 'socket.io-client'
 import { useChats } from '../../hooks/hooks'
@@ -18,7 +18,7 @@ const ChatBox = ({ socket }: Props) => {
         socket?.connect()
     }, [socket])
 
-    const { data, fetchNextPage, hasNextPage } = useChats(15)
+    const { data, fetchNextPage, hasNextPage, isFetched } = useChats(15)
     const queryClient = useQueryClient()
 
     const chats = data?.pages.reduce((acc, page) => {
@@ -82,6 +82,8 @@ const ChatBox = ({ socket }: Props) => {
                 style={{ maxHeight: '67vh', display: "flex", flexDirection: "column-reverse" }}
             >
                 <Box>
+                    {(chats?.length == 0 && messages.length == 0 && isFetched) && <Heading textAlign='center' fontStyle='italic' mb={290}>{t('noChats')}</Heading>}
+
                     {
                         chats?.map((chat: any, index: any) => (
                             <Message key={index} message={chat} />
