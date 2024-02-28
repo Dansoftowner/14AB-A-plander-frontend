@@ -12,7 +12,7 @@ import getDay from 'date-fns/getDay'
 import huHU from 'date-fns/locale/hu'
 import enUS from 'date-fns/locale/en-US'
 
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Text, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Center, Spinner, Text, useColorModeValue, useDisclosure, useToast } from '@chakra-ui/react'
 import { add, addDays, endOfDay, startOfDay, startOfMonth } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { lang } from './utils'
@@ -147,6 +147,7 @@ const CalendarComponent = () => {
     }, [])
 
     const [canEdit, setCanEdit] = useState(true)
+    const [showSpinner, setShowSpinner] = useState(false)
     const [hasReport, setHasReport] = useState(false)
     const onSelectEvent = useCallback((calEvent: any) => {
         if (url.pathname == '/reports') {
@@ -180,16 +181,24 @@ const CalendarComponent = () => {
                             </AlertDialogHeader>
 
                             <AlertDialogBody>
+                                {showSpinner && <Center zIndex={300} position='absolute' top='20%' left='50%'><Spinner maxH='50vh' maxW='50vw' height={200} width={200} /></Center>}
                                 {url.pathname == '/assignments' &&
                                     <AddAssignment inDuty={inDuty} setInDuty={setInDuty} value={value} setValue={setValue} title={title} location={location}
                                         setTitle={setTitle} setLocation={setLocation} />
                                 }
+
                                 {url.pathname == '/reports' && <ReportDetail edit={canEdit} setCanEdit={setCanEdit} id={assigmentId} assignees={inDuty} report={report} setReport={setReport} />}
                             </AlertDialogBody>
 
                             <AlertDialogFooter>
                                 {(url.pathname == '/reports' && hasReport) &&
-                                    <Button mr='auto' onClick={() => useReportPDF(assigmentId)} title={t('exportPdf')}>
+                                    <Button mr='auto' onClick={() => {
+                                        setShowSpinner(true)
+                                        useReportPDF(assigmentId).then(() => {
+                                            console.log('PDF exported')
+                                            setShowSpinner(false)
+                                        })
+                                    }} title={t('exportPdf')}>
                                         <Text color='#ff4d4d' m={0}><FaFilePdf /></Text>
                                     </Button>
                                 }
