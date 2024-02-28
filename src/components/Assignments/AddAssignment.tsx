@@ -1,7 +1,6 @@
-import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, InputRightElement, List, ListItem, Spinner, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, Input, InputGroup, List, ListItem, Spinner, Text, VStack } from "@chakra-ui/react"
 import { AutoComplete, AutoCompleteInput, AutoCompleteList, AutoCompleteItem } from "@choc-ui/chakra-autocomplete"
 import { Dispatch, Fragment, SetStateAction, useState } from "react"
-import { FaChevronDown } from "react-icons/fa"
 import { User, useAuth, useInfiniteMembers } from "../../hooks/hooks"
 import DateTimeRangePicker from '@wojtekmaj/react-datetimerange-picker';
 
@@ -72,8 +71,6 @@ const AddAssignment = ({ inDuty, setInDuty, value, setValue, location, title, se
                                     setContent(val.target.value)
                                 }}
                             />
-                            <InputRightElement
-                                children={<FaChevronDown />} />
                         </InputGroup>
 
                         <AutoCompleteList loadingState={<Spinner />}>

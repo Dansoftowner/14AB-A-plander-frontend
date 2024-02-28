@@ -1,7 +1,7 @@
 
 import { useAssociations, Association } from '../../hooks/useAssociations'
 import { ChangeEvent, Fragment, useEffect, useMemo, useState } from 'react'
-import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, InputRightElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode, Heading } from '@chakra-ui/react'
+import { Box, Button, Checkbox, HStack, InputGroup, InputLeftElement, Stack, Text, useColorModeValue, Image, FormErrorMessage, useToast, Spinner, Center, useColorMode, Heading } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { loginSchema } from '../RegisterForm/inputSchema'
 import { z } from 'zod'
@@ -15,7 +15,6 @@ import {
     AutoCompleteItem,
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import { FaChevronDown } from "react-icons/fa";
 import { MdOutlineLocalPolice } from "react-icons/md";
 import './LoginPage.css';
 import { Login, useLogin } from '../../hooks/useLogin.ts'
@@ -148,8 +147,6 @@ const LoginPage = () => {
                                             _placeholder={{ color: colorMode === 'light' ? 'gray.300' : 'gray.500' }}
 
                                         />
-                                        <InputRightElement
-                                            children={<FaChevronDown />} />
                                         <InputLeftElement>
                                             <MdOutlineLocalPolice />
                                         </InputLeftElement>
