@@ -31,5 +31,6 @@
   "missingReport": "Hiányzó jelentés",
   "doneReport": "Elkészített jelentés",
   "exportPdf": "PDF készítése",
-  "inAssignment": "Szolgálatba osztva."
+  "inAssignment": "Szolgálatba osztva.",
+  "assignmentInPast": "Nem lehet a múltba beosztást felvenni!"
 }

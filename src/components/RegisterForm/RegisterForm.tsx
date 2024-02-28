@@ -93,6 +93,15 @@ export const RegisterForm = () => {
                             })
                             navigate('/login')
                         }
+                    }).catch((err) => {
+                        registerToast({
+                            title: t('error'),
+                            description: err.response?.data.message,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                            position: 'top'
+                        })
                     })
             }
             )}>

@@ -5,12 +5,12 @@ import apiClient from '../services/apiClient'
 export interface Report {
   method: string
   purpose: string
-  licensePlateNumber?: string
-  startKm?: number
-  endKm?: number
-  externalOrganization?: string
-  externalRepresentative?: string
-  description?: string
+  licensePlateNumber?: string | null
+  startKm?: number | null
+  endKm?: number | null
+  externalOrganization?: string | null
+  externalRepresentative?: string | null
+  description?: string | null
   submittedAt: string
   author?: string
 }
@@ -30,6 +30,7 @@ export const useReport = (id: string) =>
         .then((res) => res.data)
         .catch((err) => console.log(err)),
     retry: 1,
+    refetchOnWindowFocus: false,
   })
 
 export const usePostReport = (id: string, r: dataOmit) =>

@@ -48,6 +48,7 @@ export const useAssignments = (query: AssignmentsQuery) =>
           },
         })
         .then((res) => res.data),
+    refetchOnWindowFocus: false,
   })
 
 export const useAssignment = (_id: string) =>

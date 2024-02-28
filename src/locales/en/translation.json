@@ -23,5 +23,6 @@
   "send": "Send",
   "msgPholder": "Type your message here...",
   "welcome": "Welcome",
-  "back,": "back, "
+  "back,": "back, ",
+  "noChats": "No messages were sent in this association yet!"
 }

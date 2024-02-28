@@ -38,7 +38,7 @@ const InviteMember = () => {
     if (!user) return <Navigate to='/login' />
     if (!user.roles.includes('president')) return <Navigate to='/members' />
     return (
-        <VStack mt={10} minH={750} maxH='100vh' maxW='95vw' mx='auto' borderRadius={20} width='fit-content' padding={4}
+        <VStack mt={10} minH={680} maxH='100vh' maxW='95vw' mx='auto' borderRadius={20} width='fit-content' padding={4}
             boxShadow='dark-lg'>
             <Heading textAlign='center' fontSize='2xl' fontWeight='bold'>{t('inviteMember')}</Heading>
             <form onSubmit={handleSubmit((e) => {
@@ -72,11 +72,11 @@ const InviteMember = () => {
                     })
             })}>
                 <Stack mt={7} marginBottom={5} align='center' mx={5} maxW='95vw'>
-                    <FormInput register={register} name="email" i18nPlaceHolder="emailPHolder" i18nTitle="email" required={true} errors={errors} />
-                    <FormInput register={register} name="name" i18nPlaceHolder="fnPholder" i18nTitle="fullname" required={false} errors={errors} />
-                    <FormInput register={register} name="address" i18nPlaceHolder="adPholder" i18nTitle="address" required={false} errors={errors} />
+                    <FormInput register={register} name="email" i18nPlaceHolder="inviteEmail" i18nTitle="email" required={true} errors={errors} />
+                    <FormInput register={register} name="name" i18nPlaceHolder="inviteName" i18nTitle="fullname" required={false} errors={errors} />
+                    <FormInput register={register} name="address" i18nPlaceHolder="inviteAddress" i18nTitle="address" required={false} errors={errors} />
 
-                    <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} />
+                    {/* <FormInput register={register} name="idNumber" i18nPlaceHolder="idcPholder" i18nTitle="idNumber" required={false} errors={errors} /> */}
 
                     <FormInput register={register} guard name="guardNumber" i18nPlaceHolder="guardNumPholder" i18nTitle="guardNumber" required={false} errors={errors} />
 
@@ -93,7 +93,7 @@ const InviteMember = () => {
                                             selectionChange={(p) => setPhone(p)}
                                         />
                                     </Box>
-                                    <FormInput register={register} telPrefix={phone.prefix} name="phoneNumber" i18nPlaceHolder="phnPholder" required={false} errors={errors} />
+                                    <FormInput register={register} telPrefix={phone.prefix} name="phoneNumber" i18nPlaceHolder="inviteTel" required={false} errors={errors} />
                                 </InputGroup>
                             </HStack>
                         </FormControl>

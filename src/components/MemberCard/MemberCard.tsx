@@ -112,7 +112,7 @@ const MemberCard = ({ email, name, phone, _id, isRegistered }: Props) => {
                                     <AlertDialogContent>
                                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                                             {t('removeUser')}
-                                        </AlertDialogHeader>e
+                                        </AlertDialogHeader>
                                         <AlertDialogBody>
                                             {t('pwdToDelete')}
                                             <InputGroup my={2}>

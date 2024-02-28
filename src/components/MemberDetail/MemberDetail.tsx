@@ -309,7 +309,7 @@ const MemberDetail = () => {
                         </HStack>
                     </VStack>
                     <VStack maxW='90vw'>
-                        {(isPresident || isOwnProfile) &&
+                        {isOwnProfile &&
                             <HStack maxW='95vw'>
                                 <FormLabel width={350}>{t('idNumber')}: </FormLabel>
                                 <Input boxShadow='md' borderColor='#767676' disabled={!isOwnProfile} value={member.idNumber} onChange={(e) => setMember({ ...member, idNumber: e.target.value })} />
@@ -326,14 +326,21 @@ const MemberDetail = () => {
                                 {(JSON.stringify(oldMember) != JSON.stringify(member) || newPwd != '00000000AA' || phone.prefix != memberPrefix) &&
                                     <Button boxShadow='lg' type='submit' _hover={{ backgroundColor: buttonHover }} backgroundColor={buttonBg} color={buttonColor}
                                         onClick={() => {
-                                            if (validate(member.guardNumber, member.email, newPwd)) {
+                                            if (validate(member.guardNumber, member.email, newPwd, member.username)) {
                                                 if (oldMember.email != member.email || oldMember.username != member.username || newPwd != '00000000AA') {
                                                     confirmOpen(t('login:reEnterPwd'), t('login:editCredentials'))
                                                 } else {
                                                     patch(true)
                                                     setOldMember(member)
                                                 }
-                                            }
+                                            } else feedbeckToast({
+                                                title: t('common:error'),
+                                                description: t('register:zodInvalidName'),
+                                                status: 'error',
+                                                duration: 7000,
+                                                isClosable: true,
+                                                position: 'top',
+                                            })
                                         }}
                                     >
                                         <Text mb={0} mx={3}>{t('common:save')}</Text>
