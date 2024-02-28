@@ -74,7 +74,7 @@ const LoginPage = () => {
     return (
         <>
             <NavBar bgColorDark='transparent' bgColorLight='transparent' />
-            <Center backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' minH='100vh' h={800} overflowY='hidden'>
+            <Center data-testid="cy-login" backgroundColor={bg} display='flex' justifyContent='center' alignItems='center' minH='100vh' h={800} overflowY='hidden'>
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     if (User.user && User.password && User.associationId) {
@@ -152,7 +152,7 @@ const LoginPage = () => {
                                         </InputLeftElement>
                                         {errors.association && <FormErrorMessage> {errors.association.message} </FormErrorMessage>}
                                     </InputGroup>
-                                    <AutoCompleteList loadingState={<Spinner />}>
+                                    <AutoCompleteList data-testid="cy-associations" loadingState={<Spinner />}>
                                         {associations?.pages.map((page, index) =>
                                             <Fragment key={index} >
                                                 {page.items.map(association => (
@@ -185,7 +185,7 @@ const LoginPage = () => {
                             {errors.autoLogin && <FormErrorMessage> {errors.autoLogin.message} </FormErrorMessage>}
                             <Link to='/forgotten-password'><Text fontStyle='italic' h={3} _hover={{ color: buttonBg, fontSize: 17, transition: '0.3s ease-in-out' }}>{t('forgotMyPassword')}</Text></Link>
 
-                            <Button w={400} maxW='85vw' mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>{t('loginButton')}</Button>
+                            <Button w={400} data-testid="cy-logBtn" maxW='85vw' mt={10} backgroundColor={buttonBg} color={buttonColor} type='submit' _hover={{ backgroundColor: buttonHover }}>{t('loginButton')}</Button>
                         </Stack>
                     </Box >
                 </form >
