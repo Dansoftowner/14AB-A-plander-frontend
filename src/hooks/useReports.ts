@@ -34,13 +34,26 @@ export const useReport = (id: string) =>
   })
 
 export const usePostReport = (id: string, r: dataOmit) =>
-  apiClient.post(`/assignments/${id}/report`, r, {
-    headers: {
-      'x-plander-auth':
-        localStorage.getItem('token') || sessionStorage.getItem('token'),
-      'Accept-Language': i18n.language,
+  apiClient.post(
+    `/assignments/${id}/report`,
+    {
+      purpose: r.purpose,
+      method: r.method,
+      description: r.description || undefined,
+      endKm: r.endKm || undefined,
+      startKm: r.startKm || undefined,
+      externalOrganization: r.externalOrganization || undefined,
+      externalRepresentative: r.externalRepresentative || undefined,
+      licensePlateNumber: r.licensePlateNumber || undefined,
     },
-  })
+    {
+      headers: {
+        'x-plander-auth':
+          localStorage.getItem('token') || sessionStorage.getItem('token'),
+        'Accept-Language': i18n.language,
+      },
+    },
+  )
 
 export const useDeleteReport = (id: string) =>
   apiClient.delete(`/assignments/${id}/report`, {
