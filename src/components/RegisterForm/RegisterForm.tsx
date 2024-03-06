@@ -41,6 +41,7 @@ export const RegisterForm = () => {
 
     const registerToast = useToast()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetch = () => {
@@ -48,11 +49,14 @@ export const RegisterForm = () => {
                 if (res.status === 200) {
                     setValid(true)
                     setUser(res.data)
+                    setLoading(false)
                 } else {
                     setError(res.data.message)
+                    setLoading(false)
                 }
             }).catch(err => {
                 setError(err.response?.data.message)
+                setLoading(false)
             })
         }
         fetch()
@@ -67,7 +71,7 @@ export const RegisterForm = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
 
-    if (valid) return (
+    if (valid && !loading) return (
         <>
             <NavBar />
             <form className="mx-auto container" onSubmit={handleSubmit((postUser) => {
@@ -162,5 +166,5 @@ export const RegisterForm = () => {
             </form >
         </>
     )
-    return <ErrorPage status={404} message={error} />
+    if (!valid && !loading) return <ErrorPage status={404} message={error} />
 }
