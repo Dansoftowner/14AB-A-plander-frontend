@@ -59,9 +59,9 @@ const LoginPage = () => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     const User: Login = {
-        user: username,
-        password: password,
-        associationId: selectedAssociation?._id,
+        user: username?.trim(),
+        password: password?.trim(),
+        associationId: selectedAssociation?._id?.trim(),
     }
 
     const navigate = useNavigate()
