@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Spinner, Stack, VStack, useColorModeValue, useToast } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -70,8 +70,8 @@ export const RegisterForm = () => {
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
-
-    if (valid && !loading) return (
+    if (loading) return <Stack textAlign='center' my='30vh'><Spinner height={20} width={20} alignSelf='center' justifySelf='center' /></Stack>
+    if (valid) return (
         <>
             <NavBar />
             <form className="mx-auto container" onSubmit={handleSubmit((postUser) => {
