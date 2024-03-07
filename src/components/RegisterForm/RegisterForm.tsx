@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Stack, VStack, useColorModeValue, useToast } from "@chakra-ui/react"
+import { Box, Button, Divider, FormControl, FormLabel, HStack, Heading, InputGroup, Menu, Spinner, Stack, VStack, useColorModeValue, useToast } from "@chakra-ui/react"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -41,6 +41,7 @@ export const RegisterForm = () => {
 
     const registerToast = useToast()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetch = () => {
@@ -48,11 +49,14 @@ export const RegisterForm = () => {
                 if (res.status === 200) {
                     setValid(true)
                     setUser(res.data)
+                    setLoading(false)
                 } else {
                     setError(res.data.message)
+                    setLoading(false)
                 }
             }).catch(err => {
                 setError(err.response?.data.message)
+                setLoading(false)
             })
         }
         fetch()
@@ -66,7 +70,7 @@ export const RegisterForm = () => {
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm<RegForm>({ resolver: zodResolver(inputSchema) })
-
+    if (loading) return <Stack textAlign='center' my='30vh'><Spinner height={20} width={20} alignSelf='center' justifySelf='center' /></Stack>
     if (valid) return (
         <>
             <NavBar />
@@ -162,5 +166,5 @@ export const RegisterForm = () => {
             </form >
         </>
     )
-    return <ErrorPage status={404} message={error} />
+    if (!valid && !loading) return <ErrorPage status={404} message={error} />
 }
