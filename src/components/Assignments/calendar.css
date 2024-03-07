@@ -77,3 +77,8 @@
   font-weight: bold;
   min-width: 55vw;
 }
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view__years__year,
+.react-calendar__century-view__decades__decade {
+  color: black;
+}
